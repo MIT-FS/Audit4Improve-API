@@ -14,11 +14,6 @@ import java.util.logging.*;
 	 * Ser� descartada posteriormente
 	 *
 	 */
-	/** Just testing something.
-	 * 
-	 * @author bilel
-	 *
-	 */
 
 public class SupervisorControl {
 	private static Logger log=Logger.getLogger(SupervisorControl.class.getName());
