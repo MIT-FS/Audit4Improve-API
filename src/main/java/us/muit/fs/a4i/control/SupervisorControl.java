@@ -8,12 +8,18 @@ import java.util.List;
 import java.util.logging.*;
 
 	/**
-	 * @author Isabel Román Martínez
+	 * @author Isabel Romï¿½n Martï¿½nez
 	 * @version 0.0
 	 * Esta clase se crea para poder probar algunas de las capacidades que ofrece la api github
-	 * Será descartada posteriormente
+	 * Serï¿½ descartada posteriormente
 	 *
 	 */
+	/** Just testing something.
+	 * 
+	 * @author bilel
+	 *
+	 */
+
 public class SupervisorControl {
 	private static Logger log=Logger.getLogger(SupervisorControl.class.getName());
 		/**
@@ -28,7 +34,7 @@ public class SupervisorControl {
 			PagedIterable<GHRepository> myOwnRepos=myinfo.listRepositories(10, GHMyself.RepositoryListFilter.OWNER);
 			int count=1;
 			for(GHRepository repo:myOwnRepos.toList()) {
-				System.out.println("Nombre de mi repositorio número "+count+" "+repo.getFullName());
+				System.out.println("Nombre de mi repositorio nï¿½mero "+count+" "+repo.getFullName());
 				List<GHProject> proyectos=repo.listProjects().toList();
 				int i=1;
 				for(GHProject project:proyectos){
@@ -45,7 +51,7 @@ public class SupervisorControl {
 
 			log.info("Mis datos "+myinfo);		
 			log.info("Mi repositorio "+unrepo);
-			log.info("Número de repositorios "+myrepos.toList().size());
+			log.info("Nï¿½mero de repositorios "+myrepos.toList().size());
 			log.info("Detalles de mis repositorios "+myrepos.toList());
 		}catch(Exception e) {
 				log.info(e+" No se puede crear la instancia GitHub\n");
