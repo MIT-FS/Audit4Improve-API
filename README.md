@@ -12,3 +12,5 @@ Librería con capacidades que den soporte al desarrollo de aplicaciones para la 
 - Usa la librería [github-api](https://mvnrepository.com/artifact/org.kohsuke/github-api/1.301) para interaccionar con github
 
 ## [Página en gitHub Pages](https://mit-fs.github.io/Audit4Improve-API/)
+
+Soy el usuario vicmedcas
