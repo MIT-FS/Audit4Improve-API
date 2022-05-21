@@ -409,7 +409,15 @@ class ReportTest {
 	@Test
 	@Tag("noacabado")
 	void testGetAllMetrics() {
-		fail("Not yet implemented"); // TODO
+		Metric metric= null;
+		reportTested=new Report();
+
+		try {
+			assertNull(reportTested.getAllMetrics(),"All metric Null");
+		} catch (IndicatorException e) {
+			fail(“All Metrics Null” );
+		}
+	}
 	}
 	void setMetricsMocks() {
 		Date date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
@@ -429,8 +437,16 @@ class ReportTest {
 	@Test
 	@Tag("noacabado")
 	void testGetAllIndicators() {
-		fail("Not yet implemented"); //TODO
-	}
+		Metric metric= null;
+				reportTested=new Report();
+
+				try {
+					assertNull(reportTested.getAllIndicator(name),"All indicator Null");
+				} catch (IndicatorException e) {
+					fail(“All Indicator Null” );
+				}
+			}
+			}
 	void setIndicatorsMocks() {
 		Date date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
 		Mockito.when(indicatorIntMock.getName()).thenReturn("issues");
