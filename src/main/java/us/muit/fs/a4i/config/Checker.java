@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -164,14 +165,14 @@ public class Checker {
 		log.info("Leo el objeto");
 		reader.close();
 
-		log.info("Muestro la configuraci�n le�da " + confObject);
+		log.log(Level.INFO, "Muestro la configuraci�n leída {}", confObject);
 		JsonArray indicators = confObject.getJsonArray("indicators");
-		log.info("El n�mero de indicadores es " + indicators.size());
+		log.log(Level.INFO, "El número de indicadores es {}", indicators.size());
 		for (int i = 0; i < indicators.size(); i++) {
-			log.info("nombre: " + indicators.get(i).asJsonObject().getString("name"));
+			log.log(Level.INFO, "nombre: {}", indicators.get(i).asJsonObject().getString("name"));
 			if (indicators.get(i).asJsonObject().getString("name").equals(indicatorName)) {
-				log.info("Localizado el indicador");
-				log.info("tipo: " + indicators.get(i).asJsonObject().getString("type"));
+				log.log(Level.INFO, "Localizado el indicador");
+				log.log(Level.INFO, "tipo: {}", indicators.get(i).asJsonObject().getString("type"));
 				if (indicators.get(i).asJsonObject().getString("type").equals(indicatorType)) {
 					indicatorDefinition=new HashMap<String,String>();
 					indicatorDefinition.put("description", indicators.get(i).asJsonObject().getString("description"));
@@ -185,11 +186,11 @@ public class Checker {
 	}
 	
 	public HashMap<String,String> getMetricInfo(String metricName) throws FileNotFoundException {
-		log.info("Checker solicitud de b�squeda detalles de la m�trica " + metricName);
+		log.log(Level.INFO, "Checker solicitud de b�squeda detalles de la métrica {}", metricName);
 		
 		HashMap<String,String> metricDefinition=null;	
 		String filePath="/"+a4iMetrics;
-		log.info("Buscando el archivo " + filePath);
+		log.log(Level.INFO, "Buscando el archivo {}", filePath);
 		InputStream is=this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream "+is+" para "+filePath);
 		InputStreamReader isr = new InputStreamReader(is);
@@ -218,11 +219,11 @@ public class Checker {
 		log.info("Leo el objeto");
 		reader.close();
 
-		log.info("Muestro la configuraci�n le�da " + confObject);
+		log.log(Level.INFO, "Muestro la configuraci�n leída {}", confObject);
 		JsonArray metrics = confObject.getJsonArray("metrics");
-		log.info("El n�mero de m�tricas es " + metrics.size());
+		log.log(Level.INFO, "El número de m�tricas es {}", metrics.size());
 		for (int i = 0; i < metrics.size(); i++) {
-			log.info("nombre: " + metrics.get(i).asJsonObject().getString("name"));
+			log.log(Level.INFO, "nombre: {}", metrics.get(i).asJsonObject().getString("name"));
 			if (metrics.get(i).asJsonObject().getString("name").equals(metricName)) {
 				log.info("Localizada la m�trica");
 				log.info("tipo: " + metrics.get(i).asJsonObject().getString("type"));
