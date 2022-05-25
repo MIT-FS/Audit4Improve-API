@@ -216,10 +216,22 @@ public class Context {
 		return mfont;
 	}
 	
+	/**
+	 * static getProperties
+	 * 
+	 * @param str the required property
+	 * @return the property or null
+	 * @throws IOException if there are problems with the configuration file
+	 */
 	private static String getPropertyS(String str) throws IOException {
 		return getContext().properties.getProperty(str);
 	}
 	
+	/**
+	 * getProperties
+	 * @param str the required property
+	 * @return the property or null
+	 */
 	private String getProperty(String str) {
 		return properties.getProperty(str);
 
