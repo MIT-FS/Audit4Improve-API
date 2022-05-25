@@ -180,7 +180,6 @@ public class Context {
 		try{
 			return getContext().getDefaultFont();
 		} catch (IOException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
