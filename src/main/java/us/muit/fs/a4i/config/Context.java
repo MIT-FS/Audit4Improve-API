@@ -197,11 +197,14 @@ public class Context {
 	 * @throws IOException problema al leer el fichero
 	 */
 
-	public static Font getIndicatorFont(Indicator.State state) throws IOException {
-		Font font = null;
-
-		// TO DO
-		return font;
+	public static MyFont getIndicatorFont(Indicator.State state) throws IOException {
+		Color color = null;
+		switch (state) {
+			case OK: color = Color.BLACK;
+			case WARNING: color = Color.ORANGE;
+			case CRITICAL: color = Color.RED;
+		}
+		return new MyFont(new Font("Times", Font.PLAIN, 12), color);
 	}
 
 	/**
