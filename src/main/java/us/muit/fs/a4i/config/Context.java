@@ -149,9 +149,10 @@ public class Context {
 	 * @return La fuente por defecto para indicadores y métricas
 	 */
 	public MyFont getDefaultFont() {
-		String color = properties.getProperty("Font.default.color");
-		String height = properties.getProperty("Font.default.height");
-		String type = properties.getProperty("Font.default.type");
+		// check for client settings first, if null, use default configuration
+		String color = properties.getProperty("Font.color") != null ? properties.getProperty("Font.color") : properties.getProperty("Font.default.color");
+		String height = properties.getProperty("Font.height") != null ? properties.getProperty("Font.height") :properties.getProperty("Font.default.height");
+		String type = properties.getProperty("Font.type") != null ? properties.getProperty("Font.type") : properties.getProperty("Font.default.type");
 		Font font = new Font(type, Font.PLAIN, Integer.parseInt(height));
 		return new MyFont(font, Color.getColor(color));
 	}
@@ -217,7 +218,6 @@ public class Context {
 	 * @throws IOException si hay problemas al leer las propiedades
 	 */
 	public Set<String> getPropertiesNames() throws IOException {
-
 		return properties.stringPropertyNames();
 	}
 
