@@ -40,4 +40,19 @@ public class MyFont extends Font{
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+		      return true;
+		}
+		if (this.getClass() != obj.getClass()) {
+		      return false;
+		}
+		MyFont fobj = (MyFont) obj;
+		if (color.equals(fobj.getColor())) {
+		      return true;
+		}
+		return false;
+	}
 }
