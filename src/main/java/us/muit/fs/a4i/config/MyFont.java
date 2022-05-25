@@ -43,16 +43,12 @@ public class MyFont extends Font{
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == this) {
+		if (obj == this) 
 		      return true;
-		}
-		if (this.getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass()) 
 		      return false;
-		}
-		MyFont fobj = (MyFont) obj;
-		if (color.equals(fobj.getColor())) {
+		else if (color.equals(((MyFont) obj).getColor())) 
 		      return true;
-		}
 		return false;
 	}
 }
