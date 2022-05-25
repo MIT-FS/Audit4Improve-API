@@ -20,13 +20,13 @@ import us.muit.fs.a4i.model.entities.Metric;
 
 /**
  * <p>
- * Clase para la gesti�n de los par�metros de contexto
+ * Clase para la gestión de los parámetros de contexto
  * </p>
  * <p>
- * El objetivo de Context es el manejo de la configuraci�n
+ * El objetivo de Context es el manejo de la configuración
  * </p>
  * <p>
- * En el estado actual Contexto s�lo es una aproximaci�n a las posiblidades de
+ * En el estado actual Contexto sólo es una aproximaci�n a las posiblidades de
  * configuraci�n. Se presentan posibilidades para:
  * </p>
  * <ul>
@@ -44,7 +44,7 @@ import us.muit.fs.a4i.model.entities.Metric;
  * Sigue el patr�n singleton
  * </p>
  * 
- * @author Isabel Rom�n
+ * @author Isabel Román
  *
  */
 public class Context {
@@ -55,13 +55,13 @@ public class Context {
 	private Properties properties = null;
 	// Fichero de propiedades de la API, embebido en el jar
 	private static String confFile = "a4i.conf";
-	// Fichero de propiedades de la API establecido por la aplicaci�n cliente
+	// Fichero de propiedades de la API establecido por la aplicación cliente
 	private static String appConFile = null;
-	// Fichero de configuraci�n de m�tricas e indicadores por defecto, embebido en
+	// Fichero de configuración de m�tricas e indicadores por defecto, embebido en
 	// el jar
 	private static String defaultFile = "a4iDefault.json";
-	// Fichero de configuraci�n de m�tricas e indicadores establecido por la
-	// aplicaci�n cliente
+	// Fichero de configuración de métricas e indicadores establecido por la
+	// aplicación cliente
 	private static String appFile = null;
 	private Checker checker = null;
 
@@ -72,13 +72,13 @@ public class Context {
 
 	/**
 	 * <p>
-	 * Devuelve la instancia �nica de Context. Si no estaba creada la crea, leyendo
-	 * la configuraci�n por defecto
+	 * Devuelve la instancia única de Context. Si no estaba creada la crea, leyendo
+	 * la configuración por defecto
 	 * </p>
 	 * 
-	 * @return La instancia �nica de Context
+	 * @return La instancia única de Context
 	 * @throws IOException Si hay problemas con la lectura del fichero de
-	 *                     configuraci�n
+	 *                     configuración
 	 */
 	public static Context getContext() throws IOException {
 		/**
@@ -107,9 +107,9 @@ public class Context {
 		appConFile = appConPath;
 
 		// customFile=System.getenv("APP_HOME")+customFile;
-		// Otra opci�n, Usar una variable de entorno para la localizar la ruta de
-		// instalaci�n y de ah� coger el fichero de configuraci�n
-		// Tambi�n podr�a localizarse en el home de usuario
+		// Otra opción, Usar una variable de entorno para la localizar la ruta de
+		// instalación y de ahí coger el fichero de configuración
+		// También podría localizarse en el home de usuario
 		getContext().properties.load(new FileInputStream(appConPath));
 	}
 
@@ -151,7 +151,7 @@ public class Context {
 	 * Si no se ha establecido un valor por defecto se crea una fuente simple
 	 * </p>
 	 * 
-	 * @return La fuente por defecto para indicadores y m�tricas
+	 * @return La fuente por defecto para indicadores y métricas
 	 */
 	public MyFont getDefaultFont() {
 		String color = properties.getProperty("Font.default.color");
@@ -167,7 +167,7 @@ public class Context {
 	 * No Implementado
 	 * </p>
 	 * <p>
-	 * Deber� leer las propiedades adecuadas, como color, tama�o, tipo... y
+	 * Deber� leer las propiedades adecuadas, como color, tamaño, tipo... y
 	 * construir un objeto Font
 	 * </p>
 	 * <p>
@@ -188,7 +188,7 @@ public class Context {
 	 * No Implementado
 	 * </p>
 	 * <p>
-	 * Deber� leer las propiedades adecuadas, como color, tama�o, tipo... y
+	 * Deber� leer las propiedades adecuadas, como color, tamaño, tipo... y
 	 * construir un objeto Font
 	 * </p>
 	 * 
@@ -212,8 +212,8 @@ public class Context {
 	 * Consulta el nombre de todas las propiedades le�das
 	 * </p>
 	 * 
-	 * @return Conjunto con todos los nombres de las propiedades de configuraci�n
-	 *         le�das
+	 * @return Conjunto con todos los nombres de las propiedades de configuración
+	 *         leídas
 	 * @throws IOException si hay problemas al leer las propiedades
 	 */
 	public Set<String> getPropertiesNames() throws IOException {
