@@ -198,12 +198,19 @@ public class Context {
 	public static MyFont getIndicatorFont(Indicator.State state) throws IOException {
 		MyFont mfont = getContext().getDefaultFont();
 		switch (state) {
-			case OK: 
+			case OK:
+				if (getContext().properties.getProperty("Font.color.ok") != null)
+					mfont.setColor(Color.getColor(getContext().properties.getProperty("Font.color.ok")));
 				break;
 			case WARNING: 
+				if (getContext().properties.getProperty("Font.color.warning") != null)
+					mfont.setColor(Color.getColor(getContext().properties.getProperty("Font.color.warning")));
 				mfont.setColor(Color.YELLOW);
 				break;
-			case CRITICAL: mfont.setColor(Color.RED);
+			case CRITICAL: 
+				if (getContext().properties.getProperty("Font.color.critical") != null)
+					mfont.setColor(Color.getColor(getContext().properties.getProperty("Font.color.critical")));
+				mfont.setColor(Color.RED);
 		}
 		return mfont;
 	}
