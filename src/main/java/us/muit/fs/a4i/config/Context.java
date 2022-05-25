@@ -3,20 +3,15 @@
  */
 package us.muit.fs.a4i.config;
 
-import java.io.File;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.awt.Color;
-import java.awt.Font;
-
 import us.muit.fs.a4i.model.entities.Indicator;
-import us.muit.fs.a4i.model.entities.Metric;
 
 /**
  * <p>
@@ -38,7 +33,7 @@ import us.muit.fs.a4i.model.entities.Metric;
  * </ul>
  * <p>
  * �nico punto para acceso a variables que pueden ser le�das por cualquiera,
- * configuradas s�lo por la clase context
+ * configuradas sólo por la clase context
  * </p>
  * <p>
  * Sigue el patr�n singleton
@@ -57,7 +52,7 @@ public class Context {
 	private static String confFile = "a4i.conf";
 	// Fichero de propiedades de la API establecido por la aplicación cliente
 	private static String appConFile = null;
-	// Fichero de configuración de m�tricas e indicadores por defecto, embebido en
+	// Fichero de configuración de métricas e indicadores por defecto, embebido en
 	// el jar
 	private static String defaultFile = "a4iDefault.json";
 	// Fichero de configuración de métricas e indicadores establecido por la
@@ -82,7 +77,7 @@ public class Context {
 	 */
 	public static Context getContext() throws IOException {
 		/**
-		 * Si no est� creada crea la instancia �nica con las propiedades por defecto
+		 * Si no está creada crea la instancia única con las propiedades por defecto
 		 */
 		if (contextInstance == null) {
 			contextInstance = new Context();
@@ -92,11 +87,11 @@ public class Context {
 
 	/**
 	 * <p>
-	 * Establece el fichero de configuraci�n espec�fico de la aplicaci�n cliente.
+	 * Establece el fichero de configuración específico de la aplicación cliente.
 	 * Las propiedades no establecidas se coger�n de la configuraci�n por defecto
 	 * </p>
 	 * 
-	 * @param appConPath Ruta completa al fichero de configuraci�n establecido por la
+	 * @param appConPath Ruta completa al fichero de configuración establecido por la
 	 *               propiedad cliente
 	 * @throws IOException Problema lectura fichero
 	 */
@@ -104,7 +99,7 @@ public class Context {
 		/**
 		 * Vuelve a leer las propiedades incluyendo las establecidas por la aplicaci�n
 		 */
-		appConFile = appConPath;
+		Context.appConFile = appConPath;
 
 		// customFile=System.getenv("APP_HOME")+customFile;
 		// Otra opción, Usar una variable de entorno para la localizar la ruta de
@@ -122,7 +117,7 @@ public class Context {
 	 * Consulta el tipo de persistencia que se quiere utilizar
 	 * </p>
 	 * 
-	 * @return El tipo de persistencia usado (NOTA: deuda t�cnica, podr�a convenir
+	 * @return El tipo de persistencia usado (NOTA: deuda técnica, podría convenir
 	 *         usar un enumerado, para controlar mejor los tipos disponibles)
 	 * @throws IOException si hay problemas al consultar las propiedades
 	 */
@@ -135,7 +130,7 @@ public class Context {
 	 * Consulta el tipo de remoto que se quiere manejar
 	 * </p>
 	 * 
-	 * @return El tipo de remoto (NOTA: deuda t�cnica, podr�a convenir usar un
+	 * @return El tipo de remoto (NOTA: deuda t�cnica, podría convenir usar un
 	 *         enumerado, para controlar mejor los tipos disponibles)
 	 * @throws IOException si hay problemas al consultar las propiedades
 	 */
@@ -146,7 +141,7 @@ public class Context {
 	/**
 	 * <p>
 	 * No Implementado	
-	 * Deber� leer las propiedades adecuadas, como color, tama�o, tipo... y
+	 * Deber� leer las propiedades adecuadas, como color, tamaño, tipo... y
 	 * construir un objeto Font
 	 * Si no se ha establecido un valor por defecto se crea una fuente simple
 	 * </p>
@@ -158,8 +153,7 @@ public class Context {
 		String height = properties.getProperty("Font.default.height");
 		String type = properties.getProperty("Font.default.type");
 		Font font = new Font(type, Font.PLAIN, Integer.parseInt(height));
-		MyFont mfont = new MyFont(font, Color.getColor(color));
-		return mfont;
+		return new MyFont(font, Color.getColor(color));
 	}
 
 	/**
@@ -171,16 +165,19 @@ public class Context {
 	 * construir un objeto Font
 	 * </p>
 	 * <p>
-	 * Si no se ha definido una fuente para las m�tricas se debe devolver la fuente
+	 * Si no se ha definido una fuente para las métricas se debe devolver la fuente
 	 * por defecto
 	 * </p>
 	 * 
-	 * @return la fuente para las m�tricas
+	 * @return la fuente para las métricas
 	 */
-	public static Font getMetricFont() {
-		Font font = null;
-		// TO DO
-		return font;
+	public static MyFont getMetricFont() {
+		try{
+			return getContext().getDefaultFont();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
@@ -193,18 +190,21 @@ public class Context {
 	 * </p>
 	 * 
 	 * @param state Estado para el que se solicita el color de fuente
-	 * @return La fuente para el indicador cuando el estado es el par�metro pasado
+	 * @return La fuente para el indicador cuando el estado es el parámetro pasado
 	 * @throws IOException problema al leer el fichero
 	 */
 
 	public static MyFont getIndicatorFont(Indicator.State state) throws IOException {
-		Color color = null;
+		MyFont mfont = getContext().getDefaultFont();
 		switch (state) {
-			case OK: color = Color.BLACK;
-			case WARNING: color = Color.ORANGE;
-			case CRITICAL: color = Color.RED;
+			case OK: 
+				break;
+			case WARNING: 
+				mfont.setColor(Color.YELLOW);
+				break;
+			case CRITICAL: mfont.setColor(Color.RED);
 		}
-		return new MyFont(new Font("Times", Font.PLAIN, 12), color);
+		return mfont;
 	}
 
 	/**
@@ -230,9 +230,8 @@ public class Context {
 	 * @throws IOException si hay problemas leyendo el fichero
 	 */
 	private void setProperties() throws IOException {
-		log.info("Lectura del fichero de configuraci�n por defecto");
-		FileInputStream file;
-		// Establecemos las propiedades por defecto, del fichero de configuraci�n
+		log.info("Lectura del fichero de configuración por defecto");
+		// Establecemos las propiedades por defecto, del fichero de configuración
 		// embebido en el jar
 	
 		properties = new Properties();
