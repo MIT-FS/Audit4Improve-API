@@ -122,7 +122,7 @@ public class Context {
 	 * @throws IOException si hay problemas al consultar las propiedades
 	 */
 	public String getPersistenceType() throws IOException {
-		return properties.getProperty("persistence.type");
+		return getProperty("persistence.type");
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class Context {
 	 * @throws IOException si hay problemas al consultar las propiedades
 	 */
 	public String getRemoteType() throws IOException {
-		return properties.getProperty("remote.type");
+		return getProperty("remote.type");
 	}
 
 	/**
@@ -150,9 +150,13 @@ public class Context {
 	 */
 	public MyFont getDefaultFont() {
 		// check for client settings first, if null, use default configuration
-		String color = properties.getProperty("Font.color") != null ? properties.getProperty("Font.color") : properties.getProperty("Font.default.color");
-		String height = properties.getProperty("Font.height") != null ? properties.getProperty("Font.height") :properties.getProperty("Font.default.height");
-		String type = properties.getProperty("Font.type") != null ? properties.getProperty("Font.type") : properties.getProperty("Font.default.type");
+		String color = getProperty("Font.color");
+		if (color == null)
+			color = getProperty("Font.default.color");
+		String height = getProperty("Font.height");
+		if (height == null)
+			height = getProperty("Font.default.height");
+		String type = getProperty("Font.type") != null ? getProperty("Font.type") : getProperty("Font.default.type");
 		Font font = new Font(type, Font.PLAIN, Integer.parseInt(height));
 		return new MyFont(font, Color.getColor(color));
 	}
@@ -197,22 +201,28 @@ public class Context {
 
 	public static MyFont getIndicatorFont(Indicator.State state) throws IOException {
 		MyFont mfont = getContext().getDefaultFont();
+		Color color = Color.BLACK;
 		switch (state) {
 			case OK:
-				if (getContext().properties.getProperty("Font.color.ok") != null)
-					mfont.setColor(Color.getColor(getContext().properties.getProperty("Font.color.ok")));
+				color = getPropertyS("Font.color.ok") != null ? Color.getColor(getPropertyS("Font.color.ok")) : color;
 				break;
 			case WARNING: 
-				if (getContext().properties.getProperty("Font.color.warning") != null)
-					mfont.setColor(Color.getColor(getContext().properties.getProperty("Font.color.warning")));
-				mfont.setColor(Color.YELLOW);
+				color = getPropertyS("Font.color.warning") != null ? Color.getColor(getPropertyS("Font.color.warning")) : Color.YELLOW;
 				break;
 			case CRITICAL: 
-				if (getContext().properties.getProperty("Font.color.critical") != null)
-					mfont.setColor(Color.getColor(getContext().properties.getProperty("Font.color.critical")));
-				mfont.setColor(Color.RED);
+				color = getPropertyS("Font.color.critical") != null ? Color.getColor(getPropertyS("Font.color.critical")) : Color.RED;
 		}
+		mfont.setColor(color);
 		return mfont;
+	}
+	
+	private static String getPropertyS(String str) throws IOException {
+		return getContext().properties.getProperty(str);
+	}
+	
+	private String getProperty(String str) {
+		return properties.getProperty(str);
+
 	}
 
 	/**
