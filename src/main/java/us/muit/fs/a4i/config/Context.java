@@ -269,8 +269,7 @@ public class Context {
 		InputStream is=this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream "+is+" para "+filePath);	
 		properties.load(is);		
-		log.log(Level.FINE, "Listado de propiedades {}", properties.toString());
-
+		log.log(Level.FINE, "Listado de propiedades {}", properties);
 	}
 
 }
