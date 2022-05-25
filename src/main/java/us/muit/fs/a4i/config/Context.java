@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import us.muit.fs.a4i.model.entities.Indicator;
 
@@ -180,6 +181,7 @@ public class Context {
 		try{
 			return getContext().getDefaultFont();
 		} catch (IOException e) {
+			log.log(Level.WARNING, e.getMessage());
 			return null;
 		}
 	}
@@ -258,16 +260,16 @@ public class Context {
 	 * @throws IOException si hay problemas leyendo el fichero
 	 */
 	private void setProperties() throws IOException {
-		log.info("Lectura del fichero de configuración por defecto");
+		log.log(Level.INFO, "Lectura del fichero de configuración por defecto");
 		// Establecemos las propiedades por defecto, del fichero de configuración
 		// embebido en el jar
 	
 		properties = new Properties();
 		String filePath="/"+confFile;
 		InputStream is=this.getClass().getResourceAsStream(filePath);
-		log.info("InputStream "+is+" para "+filePath);			
+		log.info("InputStream "+is+" para "+filePath);	
 		properties.load(is);		
-		log.fine("Listado de propiedades "+properties);
+		log.log(Level.FINE, "Listado de propiedades {}", properties.toString());
 
 	}
 
