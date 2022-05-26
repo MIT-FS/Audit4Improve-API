@@ -206,6 +206,7 @@ public class Context {
 		switch (state) {
 			case OK:
 				color = getPropertyS("Font.color.ok") != null ? Color.getColor(getPropertyS("Font.color.ok")) : color;
+				log.info(getPropertyS("Font.color.ok"));
 				break;
 			case WARNING: 
 				color = getPropertyS("Font.color.warning") != null ? Color.getColor(getPropertyS("Font.color.warning")) : Color.YELLOW;

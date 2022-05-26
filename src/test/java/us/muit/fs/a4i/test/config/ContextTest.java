@@ -5,6 +5,7 @@ package us.muit.fs.a4i.test.config;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -13,11 +14,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
+import us.muit.fs.a4i.config.Checker;
 import us.muit.fs.a4i.config.Context;
+import us.muit.fs.a4i.config.MyFont;
+import us.muit.fs.a4i.model.entities.Indicator;
+import us.muit.fs.a4i.model.entities.Indicator.IndicatorBuilder;
+import us.muit.fs.a4i.model.entities.Indicator.State;
 
 /**
- * @author Isabel Rom醤
+ * @author Isabel Rom锟絥
  *
  */
 class ContextTest {
@@ -55,7 +63,15 @@ class ContextTest {
 	 */
 	@Test
 	void testGetContext() {
-		fail("Not yet implemented");
+		Context contextut = null;
+		try {
+			contextut = Context.getContext();
+			
+		}catch (Exception e) {
+			fail("Fallo al abrir el fichero de configuraci贸n por defecto");
+			e.printStackTrace();
+		} 
+		log.info("Contexto creado");
 	}
 
 	/**
@@ -63,7 +79,13 @@ class ContextTest {
 	 */
 	@Test
 	void testSetAppConf() {
-		fail("Not yet implemented");
+		try {
+			Context.setAppConf(System.getenv("APP_HOME"));
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Configuraci贸n de App actualizada con 茅xito");
 	}
 
 	/**
@@ -71,7 +93,16 @@ class ContextTest {
 	 */
 	@Test
 	void testGetChecker() {
-		fail("Not yet implemented");
+		Checker checker = null;
+		try {
+			Context contextut = null;
+			contextut = Context.getContext();
+			checker = contextut.getChecker();
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Checker creado");		
 	}
 
 	/**
@@ -80,7 +111,7 @@ class ContextTest {
 	@Test
 	void testGetPersistenceType() {
 		try {					
-			assertEquals("excel",Context.getContext().getPersistenceType(),"Deber韆 estar definido el tipo excel por defecto en a4i.conf");
+			assertEquals("excel",Context.getContext().getPersistenceType(),"Deber锟絘 estar definido el tipo excel por defecto en a4i.conf");
 		} catch (IOException e) {
 			fail("El fichero no se localiza");
 			e.printStackTrace();
@@ -93,7 +124,7 @@ class ContextTest {
 	@Test
 	void testGetRemoteType() {
 		try {
-			assertEquals("github",Context.getContext().getRemoteType(),"Deber韆 estar definido el tipo github por defecto en a4i.conf");
+			assertEquals("github",Context.getContext().getRemoteType(),"Deber锟絘 estar definido el tipo github por defecto en a4i.conf");
 		} catch (IOException e) {
 			fail("El fichero no se localiza");
 			e.printStackTrace();
@@ -105,7 +136,19 @@ class ContextTest {
 	 */
 	@Test
 	void testGetDefaultFont() {
-		fail("Not yet implemented");
+		Context contextut = null;
+		try {
+			contextut = Context.getContext();
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Contexto creado correctamente en testGetDefaultFont");
+		MyFont myFontTest = contextut.getDefaultFont();
+		assertEquals(myFontTest.getColor(),Color.BLACK, "El color deber铆a de ser negro, ya que se acaba de crear la fuente y es el color por defecto");
+		assertEquals(myFontTest.getSize(),12, "El tama帽o deber铆a de ser 12, ya que se acaba de crear la fuente y es el tama帽o por defecto");
+		assertEquals(myFontTest.getFontName(),"Times", "El tipo deber铆a de ser Times, ya que se acaba de crear la fuente y es el tipo por defecto");
+	
 	}
 
 	/**
@@ -113,7 +156,14 @@ class ContextTest {
 	 */
 	@Test
 	void testGetMetricFont() {
-		fail("Not yet implemented");
+		MyFont myFontTest = null;
+		try {
+			myFontTest = Context.getContext().getMetricFont();
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Fuente de m茅trica obtenida correctamente en testGetMetricFont");
 	}
 
 	/**
@@ -121,15 +171,50 @@ class ContextTest {
 	 */
 	@Test
 	void testGetIndicatorFont() {
-		fail("Not yet implemented");
+		MyFont myFontTest = null;
+		try {
+			myFontTest = Context.getContext().getIndicatorFont(State.OK);
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Fuente de estado OK creada en testGetIndicatorFont");
+		assertEquals(myFontTest.getColor(),Color.BLACK, "El color deber铆a de ser negro, ya que el estado del indicador es OK");
+		try {
+			myFontTest = Context.getContext().getIndicatorFont(State.WARNING);
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Fuente de estado WARNING creada en testGetIndicatorFont");
+		assertEquals(myFontTest.getColor(),Color.YELLOW, "El color deber铆a de ser negro, ya que el estado del indicador es WARNING");
+		try {
+			myFontTest = Context.getContext().getIndicatorFont(State.CRITICAL);
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Fuente de estado CRITICAL creada en testGetIndicatorFont");
+		assertEquals(myFontTest.getColor(),Color.RED, "El color deber铆a de ser negro, ya que el estado del indicador es CRITICAL");
 	}
 
 	/**
 	 * Test method for {@link us.muit.fs.a4i.config.Context#getPropertiesNames()}.
 	 */
 	@Test
-	void testGetPropertiesNames() {
-		fail("Not yet implemented");
+	void testGetPropertiesNames() {		
+		Context contextut = null;
+		try {
+			contextut = Context.getContext();
+		}catch (Exception e){
+			fail("Fallo al abrir el fichero de configuraci贸n cliente");
+			e.printStackTrace();
+		}
+		log.info("Contexto creado correctamente en testGetPropertiesNames");
+		try {
+			assertNotNull(contextut.getPropertiesNames(), "Las propiedades del contexto no pueden estar vac铆as. Al menos debe existir el fichero de configuraci贸n a41.conf");
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
-
 }
