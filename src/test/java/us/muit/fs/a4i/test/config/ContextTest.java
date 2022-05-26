@@ -3,25 +3,20 @@
  */
 package us.muit.fs.a4i.test.config;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-
-import us.muit.fs.a4i.config.Checker;
 import us.muit.fs.a4i.config.Context;
 import us.muit.fs.a4i.config.MyFont;
-import us.muit.fs.a4i.model.entities.Indicator;
-import us.muit.fs.a4i.model.entities.Indicator.IndicatorBuilder;
 import us.muit.fs.a4i.model.entities.Indicator.State;
 
 /**
@@ -63,10 +58,8 @@ class ContextTest {
 	 */
 	@Test
 	void testGetContext() {
-		Context contextut = null;
 		try {
-			contextut = Context.getContext();
-			
+			Context.getContext();
 		}catch (Exception e) {
 			fail("Fallo al abrir el fichero de configuración por defecto");
 			e.printStackTrace();
@@ -93,11 +86,10 @@ class ContextTest {
 	 */
 	@Test
 	void testGetChecker() {
-		Checker checker = null;
 		try {
 			Context contextut = null;
 			contextut = Context.getContext();
-			checker = contextut.getChecker();
+			contextut.getChecker();
 		}catch (Exception e){
 			fail("Fallo al abrir el fichero de configuración cliente");
 			e.printStackTrace();
@@ -155,9 +147,8 @@ class ContextTest {
 	 */
 	@Test
 	void testGetMetricFont() {
-		MyFont myFontTest = null;
 		try {
-			myFontTest = Context.getContext().getMetricFont();
+			Context.getMetricFont();
 		}catch (Exception e){
 			fail("Fallo al abrir el fichero de configuración cliente");
 			e.printStackTrace();
@@ -172,7 +163,7 @@ class ContextTest {
 	void testGetIndicatorFont() {
 		MyFont myFontTest = null;
 		try {
-			myFontTest = Context.getContext().getIndicatorFont(State.OK);
+			myFontTest = Context.getIndicatorFont(State.OK);
 		}catch (Exception e){
 			fail("Fallo al abrir el fichero de configuración cliente");
 			e.printStackTrace();
@@ -180,7 +171,7 @@ class ContextTest {
 		log.info("Fuente de estado OK creada en testGetIndicatorFont");
 		assertEquals(myFontTest.getColor(),Color.BLACK, "El color debería de ser negro, ya que el estado del indicador es OK");
 		try {
-			myFontTest = Context.getContext().getIndicatorFont(State.WARNING);
+			myFontTest = Context.getIndicatorFont(State.WARNING);
 		}catch (Exception e){
 			fail("Fallo al abrir el fichero de configuración cliente");
 			e.printStackTrace();
@@ -188,7 +179,7 @@ class ContextTest {
 		log.info("Fuente de estado WARNING creada en testGetIndicatorFont");
 		assertEquals(myFontTest.getColor(),Color.YELLOW, "El color debería de ser negro, ya que el estado del indicador es WARNING");
 		try {
-			myFontTest = Context.getContext().getIndicatorFont(State.CRITICAL);
+			myFontTest = Context.getIndicatorFont(State.CRITICAL);
 		}catch (Exception e){
 			fail("Fallo al abrir el fichero de configuración cliente");
 			e.printStackTrace();
