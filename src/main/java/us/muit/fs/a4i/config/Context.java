@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -151,17 +152,39 @@ public class Context {
 	 */
 	public MyFont getDefaultFont() {
 		// check for client settings first, if null, use default configuration
-		String color = getProperty("Font.color");
-		if (color == null)
-			color = getProperty("Font.default.color");
+		
+		String color = getProperty("Font.color") == null ? getProperty("Font.default.color") : getProperty("Font.color") ;
 		String height = getProperty("Font.height");
 		if (height == null)
 			height = getProperty("Font.default.height");
 		String type = getProperty("Font.type") != null ? getProperty("Font.type") : getProperty("Font.default.type");
 		Font font = new Font(type, Font.PLAIN, Integer.parseInt(height));
-		return new MyFont(font, Color.getColor(color));
+		return new MyFont(font, getColor(color));
 	}
 
+	/**
+	 * private function to parse Strings to Color objects
+	 * @param str the name of the color (which must be a preimplemented color of the Color class) or color values in hex representation
+	 * @return the color based on the String str
+	 */
+	private Color getColor(String str) {
+	    for (Field f : Color.class.getDeclaredFields()) {
+	        //we want to test only fields of type Color
+	        if (f.getType().equals(Color.class)) {
+	        	  if (f.getName().toLowerCase().equals(str.toLowerCase()))
+					try {
+						return (Color) f.get(f);
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }
+	    }
+	    return Color.getColor(str);
+	}	
 	/**
 	 * <p>
 	 * No Implementado

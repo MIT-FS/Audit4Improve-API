@@ -147,8 +147,7 @@ class ContextTest {
 		MyFont myFontTest = contextut.getDefaultFont();
 		assertEquals(myFontTest.getColor(),Color.BLACK, "El color debería de ser negro, ya que se acaba de crear la fuente y es el color por defecto");
 		assertEquals(myFontTest.getSize(),12, "El tamaño debería de ser 12, ya que se acaba de crear la fuente y es el tamaño por defecto");
-		assertEquals(myFontTest.getFontName(),"Times", "El tipo debería de ser Times, ya que se acaba de crear la fuente y es el tipo por defecto");
-	
+		assertEquals(myFontTest.getName(),"Times", "El tipo debería de ser Times, ya que se acaba de crear la fuente y es el tipo por defecto");
 	}
 
 	/**
