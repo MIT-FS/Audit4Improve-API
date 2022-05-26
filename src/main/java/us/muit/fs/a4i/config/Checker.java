@@ -3,41 +3,43 @@
  */
 package us.muit.fs.a4i.config;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 /**
  * <p>
- * Clase para verificar las métricas e indicadores
+ * Clase para verificar las mï¿½tricas e indicadores
  * </p>
  * <p>
- * La API incluye sus métricas e indicadores por defecto en la carpeta
+ * La API incluye sus mÃ©tricas e indicadores por defecto en la carpeta
  * resources, en el fichero a4iDefault.json
  * </p>
  * <p>
- * Si la aplicación cliente crea nuevas métricas o indicadores las guarda en un
- * fichero json de configuración, que tendrá que indicársele al Checker
+ * Si la aplicaciÃ³n cliente crea nuevas mÃ©tricas o indicadores las guarda en un
+ * fichero json de configuraciï¿½n, que tendrÃ¡ que indicÃ¡rsele al Checker
  * </p>
  * <p>
- * Deuda técnica: analizar la posibilidad de leer sólo una vez y mantener en
+ * Deuda tÃ©cnica: analizar la posibilidad de leer sÃ³lo una vez y mantener en
  * memoria
  * </p>
  * 
- * @author Isabel Román
+ * @author Isabel Romï¿½n
  *
  */
 public class Checker {
 	private static Logger log = Logger.getLogger(Checker.class.getName());
 	private String a4iMetrics = "a4iDefault.json";
 	/*
-	 * Definir la ruta completa del fichero de configuración
+	 * Definir la ruta completa del fichero de configuraciï¿½n
 	 */
 	private String appMetrics = null;
 
@@ -47,20 +49,20 @@ public class Checker {
 
 	/**
 	 * <p>
-	 * Comprueba si la métrica está definida en el fichero por defecto o en el de la
-	 * aplicación cliente
+	 * Comprueba si la mÃ©trica estÃ¡ definida en el fichero por defecto o en el de la
+	 * aplicaciÃ³n cliente
 	 * </p>
 	 * <p>
-	 * También verifica que el tipo es el adecuado
+	 * Tambiï¿½n verifica que el tipo es el adecuado
 	 * </p>
 	 * 
-	 * @param metricName nombre de la métrica que se quiere comprobar
-	 * @param metricType tipo de la métrica
-	 * @return metricDefinition Si la métrica está definida y el tipo es correcto se devuelve un mapa con las unidades y la descripción
-	 * @throws FileNotFoundException Si no se localiza el fichero de configuración
+	 * @param metricName nombre de la mÃ©trica que se quiere comprobar
+	 * @param metricType tipo de la mÃ©trica
+	 * @return metricDefinition Si la mÃ©trica estÃ¡ definida y el tipo es correcto se devuelve un mapa con las unidades y la descripciï¿½n
+	 * @throws FileNotFoundException Si no se localiza el fichero de configuraciÃ³n
 	 */
 	public HashMap<String,String> definedMetric(String metricName, String metricType) throws FileNotFoundException {
-		log.info("Checker solicitud de búsqueda métrica " + metricName);
+		log.info("Checker solicitud de bï¿½squeda mï¿½trica " + metricName);
 		
 		HashMap<String,String> metricDefinition=null;
 		
@@ -94,13 +96,13 @@ public class Checker {
 		log.info("Leo el objeto");
 		reader.close();
 
-		log.info("Muestro la configuración leída " + confObject);
+		log.info("Muestro la configuraciÃ³n leÃ­da " + confObject);
 		JsonArray metrics = confObject.getJsonArray("metrics");
-		log.info("El número de métricas es " + metrics.size());
+		log.info("El nÃºmero de mï¿½tricas es " + metrics.size());
 		for (int i = 0; i < metrics.size(); i++) {
 			log.info("nombre: " + metrics.get(i).asJsonObject().getString("name"));
 			if (metrics.get(i).asJsonObject().getString("name").equals(metricName)) {
-				log.info("Localizada la métrica");
+				log.info("Localizada la mÃ©trica");
 				log.info("tipo: " + metrics.get(i).asJsonObject().getString("type"));
 				if (metrics.get(i).asJsonObject().getString("type").equals(metricType)) {
 					metricDefinition=new HashMap<String,String>();
@@ -116,21 +118,21 @@ public class Checker {
 
 	/**
 	 * <p>
-	 * Comprueba si el indicador está definido en el fichero por defecto o en el de
-	 * la aplicación cliente
+	 * Comprueba si el indicador estÃ¡ definido en el fichero por defecto o en el de
+	 * la aplicaciÃ³n cliente
 	 * </p>
 	 * <p>
-	 * También verifica que el tipo es el adecuado
+	 * Tambiï¿½n verifica que el tipo es el adecuado
 	 * </p>
 	 * 
 	 * @param indicatorName nombre del indicador que se quiere comprobar
 	 * @param indicatorType tipo del indicador
-	 * @return indicatorDefinition Si el indicador está definido y el tipo es correcto se devuelve un mapa con las unidades y la descripción
-	 * @throws FileNotFoundException Si no se localiza el fichero de configuración
+	 * @return indicatorDefinition Si el indicador estÃ¡ definido y el tipo es correcto se devuelve un mapa con las unidades y la descripciï¿½n
+	 * @throws FileNotFoundException Si no se localiza el fichero de configuraciÃ³n
 	 */
 	public HashMap<String,String> definedIndicator(String indicatorName, String indicatorType) throws FileNotFoundException {
 		HashMap<String,String> indicatorDefinition=null;
-		log.info("Checker solicitud de búsqueda indicador " + indicatorName);
+		log.info("Checker solicitud de bï¿½squeda indicador " + indicatorName);
 		boolean defined = false;
 		
 		
@@ -163,14 +165,14 @@ public class Checker {
 		log.info("Leo el objeto");
 		reader.close();
 
-		log.info("Muestro la configuración leída " + confObject);
+		log.log(Level.INFO, "Muestro la configuraciï¿½n leÃ­da {}", confObject);
 		JsonArray indicators = confObject.getJsonArray("indicators");
-		log.info("El número de indicadores es " + indicators.size());
+		log.log(Level.INFO, "El nÃºmero de indicadores es {}", indicators.size());
 		for (int i = 0; i < indicators.size(); i++) {
-			log.info("nombre: " + indicators.get(i).asJsonObject().getString("name"));
+			log.log(Level.INFO, "nombre: {}", indicators.get(i).asJsonObject().getString("name"));
 			if (indicators.get(i).asJsonObject().getString("name").equals(indicatorName)) {
-				log.info("Localizado el indicador");
-				log.info("tipo: " + indicators.get(i).asJsonObject().getString("type"));
+				log.log(Level.INFO, "Localizado el indicador");
+				log.log(Level.INFO, "tipo: {}", indicators.get(i).asJsonObject().getString("type"));
 				if (indicators.get(i).asJsonObject().getString("type").equals(indicatorType)) {
 					indicatorDefinition=new HashMap<String,String>();
 					indicatorDefinition.put("description", indicators.get(i).asJsonObject().getString("description"));
@@ -184,11 +186,11 @@ public class Checker {
 	}
 	
 	public HashMap<String,String> getMetricInfo(String metricName) throws FileNotFoundException {
-		log.info("Checker solicitud de búsqueda detalles de la métrica " + metricName);
+		log.log(Level.INFO, "Checker solicitud de bï¿½squeda detalles de la mÃ©trica {}", metricName);
 		
 		HashMap<String,String> metricDefinition=null;	
 		String filePath="/"+a4iMetrics;
-		log.info("Buscando el archivo " + filePath);
+		log.log(Level.INFO, "Buscando el archivo {}", filePath);
 		InputStream is=this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream "+is+" para "+filePath);
 		InputStreamReader isr = new InputStreamReader(is);
@@ -217,13 +219,13 @@ public class Checker {
 		log.info("Leo el objeto");
 		reader.close();
 
-		log.info("Muestro la configuración leída " + confObject);
+		log.log(Level.INFO, "Muestro la configuraciï¿½n leÃ­da {}", confObject);
 		JsonArray metrics = confObject.getJsonArray("metrics");
-		log.info("El número de métricas es " + metrics.size());
+		log.log(Level.INFO, "El nÃºmero de mï¿½tricas es {}", metrics.size());
 		for (int i = 0; i < metrics.size(); i++) {
-			log.info("nombre: " + metrics.get(i).asJsonObject().getString("name"));
+			log.log(Level.INFO, "nombre: {}", metrics.get(i).asJsonObject().getString("name"));
 			if (metrics.get(i).asJsonObject().getString("name").equals(metricName)) {
-				log.info("Localizada la métrica");
+				log.info("Localizada la mï¿½trica");
 				log.info("tipo: " + metrics.get(i).asJsonObject().getString("type"));
 				metricDefinition=new HashMap<String,String>();
 				metricDefinition.put("name", metrics.get(i).asJsonObject().getString("name"));
