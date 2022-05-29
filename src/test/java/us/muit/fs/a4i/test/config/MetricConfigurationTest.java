@@ -2,9 +2,15 @@ package us.muit.fs.a4i.test.config;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 import us.muit.fs.a4i.config.MetricConfigurationI;
 
@@ -12,6 +18,19 @@ public class MetricConfigurationTest {
     private static Logger log = Logger.getLogger(MetricConfiguration.class.getName());
     static MetricConfiguration underTest;
     static String appConfPath;
+
+    @BeforeAll
+	static void setUpBeforeClass() throws Exception {
+		//Acciones a realizar antes de ejecutar los tests de esta clase
+		appConfPath="src"+File.separator+"test"+File.separator+"resources"+File.separator+"appConfTest.json";
+	}
+
+    @BeforeEach
+	void setUp() throws Exception {
+		//Acciones a realizar antes de cada uno de los tests de esta clase
+		//Creo el objeto bajo test, un Checker
+		underTest = new MetricConfiguration();
+    }
 
     void testDefinedMetric() {
 		
