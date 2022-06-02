@@ -115,12 +115,12 @@ class ReportTest {
 	void testReport() {
 		//fail("Not yet implemented"); // TODO
 		//El constructor está formado por el string id y por el tipo type.
-		reportTested=new Report("entityId");
-		//reportTested=new Report("entityId"); falta el type
+		reportTested=new Report("Id");
+		//reportTested=new Report("Id"); falta el type
 		reportTested=new Report();
 		ReportI.Type type=reportTested.getType();
 		assertEquals(type,reportTested.getType(),"No se establece correctamente el tipo del informe");
-		assertEquals("entityId",reportTested.getEntityId(),"No se establece correctamente el identificador del informe");
+		assertEquals("Id",reportTested.getId(),"No se establece correctamente el identificador del informe");
 	}
 	
 	
@@ -136,8 +136,8 @@ class ReportTest {
 	@Test
 	@Tag("noacabado")
 	void testReportString() {
-		reportTested=new Report("entityId");
-		assertEquals("entityId",reportTested.getEntityId(),"No se establece correctamente el identificador del informe");
+		reportTested=new Report("Id");
+		assertEquals("Id",reportTested.getId(),"No se establece correctamente el identificador del informe");
 			
 	}
 	
@@ -324,7 +324,7 @@ class ReportTest {
 	 */
 	@Test
 	@Tag("noacabado")
-	void testGetEntityId() {
+	void testGetId() {
 		fail("Not yet implemented"); // TODO
 	}
 
