@@ -8,8 +8,8 @@ import us.muit.fs.a4i.exceptions.IndicatorException;
 
 public interface ReportI {
 	/**
-	 * <p>Tipos de informes, puede necesitarse cuando los algoritmos de c·lculo de indicadores difieran seg˙n el tipo de informe</p>
-	 * <p>Un informe sÛlo es de un tipo y no se puede modificar una vez establecido</p>
+	 * <p>Tipos de informes, puede necesitarse cuando los algoritmos de c√°lculo de indicadores difieran seg√∫n el tipo de informe</p>
+	 * <p>Un informe s√≥lo es de un tipo y no se puede modificar una vez establecido</p>
 	 * 
 	 */
 
@@ -22,7 +22,7 @@ public interface ReportI {
 	
 	ReportI.Type getType();
 	
-	String getEntityId();
+	String getId();
 	
 	Metric getMetricByName(String name);
 	
@@ -37,19 +37,19 @@ public interface ReportI {
 	void addIndicator(Indicator ind);
 	
 	/**
-	 * Consulta una mÈtrica de un informe a partir del nombre
-	 * @param name Nombre de la mÈtrica solicitada
-	 * @return MÈtrica solicitada
+	 * Consulta una m√©trica de un informe a partir del nombre
+	 * @param name Nombre de la m√©trica solicitada
+	 * @return M√©trica solicitada
 	 */
 
 	/**
-	 * Obtiene todas las mÈtricas del informe
-	 * @return ColleciÛn de mÈtricas que contiene el informe
+	 * Obtiene todas las m√©tricas del informe
+	 * @return Colleci√≥n de m√©tricas que contiene el informe
 	 */
 
     /**
-     * AÒade una mÈtrica al informe
-     * @param met Nueva mÈtrica
+     * A√±ade una m√©trica al informe
+     * @param met Nueva m√©trica
      */
 
 	/**
@@ -60,14 +60,14 @@ public interface ReportI {
 
 
 	/**
-	 * AÒade un indicador al informe
+	 * A√±ade un indicador al informe
 	 * @param ind Nuevo indicador
 	 */
 
 
 	/**
-	 * Calcula un indicador a partir de su nombre y lo aÒade al informe
-	 * Si se basa en mÈtricas que no est·n a˙n incluidas en el informe las incluye
+	 * Calcula un indicador a partir de su nombre y lo a√±ade al informe
+	 * Si se basa en m√©tricas que no est√°n a√∫n incluidas en el informe las incluye
 	 * @param name Nombre del indicador que se quiere calcular
 	 */
 
@@ -77,12 +77,12 @@ public interface ReportI {
 	
     /**
      * Obtiene el identificador de la entidad a la que se refiere el informe
-     * @return Identificador unÌvoco de la entidad a la que se refiere el informe en el remoto
+     * @return Identificador un√≠voco de la entidad a la que se refiere el informe en el remoto
      */
 
 	/**
-	 * Establece la calculadora de indicadores, debe ser especÌfica para el tipo de informe
-	 * @param calc calculadora a utilizar para el c·lculo de indicadores
+	 * Establece la calculadora de indicadores, debe ser espec√≠fica para el tipo de informe
+	 * @param calc calculadora a utilizar para el c√°lculo de indicadores
 	 * @throws IndicatorException Si el tipo de la calculadora no coincide con el tipo de informe
 	 */
 	
