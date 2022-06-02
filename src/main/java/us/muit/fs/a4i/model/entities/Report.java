@@ -52,18 +52,18 @@ public class Report implements ReportI {
 		createMaps();
 		
 	}
-	public Report(String entityId){
+	public Report(String Id){
 		createMaps();
-		this.entityId=entityId;		
+		this.Id=Id;		
 	}
 	public Report(Type type){
 		createMaps();
 		this.type=type;		
 	}
-	public Report(Type type,String entityId){
+	public Report(Type type,String Id){
 		createMaps();
 		this.type=type;	
-		this.entityId=entityId;		
+		this.Id=Id;		
 	}	
 	private void createMaps() {
 		metrics=new HashMap<String,Metric>();
