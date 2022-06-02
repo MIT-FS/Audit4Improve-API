@@ -33,6 +33,7 @@ jobs:
       GITHUB_LOGIN: ${{ github.actor }}
       GITHUB_PACKAGES: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+    steps:
       - name: Ejecutando los test del código
         run: |
           chmod +x gradlew        
