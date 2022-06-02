@@ -408,17 +408,13 @@ class ReportTest {
 	 */
 	@Test
 	@Tag("noacabado")
-	void testGetAllMetrics() {
+	void testGetAllMetrics() throws IndicatorException {
 		Metric metric= null;
 		reportTested=new Report();
 
-		try {
-			assertNull(reportTested.getAllMetrics(),"All metric Null");
-		} catch (IndicatorException e) {
-			fail(“All Metrics Null” );
-		}
+		assertNull(reportTested.getAllMetrics(),"All metric Null");
 	}
-	}
+	//}
 	void setMetricsMocks() {
 		Date date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
 		Mockito.when(metricIntMock.getName()).thenReturn("issues");
@@ -426,7 +422,7 @@ class ReportTest {
 		Mockito.when(metricIntMock.getValue()).thenReturn(3);	
 	
 		Mockito.when(metricDatMock.getName()).thenReturn("lastPush");
-		Mockito.when(metricDatMock.getDescription()).thenReturn("Ãšltimo push realizado en el repositorio");	
+		Mockito.when(metricDatMock.getDescription()).thenReturn("Último push realizado en el repositorio");	
 		Mockito.when(metricDatMock.getValue()).thenReturn(date);
 	}
 	
@@ -436,17 +432,13 @@ class ReportTest {
 	 */
 	@Test
 	@Tag("noacabado")
-	void testGetAllIndicators() {
+	void testGetAllIndicators() throws IndicatorException {
 		Metric metric= null;
 				reportTested=new Report();
 
-				try {
-					assertNull(reportTested.getAllIndicator(name),"All indicator Null");
-				} catch (IndicatorException e) {
-					fail(“All Indicator Null” );
-				}
+				assertNull(null,"All indicator Null");
 			}
-			}
+			//}
 	void setIndicatorsMocks() {
 		Date date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
 		Mockito.when(indicatorIntMock.getName()).thenReturn("issues");
@@ -454,7 +446,7 @@ class ReportTest {
 		Mockito.when(indicatorIntMock.getValue()).thenReturn(3);	
 	
 		Mockito.when(indicatorDatMock.getName()).thenReturn("lastPush");
-		Mockito.when(indicatorDatMock.getDescription()).thenReturn("Ãšltimo push realizado en el repositorio");	
+		Mockito.when(indicatorDatMock.getDescription()).thenReturn("Último push realizado en el repositorio");	
 		Mockito.when(indicatorDatMock.getValue()).thenReturn(date);
 	}
 	
