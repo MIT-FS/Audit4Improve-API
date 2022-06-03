@@ -19,7 +19,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
@@ -140,7 +142,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	 * Guarda en un hoja limpia con el nombre del id del informe todas las métricas y los indicadores que incluya
 	 */
 	@Override
-    public void saveReport() throws ReportNotDefinedException{
+    public void saveReport(ReportI report) throws ReportNotDefinedException{
 		log.info("Guardando informe");
     	if(report==null) {
     		throw new ReportNotDefinedException();
@@ -185,7 +187,13 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	   Row row=sheet.createRow(rowIndex);
 	   log.info("Indice de fila nueva "+rowIndex);
 	   int cellIndex=0;
-	   //Aquí debería incorporar el formato de fuente en las celdas
+	   // Aquí debería incorporar el formato de fuente en las celdas
+	   // docs sacados de aquí https://www.javatpoint.com/apache-poi-excel-font
+	   // https://www.e-iceblue.com/Tutorials/Java/Spire.XLS-for-Java/Program-Guide/Cells/Apply-Fonts-in-Excel-in-Java.html
+	   
+	   CellStyle style = wb.createCellStyle();
+	   style.setFont((Font) formater.getMetricFont());
+
 	   row.createCell(cellIndex++).setCellValue(metric.getName());
 	   row.createCell(cellIndex++).setCellValue(metric.getValue().toString());
 	   row.createCell(cellIndex++).setCellValue(metric.getUnit());
@@ -205,12 +213,18 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	   Row row=sheet.createRow(rowIndex);
 	   log.info("Indice de fila nueva "+rowIndex);
 	   int cellIndex=0;
+	   
 	   //Aquí debería indicar el formato de fuente en las celdas, que dependerá del estado del índice
+	   
+	   CellStyle style = wb.createCellStyle();
+	   // TODO: No existe getState??? --> se implementará
+	   style.setFont((Font) formater.getIndicatorFont(indicator.getState()));
+
 	   row.createCell(cellIndex++).setCellValue(indicator.getName());
 	   row.createCell(cellIndex++).setCellValue(indicator.getValue().toString());
-
+	   row.createCell(cellIndex++).setCellValue(indicator.getUnit());
 	   row.createCell(cellIndex++).setCellValue(indicator.getDescription());
-	
+	   row.createCell(cellIndex++).setCellValue(indicator.getSource());
 	   row.createCell(cellIndex).setCellValue(indicator.getDate().toString());
 	   log.info("Indice de celda final"+cellIndex);
 	   

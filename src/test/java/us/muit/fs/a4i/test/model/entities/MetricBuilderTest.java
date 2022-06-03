@@ -78,11 +78,13 @@ class MetricBuilderTest {
 		
 		//Comenzamos probando el caso más sencillo, la métrica existe y el tipo es correcto
 		MetricBuilder underTest = null;
+//		assertEquals("watchers", "gadsf", "El nombre establecido no es correcto");
 		try {
 			underTest = new MetricBuilder<Integer>("watchers", 33);
 		} catch (MetricException e) {
-			fail("No debería haber saltado esta excepción");
 			e.printStackTrace();
+			fail("No debería haber saltado esta excepción");
+			
 		}
 		Metric newMetric = underTest.build();
 		log.info("Métrica creada "+newMetric.toString());
@@ -153,8 +155,7 @@ class MetricBuilderTest {
 				underTest.source("GitHub");
 				Metric newMetric = underTest.build();
 				log.info("Métrica creada "+newMetric.toString());			
-				assertEquals("GitHub",newMetric.getSource(),"Source no tiene el valor esperado");
-			
+				assertEquals("GitHub",newMetric.getSource(),"Source no tiene el valor esperado");		
 	}
 
 	/**

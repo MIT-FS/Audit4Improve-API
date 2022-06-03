@@ -28,7 +28,7 @@ public interface PersistenceManager {
 	 * <p>Persiste el informe</p>
 	 * @throws ReportNotDefinedException Si no se estableció el informe lanzará error
 	 */
-	void saveReport() throws ReportNotDefinedException;
+	void saveReport(ReportI report) throws ReportNotDefinedException;
 	/**
 	 * <p>Borra el informe</p>
 	 * 
