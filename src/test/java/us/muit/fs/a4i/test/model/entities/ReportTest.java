@@ -151,8 +151,8 @@ class ReportTest {
 		//Verifico que se ha consultado el nombre una vez al invocar este método, se usa como clave para meterlo en un mapa, hay que consultarlo
 		//¿Por qué falla? ¿Con qué no había contado? ¿Hay problemas en el test o en el código?
 		//Prueba a sustituir por la línea comentada
-		Mockito.verify(metricIntMock).getName();
-		//Mockito.verify(metricIntMock, atLeast(1)).getName();
+		//Mockito.verify(metricIntMock).getName();
+		Mockito.verify(metricIntMock, atLeast(1)).getName();
 		Metric metric=reportTested.getMetricByName("issues");
 		assertEquals(metric.getValue(),3,"Debería tener el valor especificado en el mock");
 		assertEquals(metric.getDescription(),"Tareas sin finalizar en el repositorio","Debería tener el valor especificado en el mock");
