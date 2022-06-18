@@ -1,4 +1,4 @@
-## Audit4Improve-API
+# Audit4Improve-API
 
 Código base usado como ejemplo en la asignatura [Factorías de Software](https://www.us.es/estudiar/que-estudiar/oferta-de-masteres/master-universitario-en-ingenieria-de-telecomunicacion-0/52040007), de 1º del MUIT de la [Universidad de Sevilla](https://www.us.es)
 
@@ -11,5 +11,10 @@ Librería con capacidades que den soporte al desarrollo de aplicaciones para la 
 - Usa Jupiter y Mockito para pruebas
 - Usa la librería [github-api](https://mvnrepository.com/artifact/org.kohsuke/github-api/1.301) para interaccionar con github
 
+<<<<<<< HEAD
 
 “Soy el usuario juapalesp”
+=======
+## [Página en gitHub Pages](https://mit-fs.github.io/Audit4Improve-API/)
+
+>>>>>>> pruebas_

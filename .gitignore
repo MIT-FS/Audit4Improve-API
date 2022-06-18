@@ -1,5 +1,7 @@
 # Ignore Gradle project-specific cache directory
 .gradle
+#No quiero subir el fichero de configuraciÛn de gradle, porque contiene secretos
+gradle.properties
 #Ignoro los directorios que crea el IDE en el espacio de trabajo, que no se suba a git
 .settings
 .metadata
@@ -25,7 +27,7 @@ gradle.properties
 
 # Package Files #
 *.jar
-#excluso el gradle wrapper de esta regla, s√≠ quiero controlarlo
+#excluyo el gradle wrapper de esta regla, s√≠ quiero controlarlo
 !gradle/wrapper/gradle-wrapper.jar
 *.war
 *.nar
@@ -36,4 +38,6 @@ gradle.properties
 
 
 
-
+#las pruebas har·n generar informes excel, que no quiero subir al repositorio remoto
+*.xls
+/javadoc.xml

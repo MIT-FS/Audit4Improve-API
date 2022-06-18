@@ -1,0 +1,58 @@
+{
+	"metrics": [{
+			"name": "subscribers",
+			"type": "java.lang.Integer",
+			"description": "Número de suscriptores, watchers en la web",
+			"unit": "subscribers"
+		},
+		{
+			"name": "forks",
+			"type": "java.lang.Integer",
+			"description": "Número de forks, no son los forks de la web",
+			"unit": "forks"
+		},
+		{
+			"name": "watchers",
+			"type": "java.lang.Integer",
+			"description": "Observadores, en la web aparece com forks",
+			"unit": "watchers"
+		},
+		{
+			"name": "issues",
+			"type": "java.lang.Integer",
+			"description": "Tareas sin finalizar en el repositorio",
+			"unit": "issues"
+		},
+		{
+			"name": "stars",
+			"type": "java.lang.Integer",
+			"description": "Estrellas concedidas",
+			"unit": "stars"
+		},
+		{
+			"name": "creation",
+			"type": "java.util.Date",
+			"description": "Fecha de creación del calendario",
+			"unit": "date"
+		},
+		{
+			"name": "lastPush",
+			"type": "java.util.Date",
+			"description": "�ltimo push realizado en el repositorio",
+			"unit": "date"
+		}
+	],
+	"indicators": [{
+			"name": "issuesProgess",
+			"type": "java.lang.Double",
+			"description": "Ratio de issues cerrados frente a totales",
+			"unit": "ratio"
+		},
+		{
+			"name": "overdued",
+			"type": "java.lang.Double",
+			"description": "Ratio de issues vencidos frente a abiertos",
+			"unit": "ratio"
+		}
+	]
+}

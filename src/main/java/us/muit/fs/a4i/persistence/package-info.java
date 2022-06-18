@@ -4,4 +4,4 @@
  * @author Isabel Román
  * @version 0.0
  */
-package us.muit.fs.a4i.model.daos;
+package us.muit.fs.a4i.persistence;

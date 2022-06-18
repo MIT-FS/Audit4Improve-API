@@ -1,5 +1,5 @@
 /**
- * Este paquete contiene las clases controladoras e interfaces
+ * Clases e interfaces controladoras
  *
  * @author Isabel Román
  * @version 0.0

@@ -4,4 +4,4 @@
  * @author Isabel Román
  * @version 0.0
  */
-package us.muit.fs.a4i.test.model;
+package us.muit.fs.a4i.test.persistence;
