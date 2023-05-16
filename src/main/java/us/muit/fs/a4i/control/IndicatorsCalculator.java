@@ -1,5 +1,5 @@
 /**
- * <p>Algoritmos para el cálculo de indicadores específicos al tipo de informe</p>
+ * <p>Algoritmos para el cï¿½lculo de indicadores especï¿½ficos al tipo de informe</p>
  */
 package us.muit.fs.a4i.control;
 
@@ -8,32 +8,49 @@ import us.muit.fs.a4i.model.entities.ReportI;
 
 /**
  * 
- * <p>Define los métodos para calcular cada indicador y añadirlo al informe</p>
- * <p>Puede hacerse uno a uno o todos a la vez</p>
- * <p>Las clases que la implementen serán específias para un tipo de informe</p>
- * @author Isabel Román
+ * <p>
+ * Define los mÃ©todos para calcular cada indicador y aÃ±adirlo al informe
+ * </p>
+ * <p>
+ * Puede hacerse uno a uno o todos a la vez
+ * </p>
+ * <p>
+ * Las clases que la implementen serÃ¡n especÃ­fias para un tipo de informe
+ * </p>
+ * 
+ * @author Isabel RomÃ¡n
  *
  */
 public interface IndicatorsCalculator {
 	/**
-	 * <p>Calcula el indicador con el nombre que se pasa y lo incluye en el informe
-	 * Si las métricas que necesita no están en el informe las busca y las añade</p>
-	 * @param name Nombre del indicador a cálcular
-	 * @param report Informe sobre el que realizar el cálculo
-	 * @throws IndicatorException Si el indicador no está definido en la calculadora
+	 * <p>
+	 * Calcula el indicador con el nombre que se pasa y lo incluye en el informe Si
+	 * las mÃ©tricas que necesita no estÃ¡n en el informe las busca y las aÃ±ade
+	 * </p>
+	 * 
+	 * @param indicatorName Nombre del indicador a calcular
+	 * @param reportManager Gestor del Informe sobre el que realizar el cÃ¡lculo
+	 * @throws IndicatorException Si el indicador no estÃ¡ definido en la calculadora
 	 */
-	
-	public void calcIndicator(String name,ReportI report) throws IndicatorException;
+
+	public void calcIndicator(String indicatorName, ReportManagerI reportManager) throws IndicatorException;
+
 	/**
-	 * <p>Calcula todos los indicadores configurados para el tipo de informe que se pasa. Debe verificar primero que el tipo de informe que se pasa es correcto</p>
-	 * @param report Informe sobre el que realizar el cálculo
-	 * @throws IndicatorException Si el tipo del informe no coincide con el de la calculadora
+	 * <p>
+	 * Calcula todos los indicadores configurados para el tipo de informe que se
+	 * pasa. Debe verificar primero que el tipo de informe que se pasa es correcto
+	 * </p>
+	 * 
+	 * @param reportManager Informe sobre el que realizar el cï¿½lculo
+	 * @throws IndicatorException Si el tipo del informe no coincide con el de la
+	 *                            calculadora
 	 */
-	public void calcAllIndicators(ReportI report) throws IndicatorException;
-	
+	public void calcAllIndicators(ReportManagerI reportManager) throws IndicatorException;
+
 	/**
 	 * Devuelve el tipo de informe que maneja esta calculadora de indicadores
+	 * 
 	 * @return El tipo de informes
 	 */
-	public ReportI.Type getReportType();
+	public ReportI.ReportType getReportType();
 }

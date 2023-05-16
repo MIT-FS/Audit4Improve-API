@@ -5,11 +5,11 @@
 			"type": "java.lang.Integer",
 			"description": "Descargas realizadas",
 			"unit": "downloads"
-		},
+		},		
 		{
 			"name": "comments",
 			"type": "java.lang.Integer",
-			"description": "Númeoro de comentarios",
+			"description": "NÃºmero de comentarios",
 			"unit": "comments"
 		}
 	],
@@ -23,7 +23,7 @@
 		{
 			"name": "commentsInterest",
 			"type": "java.lang.Double",
-			"description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
+			"description": "Ratio de comentarios con mÃ¡s de 1 respuesta frente al nÃºmero total de comentarios",
 			"unit": "ratio"
 		}
 	]

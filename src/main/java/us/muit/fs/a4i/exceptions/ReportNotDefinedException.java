@@ -8,13 +8,14 @@ package us.muit.fs.a4i.exceptions;
  *
  */
 public class ReportNotDefinedException extends Exception {
-	 /**
-	 * Excepción que indica que se está intentando recuperar una entidad sin haber establecido su id
+	/**
+	 * ExcepciÃ³n que indica que se estÃ¡ intentando recuperar una entidad sin haber
+	 * establecido su id
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	    public String getMessage(){
-		 return "No se ha establecido aún un informe";
-    }
+	public String getMessage() {
+		return "No se ha establecido aÃºn un informe";
+	}
 }

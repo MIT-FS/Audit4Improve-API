@@ -1,8 +1,7 @@
 /**
  * Clases e interfaces controladoras
  *
- * @author Isabel Rom·n
- * @version 0.0
+ * @author Isabel Rom√°n
+ * @version 0.2
  */
 package us.muit.fs.a4i.control;
-

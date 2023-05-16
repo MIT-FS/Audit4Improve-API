@@ -1,11 +1,15 @@
 /**
- * <p>Clases encargadas del contexto de aplicaci髇
- * Leen la configuraci髇 y la ponen disponible
- * Manejan la configuraci髇 b醩ica en ficheros simples le韉os a Properties y la referida a m閠ricas e indicadores disponibles en ficheros json</p>
- * <img src="https://raw.githubusercontent.com/MIT-FS/Audit4Improve-API/gh-pages/doc-files/configPackage.GIF" alt="Paquete para la configuraci髇" height="25%" width="50%"> 
+ * <p>
+ * Clases encargadas del contexto de aplicaci贸n Leen la configuraci贸n y la ponen
+ * disponible Manejan la configuraci贸n b谩sica en ficheros simples le铆dos a
+ * Properties y la referida a m茅tricas e indicadores disponibles en ficheros
+ * json
+ * </p>
+ * <img src=
+ * "https://raw.githubusercontent.com/MIT-FS/Audit4Improve-API/gh-pages/doc-files/configPackage.gif"
+ * alt="Paquete para la configuraci贸n" height="25%" width="50%">
  * 
- * @author Isabel Rom醤
- * @version 0.0
+ * @author Isabel Rom谩n
+ * @version 0.2
  */
 package us.muit.fs.a4i.config;
-

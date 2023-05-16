@@ -1,5 +1,6 @@
 /**
- * Este paquete contiene los test para las clases de getión de configuración y contexto de la api Audit4Improve
+ * Este paquete contiene los test para las clases de getión de configuración y
+ * contexto de la api Audit4Improve
  *
  * @author Isabel Román
  * @version 0.0

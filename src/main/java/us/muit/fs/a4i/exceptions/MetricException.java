@@ -1,28 +1,32 @@
 package us.muit.fs.a4i.exceptions;
 
 /**
- * @author Isabel Rom·n
+ * @author Isabel Rom√°n
  *
  */
 public class MetricException extends Exception {
-	 /**
-	 * ExcepciÛn que indica que se est· intentando recuperar una entidad sin haber establecido su id
+	/**
+	 * Excepci√≥n al manejar m√©trica
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * InformaciÛn sobre el error
+	 * Informaci√≥n sobre el error
 	 */
 	private String message;
+
 	/**
-	 * <p>Constructor</p>
+	 * <p>
+	 * Constructor
+	 * </p>
+	 * 
 	 * @param info Mensaje definiendo el error
 	 */
-	public MetricException(String info){
-		message=info;
+	public MetricException(String info) {
+		message = info;
 	}
 
 	@Override
-	    public String getMessage(){
-		 return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 }

@@ -8,11 +8,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import us.muit.fs.a4i.config.Context;
-import us.muit.fs.a4i.model.entities.Indicator;
-import us.muit.fs.a4i.model.entities.Indicator.State;
+import us.muit.fs.a4i.model.entities.IndicatorI;
 
 /**
- * @author Isabel Rom·n
+ * @author Isabel Rom√°n
  *
  */
 public class ReportFormater implements ReportFormaterI {
@@ -21,54 +20,60 @@ public class ReportFormater implements ReportFormaterI {
 	 */
 	private Font defaultFont;
 	/**
-	 * Formato de fuente para las mÈtricas
+	 * Formato de fuente para las m√©tricas
 	 */
 	private Font metricFont;
 	/**
-	 * Fomatos de fuente en funciÛn del estado del indicador
+	 * Fomatos de fuente en funci√≥n del estado del indicador
 	 */
-	private HashMap<Indicator.State,Font> indicatorsFont;
-	
-    ReportFormater(){
-    	 	this.indicatorsFont=new HashMap<Indicator.State,Font>();    	 	
-    	 	//SÛlo se construye el mapa, conforme se vayan solicitando se ir·n rellenando
-    }
+	private HashMap<IndicatorI.IndicatorState, Font> indicatorsFont;
+
+	public ReportFormater() {
+		this.indicatorsFont = new HashMap<IndicatorI.IndicatorState, Font>();
+		// S√≥lo se construye el mapa, conforme se vayan solicitando se ir√°n rellenando
+	}
+
 	@Override
 	public Font getMetricFont() {
-		if (metricFont==null) {
-			metricFont=Context.getMetricFont();
+		if (metricFont == null) {
+			metricFont = Context.getMetricFont();
 		}
 		return metricFont;
 	}
 
 	@Override
 	public void setMetricFont(Font font) {
-		metricFont=font;
+		metricFont = font;
 
 	}
 
 	@Override
-	public Font getIndicatorFont(Indicator.State state) throws IOException {	
-		if (!indicatorsFont.containsKey(state)){
+	public Font getIndicatorFont(IndicatorI.IndicatorState state) throws IOException {
+		if (!indicatorsFont.containsKey(state)) {
 			try {
 				indicatorsFont.put(state, Context.getIndicatorFont(state));
 			} catch (IOException e) {
 				indicatorsFont.put(state, Context.getContext().getDefaultFont());
 			}
-		}	
-	
+		}
+
 		return indicatorsFont.get(state);
 	}
 
 	@Override
-	public void setIndicatorFont(State state, Font font) {
+	public void setIndicatorFont(IndicatorI.IndicatorState state, Font font) {
 		indicatorsFont.put(state, font);
 
 	}
 
 	@Override
 	public void setDefaultFont(Font font) {
-		defaultFont=font;
+		defaultFont = font;
 	}
-	
+
+	@Override
+	public Font getDefaultFont() {
+		return this.defaultFont;
+	}
+
 }

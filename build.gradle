@@ -11,26 +11,59 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
  
-    //Añado el plugin para eclipse
+    //AÃ±ado el plugin para eclipse
     id 'eclipse'
     //para poder publicar paquetes en github
     id 'maven-publish'
-    //Plugin para análisis estático de código
+    //Plugin para anÃ¡lisis estÃ¡tico de cÃ³digo
     id "nebula.lint" version "17.7.0"
 }
-version = '0.0'
+
+//version = '2.0'
+//Para publicar paquetes en github
+//group = 'A4I'
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/mit-fs/audit4improve-api")         
+            credentials {
+            //las propiedades gpr.user y gpr.key estÃ¡n configuradas en gradle.properties en el raiz del proyecto, y se aÃ±ade a .gitignore para que no se suban
+            //O bien configuro las variables de entorno GITHUB_LOGIN y GITHUB_PACKAGES
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_LOGIN")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_PACKAGES")
+                }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+         //Del tutorial https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
+        
+            groupId = 'us.mitfs.samples'
+            artifactId = 'a4i'
+            version = '0.0'
+
+            from components.java
+        }
+       
+    }
+}
 tasks.withType(JavaCompile) {
-    //Añadir la opción Xlint
+    //AÃ±adir la opciÃ³n Xlint
     options.deprecation = true
-    options.encoding = 'ISO-8859-1'
+  //  options.encoding = 'ISO-8859-1'
+    options.encoding = 'UTF-8'
 }
 
 tasks.withType(Javadoc){
   
-    description = "Genera la documentación"
-    //indicar que la codificación es ISO
-    options.encoding = 'ISO-8859-1'
-    options.charSet = 'ISO-8859-1'
+    description = "Genera la documentaciÃ³n"
+    //indicar que la codificaciÃ³n es ISO
+  
+  //  options.encoding = 'ISO-8859-1'
+  //  options.charSet = 'ISO-8859-1'
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
     options.author = true
     options.version = true
     options.use = true
@@ -59,16 +92,16 @@ repositories {
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
-    //Añado la dependencia de la librería github que vamos a usar
+    //AÃ±ado la dependencia de la librerÃ­a github que vamos a usar
   
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
     //JAVADOC: https://github-api.kohsuke.org/apidocs/index.html
-    api 'org.kohsuke:github-api:1.301'
+     api 'org.kohsuke:github-api:1.301'
     //Para la persistencia de informes usaremos la api apachepoi
     // https://mvnrepository.com/artifact/org.apache.poi/poi
     //JAVADOC: https://poi.apache.org/apidocs/5.0/
     implementation 'org.apache.poi:poi:5.2.1'
-    //Para leer la configuración como ficheros con datos en formato json
+    //Para leer la configuraciÃ³n como ficheros con datos en formato json
     // https://mvnrepository.com/artifact/javax.json/javax.json-api
     //JAVADOC: https://javadoc.io/doc/org.glassfish/javax.json/latest/overview-summary.html
     implementation group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
@@ -80,16 +113,16 @@ dependencies {
     
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:30.1.1-jre'
-    //Añado para usar mockito
+    //AÃ±ado para usar mockito
     //JAVADOC: https://javadoc.io/doc/org.mockito/mockito-core/4.3.1/overview-summary.html
     testImplementation 'org.mockito:mockito-core:4.3.1'
     // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
     //JAVADOC: https://javadoc.io/doc/org.mockito/mockito-junit-jupiter/latest/index.html
     testImplementation 'org.mockito:mockito-junit-jupiter:4.3.1'
  
-    testImplementation(platform('org.junit:junit-bom:5.8.2'))
-    //JAVADOC: https://www.javadoc.io/doc/org.junit.jupiter/junit-jupiter-api/latest/index.html
-    testImplementation('org.junit.jupiter:junit-jupiter')
+	testImplementation(platform('org.junit:junit-bom:5.8.2'))
+	//JAVADOC: https://www.javadoc.io/doc/org.junit.jupiter/junit-jupiter-api/latest/index.html
+	testImplementation('org.junit.jupiter:junit-jupiter')
 
 }
 
@@ -101,33 +134,6 @@ test {
 }
 
 
-//Para publicar paquetes en github
-//group = 'A4I'
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/mit-fs/audit4improve-api")         
-            credentials {
-            //las propiedades gpr.user y gpr.key están configuradas en gradle.properties en el raiz del proyecto, y se añade a .gitignore para que no se suban
-            //O bien configuro las variables de entorno GITHUB_LOGIN y GITHUB_PACKAGES
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_LOGIN")
-                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_PACKAGES")
-                }
-        }
-    }
-    publications {
-        gpr(MavenPublication) {
-         //Del tutorial https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
-        
-            groupId = 'us.mitfs.samples'
-            artifactId = 'a4i'
-            version = '0.0'
 
-            from components.java
-        }
-       
-    }
-}
 
 

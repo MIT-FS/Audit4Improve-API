@@ -6,28 +6,35 @@ package us.muit.fs.a4i.model.remote;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHIssueState;
+import org.checkerframework.checker.units.qual.Length;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHRepositoryStatistics;
-import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GHRepositoryStatistics.CodeFrequency;
+import org.kohsuke.github.GitHub;
 
 import us.muit.fs.a4i.exceptions.MetricException;
-
-import us.muit.fs.a4i.model.entities.Metric;
-import us.muit.fs.a4i.model.entities.Metric.MetricBuilder;
+import us.muit.fs.a4i.exceptions.ReportItemException;
 import us.muit.fs.a4i.model.entities.Report;
 import us.muit.fs.a4i.model.entities.ReportI;
+import us.muit.fs.a4i.model.entities.ReportItem;
+import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
 
 /**
- * @author Isabel Román
+ * @author Isabel RomÃ¡n
  *
  */
 public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	private static Logger log = Logger.getLogger(GitHubRepositoryEnquirer.class.getName());
+
 	/**
-	 * <p>Constructor</p>
+	 * <p>
+	 * Constructor
+	 * </p>
 	 */
 
 	public GitHubRepositoryEnquirer() {
@@ -35,15 +42,16 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		metricNames.add("subscribers");
 		metricNames.add("forks");
 		metricNames.add("watchers");
+		log.info("Aï¿½adidas mï¿½tricas al GHRepositoryEnquirer");
 	}
 
 	@Override
 	public ReportI buildReport(String repositoryId) {
 		ReportI myRepo = null;
-		log.info("Invocado el método que construye un objeto RepositoryReport");
+		log.info("Invocado el mï¿½todo que construye un objeto RepositoryReport");
 		/**
 		 * <p>
-		 * Información sobre el repositorio obtenida de GitHub
+		 * InformaciÃ³n sobre el repositorio obtenida de GitHub
 		 * </p>
 		 */
 		GHRepository remoteRepo;
@@ -53,8 +61,8 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		 * uno nuevo
 		 * </p>
 		 * <p>
-		 * Deuda técnica: se puede optimizar consultando sólo las diferencias respecto a
-		 * la fecha de la última representación local
+		 * Deuda tÃ©cnica: se puede optimizar consultando sÃ³lo las diferencias respecto a
+		 * la fecha de la Ãºltima representaciÃ³n local
 		 * </p>
 		 */
 
@@ -63,53 +71,73 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 			GitHub gb = getConnection();
 			remoteRepo = gb.getRepository(repositoryId);
-			log.info("leído " + remoteRepo);
+			log.info("El repositorio es de " + remoteRepo.getOwnerName() + " Y su descripciÃ³n es "
+					+ remoteRepo.getDescription());
+			log.info("leÃ­do " + remoteRepo);
 			myRepo = new Report(repositoryId);
 
 			/**
-			 * Métricas directas de tipo conteo
+			 * MÃ©tricas directas de tipo conteo
 			 */
 
-			MetricBuilder<Integer> subscribers = new Metric.MetricBuilder<Integer>("subscribers",
+			/*
+			 * MetricBuilder<Integer> subscribers = new
+			 * Metric.MetricBuilder<Integer>("subscribers",
+			 * remoteRepo.getSubscribersCount());
+			 */
+			ReportItemBuilder<Integer> subscribers = new ReportItem.ReportItemBuilder<Integer>("subscribers",
 					remoteRepo.getSubscribersCount());
 			subscribers.source("GitHub");
 			myRepo.addMetric(subscribers.build());
-			log.info("Añadida métrica suscriptores " + subscribers);
+			log.info("AÃ±adida mÃ©trica suscriptores " + subscribers);
 
-			MetricBuilder<Integer> forks = new Metric.MetricBuilder<Integer>("forks", remoteRepo.getForksCount());
+			/*
+			 * MetricBuilder<Integer> forks = new Metric.MetricBuilder<Integer>("forks",
+			 * remoteRepo.getForksCount()); forks.source("GitHub");
+			 */
+			ReportItemBuilder<Integer> forks = new ReportItem.ReportItemBuilder<Integer>("forks",
+					remoteRepo.getForksCount());
 			forks.source("GitHub");
 			myRepo.addMetric(forks.build());
-			log.info("Añadida métrica forks " + forks);
+			log.info("AÃ±adida mÃ©trica forks " + forks);
 
-			MetricBuilder<Integer> watchers = new Metric.MetricBuilder<Integer>("watchers",
+			/*
+			 * MetricBuilder<Integer> watchers = new
+			 * Metric.MetricBuilder<Integer>("watchers", remoteRepo.getWatchersCount());
+			 */
+			ReportItemBuilder<Integer> watchers = new ReportItem.ReportItemBuilder<Integer>("watchers",
 					remoteRepo.getWatchersCount());
 			watchers.source("GitHub");
 			myRepo.addMetric(watchers.build());
 
-			MetricBuilder<Integer> stars = new Metric.MetricBuilder<Integer>("stars", remoteRepo.getStargazersCount());
+			ReportItemBuilder<Integer> stars = new ReportItem.ReportItemBuilder<Integer>("stars",
+					remoteRepo.getStargazersCount());
 			stars.source("GitHub");
 			myRepo.addMetric(stars.build());
 
-			MetricBuilder<Integer> issues = new Metric.MetricBuilder<Integer>("issues", remoteRepo.getOpenIssueCount());
+			ReportItemBuilder<Integer> issues = new ReportItem.ReportItemBuilder<Integer>("issues",
+					remoteRepo.getOpenIssueCount());
 			issues.source("GitHub");
 			myRepo.addMetric(issues.build());
 			/**
-			 * Métricas directas de tipo fecha
+			 * MÃ©tricas directas de tipo fecha
 			 */
 
-			MetricBuilder<Date> creation = new Metric.MetricBuilder<Date>("creation", remoteRepo.getCreatedAt());
+			ReportItemBuilder<Date> creation = new ReportItem.ReportItemBuilder<Date>("creation",
+					remoteRepo.getCreatedAt());
 			creation.source("GitHub");
 			myRepo.addMetric(creation.build());
 
-			MetricBuilder<Date> push = new Metric.MetricBuilder<Date>("lastPush", remoteRepo.getPushedAt());
-			push.description("Último push realizado en el repositorio").source("GitHub");
+			ReportItemBuilder<Date> push = new ReportItem.ReportItemBuilder<Date>("lastPush", remoteRepo.getPushedAt());
+			push.description("Ãšltimo push realizado en el repositorio").source("GitHub");
 			myRepo.addMetric(push.build());
 
-			MetricBuilder<Date> updated = new Metric.MetricBuilder<Date>("lastUpdated", remoteRepo.getUpdatedAt());
-			push.description("Última actualización").source("GitHub");
+			ReportItemBuilder<Date> updated = new ReportItem.ReportItemBuilder<Date>("lastUpdated",
+					remoteRepo.getUpdatedAt());
+			push.description("Ãšltima actualizaciÃ³n").source("GitHub");
 			myRepo.addMetric(updated.build());
 			/**
-			 * Métricas más elaboradas, requieren más "esfuerzo"
+			 * MÃ©tricas mÃ¡s elaboradas, requieren mÃ¡s "esfuerzo"
 			 */
 
 			GHRepositoryStatistics data = remoteRepo.getStatistics();
@@ -126,53 +154,65 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 				}
 
 			}
-			MetricBuilder<Integer> totalAdditions = new Metric.MetricBuilder<Integer>("totalAdditions", additions);
+			ReportItemBuilder<Integer> totalAdditions = new ReportItem.ReportItemBuilder<Integer>("totalAdditions",
+					additions);
 			totalAdditions.source("GitHub, calculada")
-					.description("Suma el total de adiciones desde que el repositorio se creó");
+					.description("Suma el total de adiciones desde que el repositorio se creÃ³");
 			myRepo.addMetric(totalAdditions.build());
 
-			MetricBuilder<Integer> totalDeletions = new Metric.MetricBuilder<Integer>("totalDeletions", deletions);
+			ReportItemBuilder<Integer> totalDeletions = new ReportItem.ReportItemBuilder<Integer>("totalDeletions",
+					deletions);
 			totalDeletions.source("GitHub, calculada")
-					.description("Suma el total de borrados desde que el repositorio se creó");
+					.description("Suma el total de borrados desde que el repositorio se creÃ³");
 			myRepo.addMetric(totalDeletions.build());
 
 		} catch (Exception e) {
-			log.severe("Problemas en la conexión " + e);
+			log.severe("Problemas en la conexiÃ³n " + e);
 		}
 
 		return myRepo;
 	}
 
 	/**
-	 * Permite consultar desde fuera una métrica del repositorio indicado
+	 * Permite consultar desde fuera una mÃ©trica del repositorio indicado
 	 */
+	
+	// Manuel Jerez: Cambio el nombre del segundo parametro de repositoryId a repositoryName,
+	// ya que el mÃ©todo getRepository utiliza el nombre, no el id (numÃ©rico) del repositorio
 
 	@Override
-	public Metric getMetric(String metricName, String repositoryId) throws MetricException {
+	public ReportItem getMetric(String metricName, String repositoryName) throws MetricException {
 		GHRepository remoteRepo;
 
 		GitHub gb = getConnection();
 		try {
-			remoteRepo = gb.getRepository(repositoryId);
+
+			remoteRepo = gb.getRepository(repositoryName);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MetricException(
-					"No se puede acceder al repositorio remoto " + repositoryId + " para recuperarlo");
+					"No se puede acceder al repositorio remoto " + repositoryName + " para recuperarlo");
 		}
 
 		return getMetric(metricName, remoteRepo);
 	}
-/**
- * <p>Crea la métrica solicitada consultando el repositorio remoto que se pasa como parámetro</p>
- * @param metricName Métrica solicitada
- * @param remoteRepo Repositorio remoto
- * @return La métrica creada
- * @throws MetricException Si la métrica no está definida se lanzará una excepción
- */
-	private Metric getMetric(String metricName, GHRepository remoteRepo) throws MetricException {
-		Metric metric;
+
+	/**
+	 * <p>
+	 * Crea la mÃ©trica solicitada consultando el repositorio remoto que se pasa como
+	 * parÃ¡metro
+	 * </p>
+	 * 
+	 * @param metricName MÃ©trica solicitada
+	 * @param remoteRepo Repositorio remoto
+	 * @return La mÃ©trica creada
+	 * @throws MetricException Si la mÃ©trica no estÃ¡ definida se lanzarÃ¡ una
+	 *                         excepciÃ³n
+	 */
+	private ReportItem getMetric(String metricName, GHRepository remoteRepo) throws MetricException {
+		ReportItem metric;
 		if (remoteRepo == null) {
-			throw new MetricException("Intenta obtener una métrica sin haber obtenido los datos del repositorio");
+			throw new MetricException("Intenta obtener una mÃ©trica sin haber obtenido los datos del repositorio");
 		}
 		switch (metricName) {
 		case "totalAdditions":
@@ -181,29 +221,43 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		case "totalDeletions":
 			metric = getTotalDeletions(remoteRepo);
 			break;
+		case "OpenIssues":
+			metric = getOpenIssues(remoteRepo);
+			break;
+		case "ClosedIssues":
+			metric = getClosedIssues(remoteRepo);
+		case "CollaboratorsCount":
+			metric = getCollaboratorsCount(remoteRepo);
+			break;
+		case "OwnerCommits":
+			metric = getOwnerCommits(remoteRepo);
+			break;
+		case "AllCommits":
+			metric = getAllCommits(remoteRepo);
+			break;
 		default:
-			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
+			throw new MetricException("La mÃ©trica " + metricName + " no estÃ¡ definida para un repositorio");
 		}
 
 		return metric;
 	}
 
 	/*
-	 * A partir de aquí los algoritmos específicoso para hacer las consultas de cada
-	 * métrica
+	 * A partir de aquÃ­ los algoritmos especÃ­ficos para hacer las consultas de cada
+	 * mÃ©trica
 	 */
 
 	/**
 	 * <p>
-	 * Obtención del número total de adiciones al repositorio
+	 * ObtenciÃ³n del nÃºmero total de adiciones al repositorio
 	 * </p>
 	 * 
 	 * @param remoteRepo el repositorio remoto sobre el que consultar
-	 * @return la métrica con el número total de adiciones desde el inicio
-	 * @throws MetricException Intenta crear una métrica no definida
+	 * @return la mÃ©trica con el nÃºmero total de adiciones desde el inicio
+	 * @throws MetricException Intenta crear una mÃ©trica no definida
 	 */
-	private Metric getTotalAdditions(GHRepository remoteRepo) throws MetricException {
-		Metric metric = null;
+	private ReportItem getTotalAdditions(GHRepository remoteRepo) throws MetricException {
+		ReportItem metric = null;
 
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
 		List<CodeFrequency> codeFreq;
@@ -221,12 +275,16 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 				}
 			}
-			MetricBuilder<Integer> totalAdditions = new Metric.MetricBuilder<Integer>("totalAdditions", additions);
+			ReportItemBuilder<Integer> totalAdditions = new ReportItem.ReportItemBuilder<Integer>("totalAdditions",
+					additions);
 			totalAdditions.source("GitHub, calculada")
-					.description("Suma el total de adiciones desde que el repositorio se creó");
+					.description("Suma el total de adiciones desde que el repositorio se creÃ³");
 			metric = totalAdditions.build();
 
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ReportItemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -236,15 +294,15 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 	/**
 	 * <p>
-	 * Obtención del número total de eliminaciones del repositorio
+	 * ObtenciÃ³n del nÃºmero total de eliminaciones del repositorio
 	 * </p>
 	 * 
 	 * @param remoteRepo el repositorio remoto sobre el que consultar
-	 * @return la métrica con el número total de eliminaciones desde el inicio
-	 * @throws MetricException Intenta crear una métrica no definida
+	 * @return la mÃ©trica con el nï¿½mero total de eliminaciones desde el inicio
+	 * @throws MetricException Intenta crear una mÃ©trica no definida
 	 */
-	private Metric getTotalDeletions(GHRepository remoteRepo) throws MetricException {
-		Metric metric = null;
+	private ReportItem getTotalDeletions(GHRepository remoteRepo) throws MetricException {
+		ReportItem metric = null;
 
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
 		List<CodeFrequency> codeFreq;
@@ -262,17 +320,169 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 				}
 			}
-			MetricBuilder<Integer> totalDeletions = new Metric.MetricBuilder<Integer>("totalDeletions", deletions);
+			ReportItemBuilder<Integer> totalDeletions = new ReportItem.ReportItemBuilder<Integer>("totalDeletions",
+					deletions);
 			totalDeletions.source("GitHub, calculada")
-					.description("Suma el total de eliminaciones desde que el repositorio se creó");
+					.description("Suma el total de eliminaciones desde que el repositorio se creï¿½");
 			metric = totalDeletions.build();
 
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ReportItemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return metric;
 
 	}
+	
+	/**
+	 * <p>
+	 * ObtenciÃ³n del nÃºmero de colaboradores del repositorio
+	 * </p>
+	 * 
+	 * @param remoteRepo el repositorio remoto sobre el que consultar
+	 * @return la mÃ©trica con el nï¿½mero de colaboradores del repositorio
+	 * @throws MetricException Intenta crear una mÃ©trica no definida
+	 */
+	private ReportItem getCollaboratorsCount(GHRepository remoteRepo) throws MetricException {
+		ReportItem metric = null;
 
+		int colaboradores;
+		try {
+			colaboradores = remoteRepo.getCollaborators().size();
+			ReportItemBuilder<Integer> colaboratorsCount;
+			
+			try {
+				colaboratorsCount = new ReportItem.ReportItemBuilder<Integer>("CollaboratorsCount", colaboradores);
+				colaboratorsCount.description("NÃºmero de colaboradores del proyecto");
+				colaboratorsCount.unit("collaborators");
+				metric = colaboratorsCount.build();
+				
+			} catch (ReportItemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return metric;
+		
+	}
+	
+	private ReportItem getOwnerCommits(GHRepository remoteRepo) throws MetricException {
+		ReportItem metric = null;
+		
+		GHRepositoryStatistics data = remoteRepo.getStatistics();		
+
+		int commits = 0;
+		try {
+			int tam = data.getParticipation().getOwnerCommits().size();
+			
+			for(int i = 0; i<4; i++) {
+				commits = commits + data.getParticipation().getOwnerCommits().get(tam-i-1);
+			}
+			ReportItemBuilder<Integer> ownerCommitsCount;
+			
+			try {
+				ownerCommitsCount = new ReportItem.ReportItemBuilder<Integer>("OwnerCommits", commits);
+				ownerCommitsCount.description("NÃºmero de commits del propietario del repositorio en el Ãºltimo sprint");
+				ownerCommitsCount.unit("commits");
+				metric = ownerCommitsCount.build();
+				
+			} catch (ReportItemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return metric;
+		
+	}
+	
+	private ReportItem getAllCommits(GHRepository remoteRepo) throws MetricException {
+		ReportItem metric = null;
+
+		GHRepositoryStatistics data = remoteRepo.getStatistics();
+		
+		int commits = 0;
+		try {
+			int tam = data.getParticipation().getAllCommits().size();
+			
+			for(int i = 0; i<4; i++) {
+				commits = commits + data.getParticipation().getAllCommits().get(tam-i-1);
+			}
+			ReportItemBuilder<Integer> commitsCount;
+			
+			try {
+				commitsCount = new ReportItem.ReportItemBuilder<Integer>("AllCommits", commits);
+				commitsCount.description("NÃºmero de commits totales en el Ãºltimo sprint");
+				commitsCount.unit("commits");
+				metric = commitsCount.build();
+				
+			} catch (ReportItemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return metric;
+		
+	}
+
+	private ReportItem getOpenIssues(GHRepository remoteRepo) throws MetricException {
+		ReportItem metric = null;
+		try {
+			List<GHIssue> openIssues = remoteRepo.getIssues(GHIssueState.OPEN);
+			Integer count = openIssues.size();
+			try {
+			ReportItemBuilder<Integer> totalDeletions = new ReportItem.ReportItemBuilder<Integer>("OpenIssues",count);
+			totalDeletions.description("NÃºmero de Issues abiertos en el proyecto");
+			totalDeletions.unit("OpenIssues");
+			metric = totalDeletions.build();
+			
+			}
+			catch(ReportItemException e){
+				e.printStackTrace();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return metric;
+	}
+	
+	private ReportItem getClosedIssues(GHRepository remoteRepo) throws MetricException {
+		ReportItem metric = null;
+		try {
+			List<GHIssue> closedIssues = remoteRepo.getIssues(GHIssueState.CLOSED);
+			Integer count = closedIssues.size();
+			try {
+			ReportItemBuilder<Integer> totalDeletions = new ReportItem.ReportItemBuilder<Integer>("ClosedIssues",count);
+			totalDeletions.description("NÃºmero de Issues cerrados en el proyecto");
+			totalDeletions.unit("ClosedIssues");
+			metric = totalDeletions.build();
+			
+			}
+			catch(ReportItemException e){
+				e.printStackTrace();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return metric;
+	}
 }

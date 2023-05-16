@@ -11,52 +11,69 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 /**
- * <p>Clase abstracta con los mÈtodos comunes a los constructores que recogen la informaciÛn del servicio GitHub</p>
- * <p>Para las consultas a github se recurre a la API github-API</p>
- * <p>Actualmente sÛlo incluye el establecimiento del identificador de entidad y la obtenciÛn del objeto GitHub para las consultas</p>
- * @author Isabel Rom·n
+ * <p>
+ * Clase abstracta con los m√©todos comunes a los constructores que recogen la
+ * informaci√≥n del servicio GitHub
+ * </p>
+ * <p>
+ * Para las consultas a github se recurre a la API github-API
+ * </p>
+ * <p>
+ * Actualmente s√≥lo incluye el establecimiento del identificador de entidad y la
+ * obtenci√≥n del objeto GitHub para las consultas
+ * </p>
+ * 
+ * @author Isabel Rom√°n
  *
  */
 public abstract class GitHubEnquirer implements RemoteEnquirer {
-	private static Logger log=Logger.getLogger(GitHubEnquirer.class.getName());
+	private static Logger log = Logger.getLogger(GitHubEnquirer.class.getName());
 	protected List<String> metricNames;
-	
 
 	/**
-	 * <p>Referencia al objeto GitHub que permite hacer consultas al servidor Github</p>
-	 * <p>Se crea al invocar por primera vez getConnectiony se mantiene mientras el GHBuilder estÈ vivo</p>
+	 * <p>
+	 * Referencia al objeto GitHub que permite hacer consultas al servidor Github
+	 * </p>
+	 * <p>
+	 * Se crea al invocar por primera vez getConnectiony se mantiene mientras el
+	 * GHBuilder est√° vivo
+	 * </p>
 	 */
-	private GitHub github=null;
-	
-	
-		
+	private GitHub github = null;
+
 	public GitHubEnquirer() {
-		metricNames=new ArrayList<String>();
+		metricNames = new ArrayList<String>();
 	}
-	
-		
+
 	/**
-	 * <p>El objeto para contectarse al GitHub se crea la primera vez que se invoca getConnection</p>
+	 * <p>
+	 * El objeto para contectarse al GitHub se crea la primera vez que se invoca
+	 * getConnection
+	 * </p>
+	 * 
 	 * @return devuelve un objeto GitHub que permite la consulta al remoto
 	 */
 	protected GitHub getConnection() {
-		
-		if(github==null) try {
-	
-			   log.info("Creando el objeto GitHub");
-		       github = GitHubBuilder.fromEnvironment().build();
-	
-		
-		}catch(Exception e) {
-		log.info(e+" No se puede crear la instancia GitHub\n");
-		log.info("Recuerde que debe configurar las variables de entorno GITHUB_LOGIN y GITHUB_OAUTH con su nombre de usuario y token respectivamente");
-	}	
+
+		if (github == null)
+			try {
+				github = GitHubBuilder.fromEnvironment().build();
+				log.info("Creado el objeto GitHub");
+
+			} catch (Exception e) {
+				log.info(e + " No se puede crear la instancia GitHub\n");
+				log.info(
+						"Recuerde que debe configurar las variables de entorno GITHUB_LOGIN y GITHUB_OAUTH con su nombre de usuario y token respectivamente");
+				e.printStackTrace();
+			}
 		return github;
 	}
+
 	protected void setMetric(String newMetric) {
 		metricNames.add(newMetric);
 	}
-	public List<String> getAvailableMetrics(){
+
+	public List<String> getAvailableMetrics() {
 		return metricNames;
 	}
 
