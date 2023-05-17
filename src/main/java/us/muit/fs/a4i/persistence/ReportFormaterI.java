@@ -3,9 +3,10 @@
  */
 package us.muit.fs.a4i.persistence;
 
-import java.awt.Font;
+//import java.awt.Font;
 import java.io.IOException;
 
+import us.muit.fs.a4i.model.entities.Font;
 import us.muit.fs.a4i.model.entities.IndicatorI;
 
 /**

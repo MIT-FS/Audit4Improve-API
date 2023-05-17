@@ -3,6 +3,7 @@
  */
 package us.muit.fs.a4i.persistence;
 
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,13 +17,16 @@ import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
+//import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import us.muit.fs.a4i.control.ReportManager;
+import us.muit.fs.a4i.control.ReportManagerI;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItemI;
+import us.muit.fs.a4i.model.entities.Font;
 
 /**
  * <p>
@@ -246,12 +250,19 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 		CellStyle style = wb.createCellStyle();
 
 		try {
-			style.setFont((Font) formater.getIndicatorFont(indicator.getIndicator().getState()));
+			//Obtengo los datos de la fuente a utilizar
+			Font fuente = (Font) formater.getIndicatorFont(indicator.getIndicator().getState());
+			Color color = Color.decode(fuente.getColor());
+			
+			//Establezco el color y la fuente a utilizar en los indicadores.
+			style.setFont(fuente.getFont());
+			style.setFillBackgroundColor(color);
 		} catch (IOException e) {
 			log.warning("Problema al abrir el fichero con los formatos");
 			e.printStackTrace();
 		}
 
+			
 		row.createCell(cellIndex++).setCellValue(indicator.getName());
 		row.createCell(cellIndex++).setCellValue(indicator.getValue().toString());
 		row.createCell(cellIndex++).setCellValue(indicator.getUnit());
