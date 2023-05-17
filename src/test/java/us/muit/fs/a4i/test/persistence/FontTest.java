@@ -6,6 +6,8 @@ import java.awt.Color;
 //import java.awt.Font;
 import java.util.logging.Logger;
 
+import org.junit.jupiter.api.Test;
+
 import us.muit.fs.a4i.model.entities.Font;
 
 /**
@@ -25,13 +27,13 @@ class FontTest {
 	@Test 
 	void testColorPorDefecto(){
 		underTest = new Font();
-		String colorDevuelto;
+		String colorDevuelto = "";
 		
 		try {
 			//Compruebo que tiene un valor por defecto
 			assertNotNull(underTest.getColor(), "Debe tener un color por defecto");
 		
-			colorDevuelto = undetTest.getColor();
+			colorDevuelto = underTest.getColor();
 			
 		}catch(Exception e) {
 			fail("El tipo de dato color no es de tipo String o el formato no es válido");
@@ -54,7 +56,7 @@ class FontTest {
 		underTest = new Font();
 		
 		//Compruebo que se devuelve el mismo tipo
-		assertEquals(underTest.getFont().getClass(), java.awt.Font.class, "El objeto devuelto debe ser la misma fuente")
+		assertEquals(underTest.getFont().getClass(), java.awt.Font.class, "El objeto devuelto debe ser la misma fuente");
 	}
 	
 	@Test
