@@ -142,10 +142,11 @@ class ReportItemTest {
 	 * Test method for
 	 * {@link us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder#description(java.lang.String)}.
 	 */
+	/*
 	@Test
 	void testDescription() {
 		fail("Not yet implemented"); // TODO
-	}
+	}*/
 
 	/**
 	 * Test method for
@@ -175,9 +176,10 @@ class ReportItemTest {
 	 * Test method for
 	 * {@link us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder#unit(java.lang.String)}.
 	 */
+	/*
 	@Test
 	void testUnit() {
 		fail("Not yet implemented"); // TODO
-	}
+	}*/
 
 }

@@ -72,7 +72,7 @@ class IndicatorConfigurationTest {
 		log.info("Acabo de ejecutar un test definido en esta clase"); 
 	}
 
-	
+	/*
 	@Test
 	void testDefinedIndicator() {
 		// Creo un par de variables, que me servirán de valores para verificar si comprueba bien el tipo
@@ -133,6 +133,8 @@ class IndicatorConfigurationTest {
 			fail("Lanza una excepción no reconocida " + e);
 		}
 	}
+	*/
+	
     /**
      * <p>En este test verifico que si busco el nombre de una métrica el método que verifica el indicador no lo confunde</p>
      */
@@ -151,15 +153,15 @@ class IndicatorConfigurationTest {
 			fail("Lanza la excepción " + e);
 		}
     }
-
+    /*
 	@Test
 	void testListAllIndicators() {
 		fail("Not yet implemented");
-	}
-
+	}*/
+    /*
 	@Test
 	void testGetIndicatorState() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 }

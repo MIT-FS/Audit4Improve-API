@@ -25,15 +25,18 @@ plugins {
 publishing {
     repositories {
         maven {
+
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/mit-fs/audit4improve-api")         
+            url = uri("https://maven.pkg.github.com/juamemmen/Audit4Improve-API")         
+
             credentials {
             //las propiedades gpr.user y gpr.key están configuradas en gradle.properties en el raiz del proyecto, y se añade a .gitignore para que no se suban
             //O bien configuro las variables de entorno GITHUB_LOGIN y GITHUB_PACKAGES
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_LOGIN")
-                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_PACKAGES")
+                username = project.findProperty("gpr.user") ?: "juamemmen"
+                password = project.findProperty("gpr.key") ?: "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"
                 }
         }
+
     }
     publications {
         gpr(MavenPublication) {
@@ -41,14 +44,17 @@ publishing {
         
             groupId = 'us.mitfs.samples'
             artifactId = 'a4i'
-            version = '0.0'
+
+            version = '0.0.1-juamemmen'
 
             from components.java
         }
        
     }
 }
-version = '0.2'
+
+version = '0.0.1-juamemmen'
+
 tasks.withType(JavaCompile) {
     //Añadir la opción Xlint
     options.deprecation = true
@@ -133,7 +139,6 @@ test {
 		events "passed", "skipped", "failed"
 	}
 }
-
 
 
 

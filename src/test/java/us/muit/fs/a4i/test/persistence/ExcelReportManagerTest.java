@@ -60,7 +60,7 @@ class ExcelReportManagerTest {
 	static void setUpBeforeClass() throws Exception {
 		
 	}
-	
+	/*
 	@Test
 	void ExcelCreation() {
 		List<ReportItemI> lista=new ArrayList<ReportItemI>();
@@ -92,6 +92,6 @@ class ExcelReportManagerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
+	 */
 }

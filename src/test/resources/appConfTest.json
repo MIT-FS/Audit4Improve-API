@@ -1,29 +1,99 @@
 {
-	"metrics": [
-		{
-			"name": "downloads",
+	"metrics": [{
+			"name": "subscribers",
 			"type": "java.lang.Integer",
-			"description": "Descargas realizadas",
-			"unit": "downloads"
-		},		
+			"description": "Número de suscriptores, watchers en la web",
+			"unit": "subscribers"
+		},
 		{
-			"name": "comments",
+			"name": "forks",
 			"type": "java.lang.Integer",
-			"description": "Número de comentarios",
-			"unit": "comments"
+			"description": "Número de forks, no son los forks de la web",
+			"unit": "forks"
+		},
+		{
+			"name": "watchers",
+			"type": "java.lang.Integer",
+			"description": "Observadores, en la web aparece com forks",
+			"unit": "watchers"
+		},
+		{
+			"name": "issues",
+			"type": "java.lang.Integer",
+			"description": "Tareas sin finalizar en el repositorio",
+			"unit": "issues"
+		},
+		{
+			"name": "stars",
+			"type": "java.lang.Integer",
+			"description": "Estrellas concedidas",
+			"unit": "stars"
+		},
+		{
+			"name": "creation",
+			"type": "java.util.Date",
+			"description": "Fecha de creación del calendario",
+			"unit": "date"
+		},
+		{
+			"name": "lastPush",
+			"type": "java.util.Date",
+			"description": "Último push realizado en el repositorio",
+			"unit": "date"
+		},
+		{
+			"name": "members",
+			"type": "java.lang.Integer",
+			"description": "Número de miembros, members en la organización",
+			"unit": "members"
+		},
+		{
+			"name": "teams",
+			"type": "java.lang.Integer",
+			"description": "Número de equipos, teams en la organización",
+			"unit": "teams"
+		},
+		{
+			"name": "openProjects",
+			"type": "java.lang.Integer",
+			"description": "Número de proyectos abiertos, en la organización",
+			"unit": "openProjects"
+		},
+		{
+			"name": "closedProjects",
+			"type": "java.lang.Integer",
+			"description": "Número de proyectos cerrados, en la organización",
+			"unit": "closedProjects"
+		},
+		{
+			"name": "RepositoriesWithOpenPullRequest",
+			"type": "java.lang.Integer",
+			"description": "Número de repositorios con pull request abiertos.",
+			"unit": "RepositoriesWithOpenPullRequest"
+		},
+		{
+			"name": "Repositories",
+			"type": "java.lang.Integer",
+			"description": "Número de repositorios de la organización.",
+			"unit": "Repositories"
+		},
+		{
+			"name": "PullRequest",
+			"type": "java.lang.Integer",
+			"description": "Número total de pull requests abiertos de la organización.",
+			"unit": "PullRequest"
 		}
 	],
-	"indicators": [
-		{
-			"name": "pullReqGlory",
+	"indicators": [{
+			"name": "issuesProgess",
 			"type": "java.lang.Double",
-			"description": "Ratio de pull request aceptados frente a solicitados",
+			"description": "Ratio de issues cerrados frente a totales",
 			"unit": "ratio"
 		},
 		{
-			"name": "commentsInterest",
+			"name": "overdued",
 			"type": "java.lang.Double",
-			"description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
+			"description": "Ratio de issues vencidos frente a abiertos",
 			"unit": "ratio"
 		}
 	]

@@ -40,6 +40,48 @@
 			"type": "java.util.Date",
 			"description": "Último push realizado en el repositorio",
 			"unit": "date"
+		},
+		{
+			"name": "Members",
+			"type": "java.lang.Integer",
+			"description": "Número de miembros, members en la organización",
+			"unit": "Members"
+		},
+		{
+			"name": "Teams",
+			"type": "java.lang.Integer",
+			"description": "Número de equipos, teams en la organización",
+			"unit": "Teams"
+		},
+		{
+			"name": "openProjects",
+			"type": "java.lang.Integer",
+			"description": "Número de proyectos abiertos, en la organización",
+			"unit": "openProjects"
+		},
+		{
+			"name": "closedProjects",
+			"type": "java.lang.Integer",
+			"description": "Número de proyectos cerrados, en la organización",
+			"unit": "closedProjects"
+		},
+		{
+			"name": "RepositoriesWithOpenPullRequest",
+			"type": "java.lang.Integer",
+			"description": "Número de repositorios con pull request abiertos.",
+			"unit": "RepositoriesWithOpenPullRequest"
+		},
+		{
+			"name": "Repositories",
+			"type": "java.lang.Integer",
+			"description": "Número de repositorios de la organización.",
+			"unit": "Repositories"
+		},
+		{
+			"name": "PullRequest",
+			"type": "java.lang.Integer",
+			"description": "Número total de pull requests abiertos de la organización.",
+			"unit": "PullRequest"
 		}
 	],
 	"indicators": [{

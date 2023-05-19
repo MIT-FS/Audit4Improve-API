@@ -6,6 +6,7 @@ package us.muit.fs.a4i.model.remote;
 import java.util.List;
 
 import us.muit.fs.a4i.exceptions.MetricException;
+import us.muit.fs.a4i.exceptions.ReportItemException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItemI;
 
@@ -55,8 +56,9 @@ public interface RemoteEnquirer {
 	 *                   que se consulta
 	 * @return La nueva métrica construida tras la consulta al remoto
 	 * @throws MetricException Si la métrica no esta definida
+	 * @throws ReportItemException 
 	 */
-	public ReportItemI getMetric(String metricName, String entityId) throws MetricException;
+	public ReportItemI getMetric(String metricName, String entityId) throws MetricException, ReportItemException;
 
 	/**
 	 * <p>

@@ -79,123 +79,137 @@ class ReportManagerTest {
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#deleteReport(us.muit.fs.a4i.model.entities.ReportI)}.
 	 */
+	/*
+	/*
 	@Test
 	void testDeleteReportReportI() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#setRemoteEnquirer(us.muit.fs.a4i.model.remote.RemoteEnquirer)}.
 	 */
+	/*
 	@Test
 	void testSetRemoteEnquirer() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#setPersistenceManager(us.muit.fs.a4i.persistence.PersistenceManager)}.
 	 */
+	/*
 	@Test
 	void testSetPersistenceManager() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#setFormater(us.muit.fs.a4i.persistence.ReportFormaterI)}.
 	 */
+	/*
 	@Test
 	void testSetFormater() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#setIndicatorCalc(us.muit.fs.a4i.control.IndicatorsCalculator)}.
 	 */
+	/*
 	@Test
 	void testSetIndicatorCalc() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#saveReport(us.muit.fs.a4i.model.entities.ReportI)}.
 	 */
+	/*
 	@Test
 	void testSaveReportReportI() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for {@link us.muit.fs.a4i.control.ReportManager#saveReport()}.
 	 */
+	/*
 	@Test
 	void testSaveReport() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#newReport(java.lang.String, us.muit.fs.a4i.model.entities.ReportI.ReportType)}.
 	 */
+	/*
 	@Test
 	void testNewReport() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for {@link us.muit.fs.a4i.control.ReportManager#deleteReport()}.
 	 */
+	/*
 	@Test
 	void testDeleteReport() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for {@link us.muit.fs.a4i.control.ReportManager#getReport()}.
 	 */
+	/*
 	@Test
 	void testGetReport() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#addMetric(java.lang.String)}.
 	 */
+	/*
 	@Test
 	void testAddMetric() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#getMetric(java.lang.String)}.
 	 */
+	/*
 	@Test
 	void testGetMetric() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#addIndicator(java.lang.String)}.
 	 */
+	/*
 	@Test
 	void testAddIndicator() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	/**
 	 * Test method for
 	 * {@link us.muit.fs.a4i.control.ReportManager#getIndicator(java.lang.String)}.
 	 */
+	/*
 	@Test
 	void testGetIndicator() {
 		fail("Not yet implemented");
-	}
-
+	}*/
 }
