@@ -3,6 +3,7 @@
  */
 package us.muit.fs.a4i.persistence;
 
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,16 +12,19 @@ import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Logger;
+//import java.awt.Font;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
+//import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import us.muit.fs.a4i.config.Context;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
+import us.muit.fs.a4i.model.entities.Font;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItemI;
 
@@ -206,7 +210,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 		}
 	}
 
-	private void persistMetric(ReportItemI metric) {
+	private void persistMetric(ReportItemI metric) throws IOException {
 		log.info("Introduzco mÃ©trica en la hoja");
 
 		int rowIndex = sheet.getLastRowNum();
@@ -219,8 +223,18 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 		// https://www.e-iceblue.com/Tutorials/Java/Spire.XLS-for-Java/Program-Guide/Cells/Apply-Fonts-in-Excel-in-Java.html
 
 		CellStyle style = wb.createCellStyle();
-		//style.setFont((Font) formater.getMetricFont());
+		
+		// Obtengo los datos de la fuente a utilizar
+		// Se crea un objeto de tipo Font (definido en la carpeta entities) con los valores por defectos del constructor
+		// Con dichos valores por defecto (el color) se configura el estilo de las celdas
+		org.apache.poi.ss.usermodel.Font fuenteJava = (org.apache.poi.ss.usermodel.Font) formater.getMetricFont();
+		Font fuente = new Font();
+		
+		//Establezco el color y la fuente a utilizar en la métrica
+		style.setFont(fuenteJava);
+		style.setFillForegroundColor(Short.parseShort(fuente.getColor()));
 
+		
 		row.createCell(cellIndex++).setCellValue(metric.getName());
 		row.createCell(cellIndex++).setCellValue(metric.getValue().toString());
 		row.createCell(cellIndex++).setCellValue(metric.getUnit());
@@ -245,8 +259,8 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 
 		CellStyle style = wb.createCellStyle();
 
-		try {
-			style.setFont((Font) formater.getIndicatorFont(indicator.getIndicator().getState()));
+		try { // ha sido necesario modificar el tipo porque había conflictos con lo nuevo añadido en el método persistMetric
+			style.setFont((org.apache.poi.ss.usermodel.Font) formater.getIndicatorFont(indicator.getIndicator().getState()));
 		} catch (IOException e) {
 			log.warning("Problema al abrir el fichero con los formatos");
 			e.printStackTrace();
@@ -270,6 +284,22 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 	@Override
 	public void deleteReport(ReportI report) throws ReportNotDefinedException {
 		// TODO Auto-generated method stub
-
+		log.info("Eliminando informe excel");
+		if (report == null) {
+			throw new ReportNotDefinedException();
+		}
+		try {
+			sheet = wb.getSheet(report.getEntityId());
+			if (sheet != null) {
+				int index = wb.getSheetIndex(sheet);
+				wb.removeSheetAt(index);
+		}
+		}catch (Exception e) { 
+			
+			e.printStackTrace();
+		
+		
+		
+	}
 	}
 }

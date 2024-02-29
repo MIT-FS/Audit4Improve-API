@@ -9,6 +9,8 @@
 package us.muit.fs.a4i.test.persistence;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,12 +25,21 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import us.muit.fs.a4i.config.Context;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItemI;
 import us.muit.fs.a4i.persistence.ExcelReportManager;
 import us.muit.fs.a4i.persistence.ReportFormaterI;
+
+import static org.junit.jupiter.api.Assertions.fail;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 
@@ -82,6 +93,7 @@ class ExcelReportManagerTest {
 		Mockito.when(informe.getAllMetrics()).thenReturn(lista);
 		Mockito.when(informe.getEntityId()).thenReturn("entidadTest");
 		
+	
 		excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
 		excelName= new String("excelTest");
 		underTest=new ExcelReportManager(excelPath,excelName);	
@@ -93,5 +105,44 @@ class ExcelReportManagerTest {
 			e.printStackTrace();
 		}
 
+	}
+		
+	/**
+	 * <p>Test para el m�todo de eliminar un informe en excel</p>
+	 * @throws java.lang.Exception
+	 * @author Mariana Reyes Henriquez
+	 */
+	@Test
+	void ExcelDelete() {
+		excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
+		excelName= new String("excelTest");
+		underTest=new ExcelReportManager(excelPath,excelName);	
+		try {
+			log.info("Se intenta eliminar un fichero que no existe");
+			underTest.deleteReport(null);
+			fail("Deber�a haber lanzado una excepci�n");
+		} catch (ReportNotDefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	@Test
+	void CompruebaFuente() throws IOException, ReportNotDefinedException {
+		
+	
+		
+		excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
+		excelName= new String("excelTestFont");
+		underTest=new ExcelReportManager(excelPath,excelName);
+		underTest.saveReport(informe);
+		
+		
+		ArgumentCaptor<ReportFormaterI> FormaterCaptor = ArgumentCaptor.forClass(ReportFormaterI.class);
+		underTest.setFormater(FormaterCaptor.capture());
+		
+		Context.getContext();
+		
+		assertEquals(FormaterCaptor.getValue().getMetricFont(), Context.getMetricFont() ,"Las fuentes no coinciden" );
 	}
 }
