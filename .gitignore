@@ -1,6 +1,6 @@
 # Ignore Gradle project-specific cache directory
 .gradle
-#No quiero subir el fichero de configuración de gradle, porque contiene secretos
+#No quiero subir el fichero de configuraciï¿½n de gradle, porque contiene secretos
 gradle.properties
 #Ignoro los directorios que crea el IDE en el espacio de trabajo, que no se suba a git
 .settings
@@ -38,6 +38,7 @@ gradle.properties
 
 
 
-#las pruebas harán generar informes excel, que no quiero subir al repositorio remoto
+#las pruebas harï¿½n generar informes excel, que no quiero subir al repositorio remoto
 *.xls
 /javadoc.xml
+.DS_Store
