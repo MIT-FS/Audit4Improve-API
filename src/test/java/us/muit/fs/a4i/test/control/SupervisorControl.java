@@ -7,19 +7,24 @@ import java.util.List;
 import java.util.logging.*;
 
 	/**
-	 * @author Isabel Román Martínez
+	 * @author Isabel Romï¿½n Martï¿½nez
 	 * @version 0.0
 	 * Esta clase se crea para poder probar algunas de las capacidades que ofrece la api github
-	 * Será descartada posteriormente
-	 * No usa Junit, sino que crea un main, no tiene verificaciones automáticas, la automatización no es posible
+	 * Serï¿½ descartada posteriormente
+	 * No usa Junit, sino que crea un main, no tiene verificaciones automï¿½ticas, la automatizaciï¿½n no es posible
 	 *
 	 */
 public class SupervisorControl {
+	private static void divider() {
+		System.out.println("------------------------------------------------------");
+	}
+
 	private static Logger log=Logger.getLogger(SupervisorControl.class.getName());
 		/**
 		 * @param args
 		 */
 		public static void main(String[] args) {
+			System.out.println(""); divider();
 			try {
 			GitHub github = GitHubBuilder.fromEnvironment().build();
 			GHMyself myinfo=github.getMyself();
@@ -28,7 +33,7 @@ public class SupervisorControl {
 			PagedIterable<GHRepository> myOwnRepos=myinfo.listRepositories(10, GHMyself.RepositoryListFilter.OWNER);
 			int count=1;
 			for(GHRepository repo:myOwnRepos.toList()) {
-				System.out.println("Nombre de mi repositorio número "+count+" "+repo.getFullName());
+				System.out.println("Nombre de mi repositorio numero "+count+" "+repo.getFullName());
 				List<GHProject> proyectos=repo.listProjects().toList();
 				int i=1;
 				for(GHProject project:proyectos){
@@ -42,12 +47,16 @@ public class SupervisorControl {
 				}
 				count++;
 			}
+			divider();
+			System.out.println("Numero de repositorios "+myOwnRepos.toList().size());
+			divider(); System.out.println("");
+
             GHPersonSet<GHOrganization> misOrganizaciones = myinfo.getAllOrganizations();
             System.out.println("Pertenezco a las siguientes organizaciones: ");
             //Iterator<GHOrganization> iteradorOrganizaciones = misOrganizaciones.iterator();
             int i=1;
             for(GHOrganization organizacion: misOrganizaciones) {
-            	System.out.println(i+" Organización "+organizacion.getId()+" : "+organizacion);
+            	System.out.println(i+" Organizacion "+organizacion.getId()+" : "+organizacion);
             	PagedIterable<GHRepository> repos=organizacion.listRepositories();
             	System.out.println(repos);
             	i++;
@@ -55,14 +64,14 @@ public class SupervisorControl {
             /*
 			log.info("Mis datos "+myinfo);		
 			log.info("Un repositorio "+unrepo);
-			log.info("Número de repositorios "+myrepos.toList().size());
+			log.info("Numero de repositorios "+myrepos.toList().size());
 			log.info("Detalles de mis repositorios "+myrepos.toList());
 			*/
             GHOrganization unaOrg = github.getOrganization("MIT-FS");
           //  PagedIterable<GHRepository> repos=unaOrg.listRepositories();
-        	System.out.println("Recupero la organización "+unaOrg.getId());
+        	System.out.println("Recupero la organizacion "+unaOrg.getId());
         	GHRepository githubrepo=github.getRepository("hub4j/github-api");
-        	System.out.println("Este repositorio es de "+githubrepo.getOwnerName()+" Y su descripción es "+githubrepo.getDescription());
+        	System.out.println("Este repositorio es de "+githubrepo.getOwnerName()+" Y su descripcion es "+githubrepo.getDescription());
         	GHRepositoryStatistics estadisticas=githubrepo.getStatistics();
         	log.info("Estadisticas recogidas");
         	  	
@@ -70,20 +79,20 @@ public class SupervisorControl {
         	PagedIterable<GHRepositoryStatistics.ContributorStats> estDes=estadisticas.getContributorStats();
         	log.info("Desarrolladores recogidos");
         	List<GHRepositoryStatistics.ContributorStats> listaDesarrolladores=estDes.toList();
-        	System.out.println("Número de desarrolladores "+listaDesarrolladores.size());
+        	System.out.println("Numero de desarrolladores "+listaDesarrolladores.size());
         	      	    	
         	i=1;
 
 
             HashMap <String, GHRepositoryStatistics.ContributorStats> mapaEstadisticasUsuario = new HashMap <String, GHRepositoryStatistics.ContributorStats> ();
         	for (GHRepositoryStatistics.ContributorStats desarrollador:listaDesarrolladores) {
-        		//System.out.println(i+" Desarrollador "+desarrollador.getAuthor().getName()+" mail "+desarrollador.getAuthor().getEmail()+ " login "+desarrollador.getAuthor().getLogin());
-//        		GHUser usuario=github.getUser(desarrollador.getAuthor().getLogin());
+        		// System.out.println(i+" Desarrollador "+desarrollador.getAuthor().getName()+" mail "+desarrollador.getAuthor().getEmail()+ " login "+desarrollador.getAuthor().getLogin());
+        		// GHUser usuario=github.getUser(desarrollador.getAuthor().getLogin());
         		mapaEstadisticasUsuario.put(desarrollador.getAuthor().getLogin(), desarrollador);
         		i++;
         	}
         	System.out.println("Datos del usuario rtyley "+mapaEstadisticasUsuario.get("rtyley"));
-        	System.out.println("Semanas "+mapaEstadisticasUsuario.get("rtyley").getWeeks());
+        	// System.out.println("Semanas "+mapaEstadisticasUsuario.get("rtyley").getWeeks());
         	
 			/*for(GHProject project:proyectos){
 				System.out.println("Con proyecto "+i+" llamado "+project.getName()+" con id "+project.getId());

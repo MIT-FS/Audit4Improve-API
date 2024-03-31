@@ -11,24 +11,24 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
  
-    //Añado el plugin para eclipse
+    //Anado el plugin para eclipse
     id 'eclipse'
     //para poder publicar paquetes en github
     id 'maven-publish'
-    //Plugin para análisis estático de código
+    //Plugin para analisis estetico de codigo
     id "nebula.lint" version "17.7.0"
 }
 version = '0.0'
 tasks.withType(JavaCompile) {
-    //Añadir la opción Xlint
+    //Anadir la opcion Xlint
     options.deprecation = true
     options.encoding = 'ISO-8859-1'
 }
 
 tasks.withType(Javadoc){
   
-    description = "Genera la documentación"
-    //indicar que la codificación es ISO
+    description = "Generates the documentation"
+    //indicar que la codificacion es ISO
     options.encoding = 'ISO-8859-1'
     options.charSet = 'ISO-8859-1'
     options.author = true
@@ -59,7 +59,7 @@ repositories {
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
-    //Añado la dependencia de la librería github que vamos a usar
+    //Anado la dependencia de la libreria github que vamos a usar
   
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
     //JAVADOC: https://github-api.kohsuke.org/apidocs/index.html
@@ -68,7 +68,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.poi/poi
     //JAVADOC: https://poi.apache.org/apidocs/5.0/
     implementation 'org.apache.poi:poi:5.2.1'
-    //Para leer la configuración como ficheros con datos en formato json
+    //Para leer la configuracion como ficheros con datos en formato json
     // https://mvnrepository.com/artifact/javax.json/javax.json-api
     //JAVADOC: https://javadoc.io/doc/org.glassfish/javax.json/latest/overview-summary.html
     implementation group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
@@ -80,7 +80,7 @@ dependencies {
     
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:30.1.1-jre'
-    //Añado para usar mockito
+    //Anado para usar mockito
     //JAVADOC: https://javadoc.io/doc/org.mockito/mockito-core/4.3.1/overview-summary.html
     testImplementation 'org.mockito:mockito-core:4.3.1'
     // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
@@ -109,7 +109,7 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/mit-fs/audit4improve-api")         
             credentials {
-            //las propiedades gpr.user y gpr.key están configuradas en gradle.properties en el raiz del proyecto, y se añade a .gitignore para que no se suban
+            //las propiedades gpr.user y gpr.key estan configuradas en gradle.properties en el raiz del proyecto, y se anade a .gitignore para que no se suban
             //O bien configuro las variables de entorno GITHUB_LOGIN y GITHUB_PACKAGES
                 username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_LOGIN")
                 password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_PACKAGES")
