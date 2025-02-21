@@ -136,7 +136,32 @@
 			"type": "java.lang.Integer",
 			"description": "Número de repositorios con pull requests pendientes",
 			"unit": "repositories"
+		},
+			{
+			"name": "issuesLastMonth",
+			"type": "java.lang.Integer",
+			"description": "Número de trabajos/issues creados en el mes",
+			"unit": "issues/month"
+		},
+			{
+			"name": "closedIssuesLastMonth",
+			"type": "java.lang.Integer",
+			"description": "Número de repositorios trabajos/issues concluidos en el mes",
+			"unit": "issues/month"
+		},
+			{
+			"name": "meanClosedIssuesLastMonth",
+			"type": "java.lang.Double",
+			"description": "Media de issues cerrados en el pasado mes por desarrollador",
+			"unit": "issues/developer"
+		},
+		{
+			"name": "assignedIssuesLastMonth",
+			"type": "java.lang.Integer",
+			"description": "Issues asignados a un desarrollador en el último mes",
+			"unit": "issues/month"
 		}
+		
 		
 	],
 	"indicators": [{

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
-import us.muit.fs.a4i.control.IssuesRatioIndicatorStrategy;
+import us.muit.fs.a4i.control.strategies.IssuesRatioIndicatorStrategy;
 import us.muit.fs.a4i.exceptions.NotAvailableMetricException;
 import us.muit.fs.a4i.model.entities.ReportItemI;
 

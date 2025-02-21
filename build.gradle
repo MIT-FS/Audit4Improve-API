@@ -16,12 +16,12 @@ plugins {
     //para poder publicar paquetes en github
     id 'maven-publish'
     //Plugin para análisis estático de código
-    id "nebula.lint" version "17.7.0"
+    //id "nebula.lint" version "17.7.0"
 }
 
-//version = '2.0'
+
 //Para publicar paquetes en github
-//group = 'A4I'
+
 publishing {
     repositories {
         maven {
@@ -41,7 +41,7 @@ publishing {
         
             groupId = 'us.mitfs.samples'
             artifactId = 'a4i'
-            version = '0.0'
+            version = '0.2'
 
             from components.java
         }
@@ -49,6 +49,7 @@ publishing {
     }
 }
 version = '0.2'
+//group = 'us.mitfs.samples'
 tasks.withType(JavaCompile) {
     //Añadir la opción Xlint
     options.deprecation = true
