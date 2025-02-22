@@ -72,5 +72,61 @@ class GitHubRepositoryEnquirerTest {
 		List<String> availableMetrics=ghEnquirer.getAvailableMetrics();
 		log.info(availableMetrics.toString());
 	}
+	
+	@Test
+	void testGetTotalPullRequests() throws MetricException {
+		
+		// Nombre de la métrica que queremos consultar
+		String nombreMetrica = "totalPullReq";
+		
+		// Repositorio del que se quiere obtener la métrica
+		String repositoryId = "MIT-FS/Audit4Improve-API";
+		
+		// Variable para almacenar el número total de pull requests 
+		ReportItem metrica = null;
+		
+		// Número total de pull requests que habrá en el repositorio
+		int numPullRequests = 61; 
+		
+        // Creamos el RemoteEnquirer para el repositorio GitHub
+        GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
+
+        // Obtenemos el número total de pull requests
+        metrica = enquirer.getMetric(nombreMetrica, repositoryId);
+        log.info(metrica.toString());
+
+        // Comprobamos que el resultado coincida con el número total de pull requests real
+        assertEquals(numPullRequests, metrica.getValue());
+		
+	}
+	
+	/**
+	 * @throws MetricException
+	 */
+	@Test
+	void testCompletedPullRequests() throws MetricException {
+		
+		// Nombre de la métrica que queremos consultar
+		String nombreMetrica = "completedPullReq";
+				
+		// Repositorio del que se quiere obtener la métrica
+		String repositoryId = "MIT-FS/Audit4Improve-API";
+				
+		// Variable para almacenar el número de pull requests completados
+		ReportItem metrica = null;
+				
+		// Número de pull requests completados que habrá en el repositorio
+		int numCompletedPull = 51; 
+				
+		// Creamos el RemoteEnquirer para el repositorio GitHub
+		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
+
+		// Obtenemos el número de pull requests completados
+		metrica = enquirer.getMetric(nombreMetrica, repositoryId);
+		log.info(metrica.toString());
+
+		// Comprobamos que el resultado coincida con el número de pull requests completados real
+		assertEquals(numCompletedPull, metrica.getValue());	
+	}
 
 }

@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHRepositoryStatistics;
 import org.kohsuke.github.GHRepositoryStatistics.CodeFrequency;
@@ -67,6 +68,9 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		metricNames.add("closedIssuesLastMonth");
 		metricNames.add("meanClosedIssuesLastMonth");
 		metricNames.add("issues4DevLastMonth");
+		//equipo 4
+		metricNames.add("totalPullReq");
+		metricNames.add("closedPullReq");
 		log.info("A�adidas m�tricas al GHRepositoryEnquirer");
 	}
 
@@ -260,6 +264,13 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		case "issues4DevLastMonth":
 			metric = issues4DevLastMonth(remoteRepo);
 			break;
+		//equipo 4
+		case "pullResquestTotales":
+			metric = getTotalPullReq(remoteRepo);
+			break;
+		case "closedPullReq":
+			metric = getClosedPullReq(remoteRepo);
+			break;	
 		default:
 			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
 		}
@@ -793,5 +804,47 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 		return builder.build();
 	}
+  	private ReportItem getClosedPullReq(GHRepository repo){
+		log.info("Consultando los pull requests completados");
+	    ReportItemBuilder<Integer> builder = null;
+	    
+	    int completedPullRequests = 0;
+	    
+	    try {
+
+	    	for (GHPullRequest pullRequest : repo.getPullRequests(GHIssueState.CLOSED)) {
+	    		
+	    		completedPullRequests++;
+	    		
+	    	}
+	    	builder = new ReportItem.ReportItemBuilder<Integer>("closedPullReq", completedPullRequests);
+	    	builder.description("Número de pull requests completados").source("GitHub");
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return builder.build();
+	}
+	
+	private ReportItem getTotalPullReq(GHRepository repo){
+		log.info("Consultando los pull requests totales");
+	    ReportItemBuilder<Integer> builder = null;
+	    
+	    int totalPullRequests = 0;
+	    
+	    try {
+
+	    	for (GHPullRequest pullRequest : repo.getPullRequests(GHIssueState.ALL)) {
+	    	
+	    		totalPullRequests++;
+	    		
+	    	}
+	    	builder = new ReportItem.ReportItemBuilder<Integer>("totalPullReq", totalPullRequests);
+	    	builder.description("Número de pull requests totales").source("GitHub");
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return builder.build();
+	}
+	
 
 }
