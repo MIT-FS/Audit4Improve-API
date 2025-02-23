@@ -265,7 +265,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 			metric = issues4DevLastMonth(remoteRepo);
 			break;
 		//equipo 4
-		case "pullResquestTotales":
+		case "totalPullReq":
 			metric = getTotalPullReq(remoteRepo);
 			break;
 		case "closedPullReq":

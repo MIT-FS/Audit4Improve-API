@@ -1,5 +1,6 @@
 {
-	"metrics": [{
+	"metrics": [
+		{
 			"name": "subscribers",
 			"type": "java.lang.Integer",
 			"description": "Número de suscriptores de un repositorio, watchers en la web",
@@ -137,19 +138,19 @@
 			"description": "Número de repositorios con pull requests pendientes",
 			"unit": "repositories"
 		},
-			{
+		{
 			"name": "issuesLastMonth",
 			"type": "java.lang.Integer",
 			"description": "Número de trabajos/issues creados en el mes",
 			"unit": "issues/month"
 		},
-			{
+		{
 			"name": "closedIssuesLastMonth",
 			"type": "java.lang.Integer",
 			"description": "Número de repositorios trabajos/issues concluidos en el mes",
 			"unit": "issues/month"
 		},
-			{
+		{
 			"name": "meanClosedIssuesLastMonth",
 			"type": "java.lang.Double",
 			"description": "Media de issues cerrados en el pasado mes por desarrollador",
@@ -161,40 +162,64 @@
 			"description": "Issues asignados a un desarrollador en el último mes",
 			"unit": "issues/month"
 		},
-			{
+		{
 			"name": "totalPullReq",
 			"type": "java.lang.Integer",
 			"description": "Número de pull requests en un repositorio",
 			"unit": "PR"
 		},
-			{
+		{
 			"name": "closedPullReq",
 			"type": "java.lang.Integer",
 			"description": "Número de pull requests cerradas en un repositorio",
 			"unit": "PR"
 		}
-		
-		
 	],
-	"indicators": [{
+	"indicators": [
+		{
 			"name": "issuesProgress",
 			"type": "java.lang.Double",
 			"description": "Ratio de issues cerrados frente a totales",
 			"unit": "ratio",
-			"limits": { "ok": 2, "warning": 4, "critical": 6 }
+			"limits": {
+				"ok": 2,
+				"warning": 4,
+				"critical": 6
+			}
 		},
 		{
 			"name": "overdued",
 			"type": "java.lang.Double",
 			"description": "Ratio de issues vencidos frente a abiertos",
 			"unit": "ratio",
-			"limits": { "ok": 5, "warning": 9, "critical": 12 }
+			"limits": {
+				"ok": 5,
+				"warning": 9,
+				"critical": 12
+			}
 		},
 		{
 			"name": "issuesRatio",
 			"type": "java.lang.Double",
 			"description": "Ratio de issues abiertos frente a cerrados",
 			"unit": "ratio"
-		}
+		},
+		{
+			"name": "pullRequestCompletion",
+			"type": "java.lang.Double",
+			"description": "% PR cerrados frente a totales",
+			"unit": "%",
+			"limits": {
+				"ok": 75,
+				"warning": 50,
+				"critical": 25
+			}
+		},
+		{
+			"name": "developerPerfomance",
+			"type": "java.lang.Double",
+			"description": "Ratio de issues cerradas frente a creadas del desarrollador frente al equipo",
+			"unit": "ratio"
+		},
 	]
 }

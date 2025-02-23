@@ -61,7 +61,7 @@ public class DeveloperPerformanceStrategy implements IndicatorStrategy<Double> {
 
 			try {
 				// Se crea el indicador
-				indicatorReport = new ReportItem.ReportItemBuilder<Double>("rendimientoMiembro", rendimientoMiembro)
+				indicatorReport = new ReportItem.ReportItemBuilder<Double>("developerPerformance", rendimientoMiembro)
 						.metrics(Arrays.asList(issuesLastMonth.get(), closedIssuesLastMonth.get(),
 								issues4DevLastMonth.get(), meanClosedIssuesLastMonth.get()))
 						.indicator(IndicatorState.UNDEFINED).build();

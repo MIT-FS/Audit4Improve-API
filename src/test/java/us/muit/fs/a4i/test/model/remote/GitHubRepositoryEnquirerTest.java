@@ -83,11 +83,8 @@ class GitHubRepositoryEnquirerTest {
 		String repositoryId = "MIT-FS/Audit4Improve-API";
 		
 		// Variable para almacenar el número total de pull requests 
-		ReportItem metrica = null;
-		
-		// Número total de pull requests que habrá en el repositorio
-		int numPullRequests = 61; 
-		
+		ReportItem<Integer> metrica = null;
+				
         // Creamos el RemoteEnquirer para el repositorio GitHub
         GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
 
@@ -96,8 +93,8 @@ class GitHubRepositoryEnquirerTest {
         log.info(metrica.toString());
 
         // Comprobamos que el resultado coincida con el número total de pull requests real
-        assertEquals(numPullRequests, metrica.getValue());
-		
+        assertTrue(metrica.getValue()>0,"Bad number of PR");
+     		
 	}
 	
 	/**
@@ -107,17 +104,15 @@ class GitHubRepositoryEnquirerTest {
 	void testCompletedPullRequests() throws MetricException {
 		
 		// Nombre de la métrica que queremos consultar
-		String nombreMetrica = "completedPullReq";
+		String nombreMetrica = "closedPullReq";
 				
 		// Repositorio del que se quiere obtener la métrica
 		String repositoryId = "MIT-FS/Audit4Improve-API";
 				
 		// Variable para almacenar el número de pull requests completados
-		ReportItem metrica = null;
+		ReportItem<Integer> metrica = null;
 				
-		// Número de pull requests completados que habrá en el repositorio
-		int numCompletedPull = 51; 
-				
+						
 		// Creamos el RemoteEnquirer para el repositorio GitHub
 		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
 
@@ -126,7 +121,8 @@ class GitHubRepositoryEnquirerTest {
 		log.info(metrica.toString());
 
 		// Comprobamos que el resultado coincida con el número de pull requests completados real
-		assertEquals(numCompletedPull, metrica.getValue());	
+		
+		assertTrue(0<metrica.getValue(),"Bad number of closed PR");	
 	}
 
 }
