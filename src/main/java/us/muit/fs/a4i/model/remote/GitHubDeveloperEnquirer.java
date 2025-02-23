@@ -22,18 +22,17 @@ import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
 
 /**
- * Deuda técnica
- * Esta clase debe consultar datos sobre un desarrollador concreto de github
- * Ahora mismo está en estado lamentable
- * Simplemente busca los eventos de un desarrollador
- * No localiza eventos de tipo ISSUE, que son los que se quería
- * RECUERDA: las métricas tienen que estar incluidas en el fichero de configuración a4iDefault.json
+ * Deuda técnica Esta clase debe consultar datos sobre un desarrollador concreto
+ * de github Ahora mismo está en estado lamentable Simplemente busca los eventos
+ * de un desarrollador No localiza eventos de tipo ISSUE, que son los que se
+ * quería RECUERDA: las métricas tienen que estar incluidas en el fichero de
+ * configuración a4iDefault.json
  */
 public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 	public GitHubDeveloperEnquirer() {
 		super();
-		metricNames.add("closedIssuesLastMonth");	
-		metricNames.add("assignedIssuesLastMonth");	
+		metricNames.add("closedIssuesLastMonth");
+		metricNames.add("assignedIssuesLastMonth");
 		log.info("Incluidos nombres metricas en Enquirer");
 	}
 
@@ -45,6 +44,7 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 	 * </p>
 	 */
 	private String entityId;
+
 	@Override
 	public ReportI buildReport(String developerId) {
 		// TODO Auto-generated method stub
@@ -58,21 +58,21 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 		GitHub gb = getConnection();
 		try {
 			developer = gb.getUser(developerId);
-			log.info("Localizado el desarrollador "+developer.getName());
+			log.info("Localizado el desarrollador " + developer.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new MetricException(
-					"No se puede acceder al desarrollador " + developerId + " para recuperarlo");
+			throw new MetricException("No se puede acceder al desarrollador " + developerId + " para recuperarlo");
 		}
-        
+
 		return getMetric(metricName, developer);
 	}
-	
+
 	private ReportItem getMetric(String metricName, GHUser developer) throws MetricException {
-		log.info("Localizando la metrica "+metricName);
+		log.info("Localizando la metrica " + metricName);
 		ReportItem metric;
 		if (developer == null) {
-			throw new MetricException("Intenta obtener una métrica de desarrollador sin haber obtenido el desarrollador");
+			throw new MetricException(
+					"Intenta obtener una métrica de desarrollador sin haber obtenido el desarrollador");
 		}
 		switch (metricName) {
 		case "closedIssuesLastMonth":
@@ -91,21 +91,21 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 	private ReportItem getClosedIssuesLastMonth(GHUser developer) {
 		log.info("Consultando los issues asignados a un desarrollador");
 		ReportItemBuilder<Integer> builder = null;
-		int issues=0;
-		
-		try {
-			PagedIterable <GHEventInfo> events=developer.listEvents();
-			for(GHEventInfo event:events) {
-				log.info("Evento tipo"+event.getType()+" en la fecha "+event.getCreatedAt());
-				if(event.getType()==GHEvent.ISSUES) {
+		int issues = 0;
 
-					GHEventPayload.Issue payload=event.getPayload(GHEventPayload.Issue.class);
+		try {
+			PagedIterable<GHEventInfo> events = developer.listEvents();
+			for (GHEventInfo event : events) {
+				log.info("Evento tipo" + event.getType() + " en la fecha " + event.getCreatedAt());
+				if (event.getType() == GHEvent.ISSUES) {
+
+					GHEventPayload.Issue payload = event.getPayload(GHEventPayload.Issue.class);
 					log.info(payload.getAction());
 					issues++;
-					
-				}				
-				
+
 				}
+
+			}
 			builder = new ReportItem.ReportItemBuilder<Integer>("closedIssuesLastMonth", issues);
 			builder.source("GitHub");
 		} catch (Exception e) {
@@ -119,6 +119,5 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
 }

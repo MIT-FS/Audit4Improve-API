@@ -16,15 +16,15 @@ class GitHubDeveloperEnquirerTest {
 	GitHubDeveloperEnquirer ghEnquirer = new GitHubDeveloperEnquirer();
 
 	/**
-	 * Test method for
-	 * GitHubOrganizationEnquirer
-	 * @throws MetricException 
-	 * @throws ReportItemException 
+	 * Test method for GitHubOrganizationEnquirer
+	 * 
+	 * @throws MetricException
+	 * @throws ReportItemException
 	 */
 	@Test
 	void testAssignedIssuesLastMonth() throws MetricException {
-		ReportItem<Integer> metric = ghEnquirer.getMetric("closedIssuesLastMonth","Isabel-Roman");	
-		assertEquals(metric.getName(),"closedIssuesLastMonth");
+		ReportItem<Integer> metric = ghEnquirer.getMetric("closedIssuesLastMonth", "Isabel-Roman");
+		assertEquals(metric.getName(), "closedIssuesLastMonth");
 		log.info(metric.getValue().toString());
 		log.info(metric.getDescription());
 	}

@@ -33,10 +33,11 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
 
 /**
  * @author Isabel Román Deuda técnica: debería seguir la misma filosofía que
- *         GitHubOrganizationEnquirer para evitar la replicación de código
- * deuda técnica:
- * las métricas tras la etiqueta //equipo 3 tienen problemas, no están acordes al indicador para el que fueron creadas
- * RECUERDA: las métricas tienen que estar incluidas en el fichero de configuración a4iDefault.json
+ *         GitHubOrganizationEnquirer para evitar la replicación de código deuda
+ *         técnica: las métricas tras la etiqueta //equipo 3 tienen problemas,
+ *         no están acordes al indicador para el que fueron creadas RECUERDA:
+ *         las métricas tienen que estar incluidas en el fichero de
+ *         configuración a4iDefault.json
  */
 public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	/**
@@ -71,10 +72,10 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		metricNames.add("closedIssuesLastMonth");
 		metricNames.add("meanClosedIssuesLastMonth");
 		metricNames.add("issues4DevLastMonth");
-		//equipo 4
+		// equipo 4
 		metricNames.add("totalPullReq");
 		metricNames.add("closedPullReq");
-		//equipo 5
+		// equipo 5
 		metricNames.add("PRAcceptedLastYear");
 		metricNames.add("PRAcceptedLastMonth");
 		metricNames.add("PRRejectedLastYear");
@@ -272,13 +273,13 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		case "issues4DevLastMonth":
 			metric = issues4DevLastMonth(remoteRepo);
 			break;
-		//equipo 4
+		// equipo 4
 		case "totalPullReq":
 			metric = getTotalPullReq(remoteRepo);
 			break;
 		case "closedPullReq":
 			metric = getClosedPullReq(remoteRepo);
-			break;	
+			break;
 		case "PRAcceptedLastYear":
 			metric = getPRAcceptedLastYear(remoteRepo);
 			break;
@@ -627,12 +628,12 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	}
 
 	// Métodos añadidos por el equipo 3
-    /**
-     *  
-     * @param remoteRepo
-     * @return ReportItem with the number of issues created last month
-     * @throws MetricException
-     */
+	/**
+	 * 
+	 * @param remoteRepo
+	 * @return ReportItem with the number of issues created last month
+	 * @throws MetricException
+	 */
 	private ReportItem getIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
 		log.info("Consultando los issues abiertos un mes");
 		int issuesLastMonth = 0;
@@ -650,8 +651,8 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 			for (GHIssue issue : issues) {
 				if (issue.getCreatedAt().after(lastMonth)) {
 					issuesLastMonth++;
-					log.finer("issue manejado por "+issue.getUser().getName());
-					
+					log.finer("issue manejado por " + issue.getUser().getName());
+
 				}
 			}
 
@@ -672,7 +673,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 		return builder.build();
 	}
-    
+
 	/**
 	 * 
 	 * @param remoteRepo
@@ -715,14 +716,14 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 		return builder.build();
 	}
-     
+
 	/**
 	 * 
 	 * @param remoteRepo
 	 * @return ReportItem with the average of closed issues per member in a month
 	 * @throws MetricException
 	 */
-  	private ReportItem getMeanClosedIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
+	private ReportItem getMeanClosedIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
 		int closedIssuesLastMonth = 0;
 		int activeMembers = 0;
 		Map<String, Integer> issuesClosedByMember = new HashMap<>();
@@ -778,12 +779,15 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	/**
 	 * 
 	 * @param remoteRepo
-	 * @return ReportItem with a map indicating the issues assigned to each member in a month
+	 * @return ReportItem with a map indicating the issues assigned to each member
+	 *         in a month
 	 * @throws MetricException
 	 * 
-	 * Deuda técnica: esto no está bien porque aquí este reportitem es un mapa y luego lo tratan como si fuera un double... no es coherente una parte con la otra.
+	 *                         Deuda técnica: esto no está bien porque aquí este
+	 *                         reportitem es un mapa y luego lo tratan como si fuera
+	 *                         un double... no es coherente una parte con la otra.
 	 */
-  	private ReportItem issues4DevLastMonth(GHRepository remoteRepo) throws MetricException {
+	private ReportItem issues4DevLastMonth(GHRepository remoteRepo) throws MetricException {
 		Map<String, Integer> issuesAssignedByMember = new HashMap<>();
 		ReportItemBuilder<Map<String, Integer>> builder = null;
 
@@ -824,183 +828,204 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 		return builder.build();
 	}
-  	private ReportItem getClosedPullReq(GHRepository repo){
+
+	private ReportItem getClosedPullReq(GHRepository repo) {
 		log.info("Consultando los pull requests completados");
-	    ReportItemBuilder<Integer> builder = null;
-	    
-	    int completedPullRequests = 0;
-	    
-	    try {
+		ReportItemBuilder<Integer> builder = null;
 
-	    	for (GHPullRequest pullRequest : repo.getPullRequests(GHIssueState.CLOSED)) {
-	    		
-	    		completedPullRequests++;
-	    		
-	    	}
-	    	builder = new ReportItem.ReportItemBuilder<Integer>("closedPullReq", completedPullRequests);
-	    	builder.description("Número de pull requests completados").source("GitHub");
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    }
-	    return builder.build();
+		int completedPullRequests = 0;
+
+		try {
+
+			for (GHPullRequest pullRequest : repo.getPullRequests(GHIssueState.CLOSED)) {
+
+				completedPullRequests++;
+
+			}
+			builder = new ReportItem.ReportItemBuilder<Integer>("closedPullReq", completedPullRequests);
+			builder.description("Número de pull requests completados").source("GitHub");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return builder.build();
 	}
-	
-	private ReportItem getTotalPullReq(GHRepository repo){
+
+	private ReportItem getTotalPullReq(GHRepository repo) {
 		log.info("Consultando los pull requests totales");
-	    ReportItemBuilder<Integer> builder = null;
-	    
-	    int totalPullRequests = 0;
-	    
-	    try {
+		ReportItemBuilder<Integer> builder = null;
 
-	    	for (GHPullRequest pullRequest : repo.getPullRequests(GHIssueState.ALL)) {
-	    	
-	    		totalPullRequests++;
-	    		
-	    	}
-	    	builder = new ReportItem.ReportItemBuilder<Integer>("totalPullReq", totalPullRequests);
-	    	builder.description("Número de pull requests totales").source("GitHub");
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    }
-	    return builder.build();
+		int totalPullRequests = 0;
+
+		try {
+
+			for (GHPullRequest pullRequest : repo.getPullRequests(GHIssueState.ALL)) {
+
+				totalPullRequests++;
+
+			}
+			builder = new ReportItem.ReportItemBuilder<Integer>("totalPullReq", totalPullRequests);
+			builder.description("Número de pull requests totales").source("GitHub");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return builder.build();
 	}
-	
-   //Equipo 5
-	
-    /**
-     * <p>
-     * Filtra las solicitudes de extracción (pull requests) según la fecha de creación y el estado de aceptación.
-     * </p>
-     *
-     * @param pullRequests la lista de solicitudes de extracción a filtrar
-     * @param startDate la fecha de inicio del intervalo de tiempo para filtrar
-     * @param endDate la fecha de finalización del intervalo de tiempo para filtrar
-     * @param accepted indica si se deben filtrar las solicitudes de extracción aceptadas (true) o rechazadas (false)
-     * @return la lista de solicitudes de extracción que cumplen con los criterios de filtrado
-     */
-    private static List<GHPullRequest> filterPullRequests(List<GHPullRequest> pullRequests, LocalDateTime startDate, LocalDateTime endDate, boolean accepted) {
-        return pullRequests.stream()
-                .filter(pr -> {                
-                	try {
-	                    LocalDateTime createdDate = pr.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-	                    return createdDate.isAfter(startDate) && createdDate.isBefore(endDate) && (accepted ? pr.isMerged() : !pr.isMerged());
-	                } catch (IOException e) {
-	                    log.warning("Failed to get creation date for PR #" + pr.getNumber() + "\n"+e);
-	                    return false;
-	                }
-                })
-                .collect(Collectors.toList());
-    }
-    
 
-    /**
-     * <p>
-     * Obtención del número de solicitudes de extracción aceptadas en el último año.
-     * </p>
-     * 
-     * @param remoteRepo el repositorio remoto sobre el que consultar
-     * @return la métrica con el número de solicitudes de extracción aceptadas en el último año
-     * @throws MetricException si ocurre un error al obtener las solicitudes de extracción
-     */
-    private ReportItem getPRAcceptedLastYear(GHRepository remoteRepo) throws MetricException {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneYearAgo = now.minusYears(1);
-        
-        try {
-            List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
-            List<GHPullRequest> acceptedLastYear = filterPullRequests(pullRequests, oneYearAgo, now, true);
-            
-            ReportItemBuilder<Integer> acceptedLastYearMetric = new ReportItem.ReportItemBuilder<>("PRAcceptedLastYear", acceptedLastYear.size());
-            acceptedLastYearMetric.source("GitHub, calculada")
-                    .description("Número de solicitudes de extracción aceptadas en el último año");
-            
-            return acceptedLastYearMetric.build();
-        } catch (IOException | ReportItemException e) {
-            throw new MetricException("Error al obtener las solicitudes de extracción aceptadas en el último año\n" + e);
-        }
-    }
-    
-    /**
-     * <p>
-     * Obtención del número de solicitudes de extracción aceptadas en el último mes.
-     * </p>
-     * 
-     * @param remoteRepo el repositorio remoto sobre el que consultar
-     * @return la métrica con el número de solicitudes de extracción aceptadas en el último mes
-     * @throws MetricException si ocurre un error al obtener las solicitudes de extracción
-     */
-    private ReportItem getPRAcceptedLastMonth(GHRepository remoteRepo) throws MetricException {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneMonthAgo = now.minusMonths(1);
-        
-        try {
-            List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
-            List<GHPullRequest> acceptedLastMonth = filterPullRequests(pullRequests, oneMonthAgo, now, true);
-            
-            ReportItemBuilder<Integer> acceptedLastMonthMetric = new ReportItem.ReportItemBuilder<>("PRAcceptedLastMonth", acceptedLastMonth.size());
-            acceptedLastMonthMetric.source("GitHub, calculada")
-                    .description("Número de solicitudes de extracción aceptadas en el último mes");
-            
-            return acceptedLastMonthMetric.build();
-        } catch (IOException | ReportItemException e) {
-            throw new MetricException("Error al obtener las solicitudes de extracción aceptadas en el último mes\n" + e);
-        }
-    }
-    
-    
-    /**
-     * <p>
-     * Obtención del número de solicitudes de extracción rechazadas en el último año.
-     * </p>
-     * 
-     * @param remoteRepo el repositorio remoto sobre el que consultar
-     * @return la métrica con el número de solicitudes de extracción rechazadas en el último año
-     * @throws MetricException si ocurre un error al obtener las solicitudes de extracción
-     */
-    private ReportItem getPRRejectedLastYear(GHRepository remoteRepo) throws MetricException {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneYearAgo = now.minusYears(1);
-        
-        try {
-            List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
-            List<GHPullRequest> rejectedLastYear = filterPullRequests(pullRequests, oneYearAgo, now, false);
-            
-            ReportItemBuilder<Integer> rejectedLastYearMetric = new ReportItem.ReportItemBuilder<>("PRRejectedLastYear", rejectedLastYear.size());
-            rejectedLastYearMetric.source("GitHub, calculada")
-                    .description("Número de solicitudes de extracción rechazadas en el último año");
-            
-            return rejectedLastYearMetric.build();
-        } catch (IOException | ReportItemException e) {
-            throw new MetricException("Error al obtener las solicitudes de extracción rechazadas en el último año\n" + e);
-        }
-    }
-    
+	// Equipo 5
 
-    /**
-     * <p>
-     * Obtención del número de solicitudes de extracción rechazadas en el último mes.
-     * </p>
-     * 
-     * @param remoteRepo el repositorio remoto sobre el que consultar
-     * @return la métrica con el número de solicitudes de extracción rechazadas en el último mes
-     * @throws MetricException si ocurre un error al obtener las solicitudes de extracción
-     */
-    private ReportItem getPRRejectedLastMonth(GHRepository remoteRepo) throws MetricException {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneMonthAgo = now.minusMonths(1);
-        
-        try {
-            List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
-            List<GHPullRequest> rejectedLastMonth = filterPullRequests(pullRequests, oneMonthAgo, now, false);
-            
-            ReportItemBuilder<Integer> rejectedLastMonthMetric = new ReportItem.ReportItemBuilder<>("PRRejectedLastMonth", rejectedLastMonth.size());
-            rejectedLastMonthMetric.source("GitHub, calculada")
-                    .description("Número de solicitudes de extracción rechazadas en el último mes");
-            
-            return rejectedLastMonthMetric.build();
-        } catch (IOException | ReportItemException e) {
-            throw new MetricException("Error al obtener las solicitudes de extracción rechazadas en el último mes\n" + e);
-        }
-    }
+	/**
+	 * <p>
+	 * Filtra las solicitudes de extracción (pull requests) según la fecha de
+	 * creación y el estado de aceptación.
+	 * </p>
+	 *
+	 * @param pullRequests la lista de solicitudes de extracción a filtrar
+	 * @param startDate    la fecha de inicio del intervalo de tiempo para filtrar
+	 * @param endDate      la fecha de finalización del intervalo de tiempo para
+	 *                     filtrar
+	 * @param accepted     indica si se deben filtrar las solicitudes de extracción
+	 *                     aceptadas (true) o rechazadas (false)
+	 * @return la lista de solicitudes de extracción que cumplen con los criterios
+	 *         de filtrado
+	 */
+	private static List<GHPullRequest> filterPullRequests(List<GHPullRequest> pullRequests, LocalDateTime startDate,
+			LocalDateTime endDate, boolean accepted) {
+		return pullRequests.stream().filter(pr -> {
+			try {
+				LocalDateTime createdDate = pr.getCreatedAt().toInstant().atZone(ZoneId.systemDefault())
+						.toLocalDateTime();
+				return createdDate.isAfter(startDate) && createdDate.isBefore(endDate)
+						&& (accepted ? pr.isMerged() : !pr.isMerged());
+			} catch (IOException e) {
+				log.warning("Failed to get creation date for PR #" + pr.getNumber() + "\n" + e);
+				return false;
+			}
+		}).collect(Collectors.toList());
+	}
+
+	/**
+	 * <p>
+	 * Obtención del número de solicitudes de extracción aceptadas en el último año.
+	 * </p>
+	 * 
+	 * @param remoteRepo el repositorio remoto sobre el que consultar
+	 * @return la métrica con el número de solicitudes de extracción aceptadas en el
+	 *         último año
+	 * @throws MetricException si ocurre un error al obtener las solicitudes de
+	 *                         extracción
+	 */
+	private ReportItem getPRAcceptedLastYear(GHRepository remoteRepo) throws MetricException {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime oneYearAgo = now.minusYears(1);
+
+		try {
+			List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
+			List<GHPullRequest> acceptedLastYear = filterPullRequests(pullRequests, oneYearAgo, now, true);
+
+			ReportItemBuilder<Integer> acceptedLastYearMetric = new ReportItem.ReportItemBuilder<>("PRAcceptedLastYear",
+					acceptedLastYear.size());
+			acceptedLastYearMetric.source("GitHub, calculada")
+					.description("Número de solicitudes de extracción aceptadas en el último año");
+
+			return acceptedLastYearMetric.build();
+		} catch (IOException | ReportItemException e) {
+			throw new MetricException(
+					"Error al obtener las solicitudes de extracción aceptadas en el último año\n" + e);
+		}
+	}
+
+	/**
+	 * <p>
+	 * Obtención del número de solicitudes de extracción aceptadas en el último mes.
+	 * </p>
+	 * 
+	 * @param remoteRepo el repositorio remoto sobre el que consultar
+	 * @return la métrica con el número de solicitudes de extracción aceptadas en el
+	 *         último mes
+	 * @throws MetricException si ocurre un error al obtener las solicitudes de
+	 *                         extracción
+	 */
+	private ReportItem getPRAcceptedLastMonth(GHRepository remoteRepo) throws MetricException {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime oneMonthAgo = now.minusMonths(1);
+
+		try {
+			List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
+			List<GHPullRequest> acceptedLastMonth = filterPullRequests(pullRequests, oneMonthAgo, now, true);
+
+			ReportItemBuilder<Integer> acceptedLastMonthMetric = new ReportItem.ReportItemBuilder<>(
+					"PRAcceptedLastMonth", acceptedLastMonth.size());
+			acceptedLastMonthMetric.source("GitHub, calculada")
+					.description("Número de solicitudes de extracción aceptadas en el último mes");
+
+			return acceptedLastMonthMetric.build();
+		} catch (IOException | ReportItemException e) {
+			throw new MetricException(
+					"Error al obtener las solicitudes de extracción aceptadas en el último mes\n" + e);
+		}
+	}
+
+	/**
+	 * <p>
+	 * Obtención del número de solicitudes de extracción rechazadas en el último
+	 * año.
+	 * </p>
+	 * 
+	 * @param remoteRepo el repositorio remoto sobre el que consultar
+	 * @return la métrica con el número de solicitudes de extracción rechazadas en
+	 *         el último año
+	 * @throws MetricException si ocurre un error al obtener las solicitudes de
+	 *                         extracción
+	 */
+	private ReportItem getPRRejectedLastYear(GHRepository remoteRepo) throws MetricException {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime oneYearAgo = now.minusYears(1);
+
+		try {
+			List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
+			List<GHPullRequest> rejectedLastYear = filterPullRequests(pullRequests, oneYearAgo, now, false);
+
+			ReportItemBuilder<Integer> rejectedLastYearMetric = new ReportItem.ReportItemBuilder<>("PRRejectedLastYear",
+					rejectedLastYear.size());
+			rejectedLastYearMetric.source("GitHub, calculada")
+					.description("Número de solicitudes de extracción rechazadas en el último año");
+
+			return rejectedLastYearMetric.build();
+		} catch (IOException | ReportItemException e) {
+			throw new MetricException(
+					"Error al obtener las solicitudes de extracción rechazadas en el último año\n" + e);
+		}
+	}
+
+	/**
+	 * <p>
+	 * Obtención del número de solicitudes de extracción rechazadas en el último
+	 * mes.
+	 * </p>
+	 * 
+	 * @param remoteRepo el repositorio remoto sobre el que consultar
+	 * @return la métrica con el número de solicitudes de extracción rechazadas en
+	 *         el último mes
+	 * @throws MetricException si ocurre un error al obtener las solicitudes de
+	 *                         extracción
+	 */
+	private ReportItem getPRRejectedLastMonth(GHRepository remoteRepo) throws MetricException {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime oneMonthAgo = now.minusMonths(1);
+
+		try {
+			List<GHPullRequest> pullRequests = remoteRepo.getPullRequests(GHIssueState.CLOSED);
+			List<GHPullRequest> rejectedLastMonth = filterPullRequests(pullRequests, oneMonthAgo, now, false);
+
+			ReportItemBuilder<Integer> rejectedLastMonthMetric = new ReportItem.ReportItemBuilder<>(
+					"PRRejectedLastMonth", rejectedLastMonth.size());
+			rejectedLastMonthMetric.source("GitHub, calculada")
+					.description("Número de solicitudes de extracción rechazadas en el último mes");
+
+			return rejectedLastMonthMetric.build();
+		} catch (IOException | ReportItemException e) {
+			throw new MetricException(
+					"Error al obtener las solicitudes de extracción rechazadas en el último mes\n" + e);
+		}
+	}
 }

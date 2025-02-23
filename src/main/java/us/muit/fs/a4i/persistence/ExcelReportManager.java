@@ -50,7 +50,8 @@ import us.muit.fs.a4i.model.entities.Font;
  * anterior, si no existía se crea nueva
  * </p>
  * <p>
- * Deuda técnica. En la persistencia de métricas e indicadores se observa mucho código replicado, se debe optimizar
+ * Deuda técnica. En la persistencia de métricas e indicadores se observa mucho
+ * código replicado, se debe optimizar
  * </p>
  * 
  * @author Isabel Román
@@ -255,12 +256,12 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 
 		XSSFCell cell;
 
-		cell=row.createCell(cellIndex);
+		cell = row.createCell(cellIndex);
 		cell.setCellValue(metric.getName());
 		cell.setCellStyle(style);
 		sheet.autoSizeColumn(cellIndex++);
 
-		cell=row.createCell(cellIndex);
+		cell = row.createCell(cellIndex);
 		cell.setCellValue(metric.getValue().toString());
 		cell.setCellStyle(style);
 		sheet.autoSizeColumn(cellIndex++);
@@ -327,12 +328,12 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 			}
 			XSSFCell cell;
 
-			cell=row.createCell(cellIndex);
+			cell = row.createCell(cellIndex);
 			cell.setCellValue(indicator.getName());
 			cell.setCellStyle(style);
 			sheet.autoSizeColumn(cellIndex++);
 
-			cell=row.createCell(cellIndex);
+			cell = row.createCell(cellIndex);
 			cell.setCellValue(indicator.getValue().toString());
 			cell.setCellStyle(style);
 			sheet.autoSizeColumn(cellIndex++);
@@ -365,7 +366,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 
 	@Override
 	public void deleteReport(ReportI report) throws ReportNotDefinedException {
-	
+
 		log.info("Eliminando informe excel");
 		if (report == null) {
 			throw new ReportNotDefinedException();
@@ -383,14 +384,14 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 				out = new FileOutputStream(filePath + fileName);
 				wb.write(out);
 				out.close();
-				
-			}else {
-				log.info("No existe el informe "+report.getEntityId());
+
+			} else {
+				log.info("No existe el informe " + report.getEntityId());
 			}
 			inputStream.close();
-		}catch (Exception e) { 
-			
-			e.printStackTrace();		
-	}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
 	}
 }

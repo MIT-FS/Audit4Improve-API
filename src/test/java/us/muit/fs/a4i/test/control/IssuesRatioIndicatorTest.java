@@ -1,4 +1,5 @@
 package us.muit.fs.a4i.test.control;
+
 /***
  * @author celllarod, curso 22/23
  * Pruebas añadidas por alumnos del curso 22/23 para probar la clase IssuesRatioIndicator
@@ -28,7 +29,7 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
 public class IssuesRatioIndicatorTest {
 
 	private static Logger log = Logger.getLogger(IssuesRatioIndicatorTest.class.getName());
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -56,70 +57,63 @@ public class IssuesRatioIndicatorTest {
 	@AfterEach
 	void tearDown() throws Exception {
 	}
-	
-	
 
+	@Test
+	public void testCalcIndicator() throws NotAvailableMetricException {
+		// Creamos los mocks necesarios
+		ReportItemI<Double> mockOpenIssues = Mockito.mock(ReportItemI.class);
+		ReportItemI<Double> mockClosedIssues = Mockito.mock(ReportItemI.class);
 
-	    @Test
-	    public void testCalcIndicator() throws NotAvailableMetricException {
-	        // Creamos los mocks necesarios
-	        ReportItemI<Double> mockOpenIssues = Mockito.mock(ReportItemI.class);
-	        ReportItemI<Double> mockClosedIssues = Mockito.mock(ReportItemI.class);
+		// Configuramos los mocks para devolver valores predefinidos
+		Mockito.when(mockOpenIssues.getName()).thenReturn("openIssues");
+		Mockito.when(mockOpenIssues.getValue()).thenReturn(10.0);
 
-	        // Configuramos los mocks para devolver valores predefinidos
-	        Mockito.when(mockOpenIssues.getName()).thenReturn("openIssues");
-	        Mockito.when(mockOpenIssues.getValue()).thenReturn(10.0);
+		Mockito.when(mockClosedIssues.getName()).thenReturn("closedIssues");
+		Mockito.when(mockClosedIssues.getValue()).thenReturn(5.0);
 
-	        Mockito.when(mockClosedIssues.getName()).thenReturn("closedIssues");
-	        Mockito.when(mockClosedIssues.getValue()).thenReturn(5.0);
+		// Creamos una instancia de IssuesRatioIndicator
+		IssuesRatioIndicatorStrategy indicator = new IssuesRatioIndicatorStrategy();
 
-	        // Creamos una instancia de IssuesRatioIndicator
-	        IssuesRatioIndicatorStrategy indicator = new IssuesRatioIndicatorStrategy();
+		// Ejecutamos el método que queremos probar con los mocks como argumentos
+		List<ReportItemI<Double>> metrics = Arrays.asList(mockOpenIssues, mockClosedIssues);
+		ReportItemI<Double> result = indicator.calcIndicator(metrics);
 
-	        // Ejecutamos el método que queremos probar con los mocks como argumentos
-	        List<ReportItemI<Double>> metrics = Arrays.asList(mockOpenIssues, mockClosedIssues);
-	        ReportItemI<Double> result = indicator.calcIndicator(metrics);
-
-	        // Comprobamos que el resultado es el esperado
-	        Assertions.assertEquals("issuesRatio", result.getName());
-	        Assertions.assertEquals(2.0, result.getValue());
-	        Assertions.assertDoesNotThrow(()->indicator.calcIndicator(metrics));
-	    }
-
-	    @Test
-	    public void testCalcIndicatorThrowsNotAvailableMetricException() {
-	        // Creamos los mocks necesarios
-	        ReportItemI<Double> mockOpenIssues = Mockito.mock(ReportItemI.class);
-
-	        // Configuramos los mocks para devolver valores predefinidos
-	        Mockito.when(mockOpenIssues.getName()).thenReturn("openIssues");
-	        Mockito.when(mockOpenIssues.getValue()).thenReturn(10.0);
-
-	        // Creamos una instancia de IssuesRatioIndicator
-	        IssuesRatioIndicatorStrategy indicator = new IssuesRatioIndicatorStrategy();
-
-	        // Ejecutamos el método que queremos probar con una sola métrica
-	        List<ReportItemI<Double>> metrics = Arrays.asList(mockOpenIssues);
-	        // Comprobamos que se lanza la excepción adecuada
-	        NotAvailableMetricException exception = Assertions.assertThrows(NotAvailableMetricException.class,
-	                () -> indicator.calcIndicator(metrics)); 
-	        
-	    }
-	    
-
-	    @Test
-	    public void testRequiredMetrics() {
-	        // Creamos una instancia de IssuesRatioIndicator
-	        IssuesRatioIndicatorStrategy indicatorStrategy = new IssuesRatioIndicatorStrategy();
-
-	        // Ejecutamos el método que queremos probar
-	        List<String> requiredMetrics = indicatorStrategy.requiredMetrics();
-
-	        // Comprobamos que el resultado es el esperado
-	        List<String> expectedMetrics = Arrays.asList("openIssues", "closedIssues");
-	        Assertions.assertEquals(expectedMetrics, requiredMetrics);
-	    }
+		// Comprobamos que el resultado es el esperado
+		Assertions.assertEquals("issuesRatio", result.getName());
+		Assertions.assertEquals(2.0, result.getValue());
+		Assertions.assertDoesNotThrow(() -> indicator.calcIndicator(metrics));
 	}
 
-	
+	@Test
+	public void testCalcIndicatorThrowsNotAvailableMetricException() {
+		// Creamos los mocks necesarios
+		ReportItemI<Double> mockOpenIssues = Mockito.mock(ReportItemI.class);
 
+		// Configuramos los mocks para devolver valores predefinidos
+		Mockito.when(mockOpenIssues.getName()).thenReturn("openIssues");
+		Mockito.when(mockOpenIssues.getValue()).thenReturn(10.0);
+
+		// Creamos una instancia de IssuesRatioIndicator
+		IssuesRatioIndicatorStrategy indicator = new IssuesRatioIndicatorStrategy();
+
+		// Ejecutamos el método que queremos probar con una sola métrica
+		List<ReportItemI<Double>> metrics = Arrays.asList(mockOpenIssues);
+		// Comprobamos que se lanza la excepción adecuada
+		NotAvailableMetricException exception = Assertions.assertThrows(NotAvailableMetricException.class,
+				() -> indicator.calcIndicator(metrics));
+
+	}
+
+	@Test
+	public void testRequiredMetrics() {
+		// Creamos una instancia de IssuesRatioIndicator
+		IssuesRatioIndicatorStrategy indicatorStrategy = new IssuesRatioIndicatorStrategy();
+
+		// Ejecutamos el método que queremos probar
+		List<String> requiredMetrics = indicatorStrategy.requiredMetrics();
+
+		// Comprobamos que el resultado es el esperado
+		List<String> expectedMetrics = Arrays.asList("openIssues", "closedIssues");
+		Assertions.assertEquals(expectedMetrics, requiredMetrics);
+	}
+}

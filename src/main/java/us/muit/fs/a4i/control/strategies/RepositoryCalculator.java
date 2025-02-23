@@ -24,7 +24,9 @@ import java.util.stream.Collectors;
  * <p>
  * Puede hacerse uno a uno o todos a la vez
  * </p>
- * RECUERDA: los indicadores tienen que estar incluidos en el fichero de configuración a4iDefault.json
+ * RECUERDA: los indicadores tienen que estar incluidos en el fichero de
+ * configuración a4iDefault.json
+ * 
  * @author Isabel Román
  *
  */
@@ -55,7 +57,7 @@ public class RepositoryCalculator implements IndicatorsCalculator {
 				log.info("No se han proporcionado las m�tricas necesarias");
 				e.printStackTrace();
 			}
-		} else {			
+		} else {
 			log.info("No se han proporcionado las metricas necesarias");
 		}
 	}
@@ -86,7 +88,5 @@ public class RepositoryCalculator implements IndicatorsCalculator {
 		strategies.put(indicatorName, strategy);
 
 	}
-
-	
 
 }

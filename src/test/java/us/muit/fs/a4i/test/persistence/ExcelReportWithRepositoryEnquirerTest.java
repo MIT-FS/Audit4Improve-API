@@ -13,17 +13,18 @@ import us.muit.fs.a4i.persistence.ReportFormater;
 
 class ExcelReportWithRepositoryEnquirerTest {
 	private static Logger log = Logger.getLogger(ExcelReportWithRepositoryEnquirerTest.class.getName());
+
 	@Test
 	void testSaveRepositoryReport() {
-		String excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
-		String excelName= new String("excelTest.xlsx");
+		String excelPath = new String("src" + File.separator + "test" + File.separator + "resources" + File.separator);
+		String excelName = new String("excelTest.xlsx");
 		String repoName = new String("MIT-FS/Audit4Improve-API");
-		ExcelReportManager underTest=new ExcelReportManager(excelPath,excelName);	
-	
+		ExcelReportManager underTest = new ExcelReportManager(excelPath, excelName);
+
 		underTest.setFormater(new ReportFormater());
-		
+
 		GitHubRepositoryEnquirer ghEnquirer = new GitHubRepositoryEnquirer();
-		
+
 		underTest.saveReport(ghEnquirer.buildReport(repoName));
 	}
 

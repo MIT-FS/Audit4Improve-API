@@ -21,70 +21,68 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
 
 class FixTimeStrategyTest {
 
-	  @Test
-	    public void testCalcIndicator() throws NotAvailableMetricException {
-	        // Creamos los mocks necesarios
-	        ReportItemI<Double> mockClasificacion = Mockito.mock(ReportItemI.class);
-	        ReportItemI<Double> mockCorreccion = Mockito.mock(ReportItemI.class);
-	        ReportItemI<Double> mockNum_errores = Mockito.mock(ReportItemI.class);
+	@Test
+	public void testCalcIndicator() throws NotAvailableMetricException {
+		// Creamos los mocks necesarios
+		ReportItemI<Double> mockClasificacion = Mockito.mock(ReportItemI.class);
+		ReportItemI<Double> mockCorreccion = Mockito.mock(ReportItemI.class);
+		ReportItemI<Double> mockNum_errores = Mockito.mock(ReportItemI.class);
 
-	        // Configuramos los mocks para devolver valores predefinidos
-	        Mockito.when(mockClasificacion.getName()).thenReturn("clasificacion");
-	        Mockito.when(mockClasificacion.getValue()).thenReturn(10.0);
+		// Configuramos los mocks para devolver valores predefinidos
+		Mockito.when(mockClasificacion.getName()).thenReturn("clasificacion");
+		Mockito.when(mockClasificacion.getValue()).thenReturn(10.0);
 
-	        Mockito.when(mockCorreccion.getName()).thenReturn("correccion");
-	        Mockito.when(mockCorreccion.getValue()).thenReturn(5.0);
-	        
-	        Mockito.when(mockNum_errores.getName()).thenReturn("num_errores");
-	        Mockito.when(mockNum_errores.getValue()).thenReturn(5.0);
+		Mockito.when(mockCorreccion.getName()).thenReturn("correccion");
+		Mockito.when(mockCorreccion.getValue()).thenReturn(5.0);
 
-	        // Creamos una instancia de la estrategia
-	        FixTimeStrategy strategy = new FixTimeStrategy();
+		Mockito.when(mockNum_errores.getName()).thenReturn("num_errores");
+		Mockito.when(mockNum_errores.getValue()).thenReturn(5.0);
 
-	        // Ejecutamos el método que queremos probar con los mocks como argumentos
-	        List<ReportItemI<Double>> metrics = Arrays.asList(mockClasificacion, mockCorreccion, mockNum_errores);
-	        ReportItemI<Double> result = strategy.calcIndicator(metrics);
+		// Creamos una instancia de la estrategia
+		FixTimeStrategy strategy = new FixTimeStrategy();
 
-	        // Comprobamos que el resultado es el esperado
-	        Assertions.assertEquals("ProcesoDeIssues", result.getName());
-	        Assertions.assertEquals(3.0, result.getValue());
-	        Assertions.assertDoesNotThrow(()->strategy.calcIndicator(metrics));
-	   
-	     
-	    }
+		// Ejecutamos el método que queremos probar con los mocks como argumentos
+		List<ReportItemI<Double>> metrics = Arrays.asList(mockClasificacion, mockCorreccion, mockNum_errores);
+		ReportItemI<Double> result = strategy.calcIndicator(metrics);
 
-	    @Test
-	    public void testCalcIndicatorThrowsNotAvailableMetricException() {
-	        // Creamos los mocks necesarios
-	        ReportItemI<Double> mockClasificacion = Mockito.mock(ReportItemI.class);
+		// Comprobamos que el resultado es el esperado
+		Assertions.assertEquals("ProcesoDeIssues", result.getName());
+		Assertions.assertEquals(3.0, result.getValue());
+		Assertions.assertDoesNotThrow(() -> strategy.calcIndicator(metrics));
 
-	        // Configuramos los mocks para devolver valores predefinidos
-	        Mockito.when(mockClasificacion.getName()).thenReturn("clasificacion");
-	        Mockito.when(mockClasificacion.getValue()).thenReturn(10.0);
-
-	        // Creamos una instancia de la estrategia
-	        FixTimeStrategy strategy = new FixTimeStrategy();
-
-	        // Ejecutamos el método que queremos probar con una sola métrica
-	        List<ReportItemI<Double>> metrics = Arrays.asList(mockClasificacion);
-	        // Comprobamos que se lanza la excepción adecuada
-	        NotAvailableMetricException exception = Assertions.assertThrows(NotAvailableMetricException.class,
-	                () -> strategy.calcIndicator(metrics)); 
-	        
-	    }
-	    
-
-	    @Test
-	    public void testRequiredMetrics() {
-	        
-	    	 // Creamos una instancia de la estrategia
-	        FixTimeStrategy strategy = new FixTimeStrategy();
-
-	        // Ejecutamos el método que queremos probar
-	        List<String> requiredMetrics = strategy.requiredMetrics();
-
-	        // Comprobamos que el resultado es el esperado
-	        List<String> expectedMetrics = Arrays.asList("clasificacion", "correccion", "num_errores");
-	        Assertions.assertEquals(expectedMetrics, requiredMetrics);
-	    }
 	}
+
+	@Test
+	public void testCalcIndicatorThrowsNotAvailableMetricException() {
+		// Creamos los mocks necesarios
+		ReportItemI<Double> mockClasificacion = Mockito.mock(ReportItemI.class);
+
+		// Configuramos los mocks para devolver valores predefinidos
+		Mockito.when(mockClasificacion.getName()).thenReturn("clasificacion");
+		Mockito.when(mockClasificacion.getValue()).thenReturn(10.0);
+
+		// Creamos una instancia de la estrategia
+		FixTimeStrategy strategy = new FixTimeStrategy();
+
+		// Ejecutamos el método que queremos probar con una sola métrica
+		List<ReportItemI<Double>> metrics = Arrays.asList(mockClasificacion);
+		// Comprobamos que se lanza la excepción adecuada
+		NotAvailableMetricException exception = Assertions.assertThrows(NotAvailableMetricException.class,
+				() -> strategy.calcIndicator(metrics));
+
+	}
+
+	@Test
+	public void testRequiredMetrics() {
+
+		// Creamos una instancia de la estrategia
+		FixTimeStrategy strategy = new FixTimeStrategy();
+
+		// Ejecutamos el método que queremos probar
+		List<String> requiredMetrics = strategy.requiredMetrics();
+
+		// Comprobamos que el resultado es el esperado
+		List<String> expectedMetrics = Arrays.asList("clasificacion", "correccion", "num_errores");
+		Assertions.assertEquals(expectedMetrics, requiredMetrics);
+	}
+}

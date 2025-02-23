@@ -60,12 +60,7 @@
 			"description": "Eliminaciones desde que se inició el repositorio",
 			"unit": "deletions"
 		},
-		{
-			"name": "pullRequests",
-			"type": "java.lang.Integer",
-			"description": "Número de pull requests",
-			"unit": "pull requests"
-		},
+	
 		{
 			"name": "stars",
 			"type": "java.lang.Integer",
@@ -94,18 +89,6 @@
 			"name": "openIssues",
 			"type": "java.lang.Integer",
 			"description": "Numero de issues abiertas",
-			"unit": "issues"
-		},
-		{
-			"name": "closedIssues",
-			"type": "java.lang.Integer",
-			"description": "Numero de issues cerrados",
-			"unit": "issues"
-		},
-		{
-			"name": "issues",
-			"type": "java.lang.Integer",
-			"description": "Tareas totales",
 			"unit": "issues"
 		},
 		{
@@ -138,6 +121,18 @@
 			"description": "Número de repositorios con pull requests pendientes",
 			"unit": "repositories"
 		},
+				{
+			"name": "closedIssues",
+			"type": "java.lang.Integer",
+			"description": "Numero de issues cerrados",
+			"unit": "issues"
+		},
+		{
+			"name": "issues",
+			"type": "java.lang.Integer",
+			"description": "Tareas totales",
+			"unit": "issues"
+		},
 		{
 			"name": "issuesLastMonth",
 			"type": "java.lang.Integer",
@@ -161,6 +156,12 @@
 			"type": "java.lang.Integer",
 			"description": "Issues asignados a un desarrollador en el último mes",
 			"unit": "issues/month"
+		},
+		{
+			"name": "pullRequests",
+			"type": "java.lang.Integer",
+			"description": "Número de pull requests",
+			"unit": "pull requests"
 		},
 		{
 			"name": "totalPullReq",

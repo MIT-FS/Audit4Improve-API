@@ -3,7 +3,6 @@
  */
 package us.muit.fs.a4i.persistence;
 
-
 import java.io.IOException;
 
 import us.muit.fs.a4i.model.entities.Font;

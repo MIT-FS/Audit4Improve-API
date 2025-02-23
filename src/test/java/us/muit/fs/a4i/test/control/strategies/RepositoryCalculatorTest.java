@@ -153,7 +153,8 @@ public class RepositoryCalculatorTest {
 	@Tag("unit")
 	@DisplayName("Prueba calcIndicator de RepositoryCalculator con metricas incorrectas y usando mocks")
 	void unitTestCalIndicatorNotRequiredMetrics() throws NotAvailableMetricException, ReportItemException {
-		// prueba la calculadora usando mocks, para el caso de que las métricas necesarias no estén disponibles
+		// prueba la calculadora usando mocks, para el caso de que las métricas
+		// necesarias no estén disponibles
 
 		// Creamos la clase a probar
 		RepositoryCalculator repositoryCalculator = new RepositoryCalculator();

@@ -18,9 +18,9 @@ import org.kohsuke.github.PagedIterable;
 /**
  * @author Isabel Rom�n Mart�nez
  * @version 0.2 Esta clase se crea para poder probar algunas de las capacidades
- *          que ofrece la api github Serádescartada posteriormente No usa
- *          Junit, sino que crea un main, no tiene verificaciones automáticas,
- *          la automatización no es posible
+ *          que ofrece la api github Serádescartada posteriormente No usa Junit,
+ *          sino que crea un main, no tiene verificaciones automáticas, la
+ *          automatización no es posible
  *
  */
 public class SupervisorControl {

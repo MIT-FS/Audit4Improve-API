@@ -51,119 +51,124 @@ class ExcelReportManagerTest {
 	private static ReportItem<Integer> metricIntMock = Mockito.mock(ReportItem.class);
 	@Mock(serializable = true)
 	private static ReportItem<String> metricStrMock = Mockito.mock(ReportItem.class);
-	
+
 	@Mock(serializable = true)
 	private static ReportI informe = Mockito.mock(ReportI.class);
-	
+
 	@Mock(serializable = true)
 	private static ReportItem<Integer> itemIndicatorIntMock = Mockito.mock(ReportItem.class);
-	
-	@Mock(serializable=true)
+
+	@Mock(serializable = true)
 	private static Indicator indicatorIntMock = Mockito.mock(Indicator.class);
-	
+
 	@Mock(serializable = true)
 	private static ReportItem<Integer> itemIndicatorIntMock2 = Mockito.mock(ReportItem.class);
-	
-	@Mock(serializable=true)
+
+	@Mock(serializable = true)
 	private static Indicator indicatorIntMock2 = Mockito.mock(Indicator.class);
-	
+
 	@Mock(serializable = true)
 	private static ReportItem<Integer> itemIndicatorIntMock3 = Mockito.mock(ReportItem.class);
-	
-	@Mock(serializable=true)
+
+	@Mock(serializable = true)
 	private static Indicator indicatorIntMock3 = Mockito.mock(Indicator.class);
-	
-	
-	
+
 	private static String excelPath;
 	private static String excelName;
 	private static ExcelReportManager underTest;
+
 	/**
-	 * <p>Acciones a realizar antes de ejecutar los tests definidos en esta clase</p>
+	 * <p>
+	 * Acciones a realizar antes de ejecutar los tests definidos en esta clase
+	 * </p>
+	 * 
 	 * @throws java.lang.Exception
 	 * @see org.junit.jupiter.api.BeforeAll
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		
+
 	}
-	
-	
+
 	@Test
 	void ExcelCreation() {
-		List<ReportItemI> listaMetric=new ArrayList<ReportItemI>();
-		List<ReportItemI> listaInd=new ArrayList<ReportItemI>();
-		Date fecha=new Date();
+		List<ReportItemI> listaMetric = new ArrayList<ReportItemI>();
+		List<ReportItemI> listaInd = new ArrayList<ReportItemI>();
+		Date fecha = new Date();
 		Mockito.when(metricIntMock.getValue()).thenReturn(55);
 		Mockito.when(metricIntMock.getName()).thenReturn("downloads");
 		Mockito.when(metricIntMock.getUnit()).thenReturn("downloads");
-		Mockito.when(metricIntMock.getDescription()).thenReturn("Descargas realizadas");		
-		Mockito.when(metricIntMock.getDate()).thenReturn(fecha);		
+		Mockito.when(metricIntMock.getDescription()).thenReturn("Descargas realizadas");
+		Mockito.when(metricIntMock.getDate()).thenReturn(fecha);
 		listaMetric.add(metricIntMock);
-		
+
 		Mockito.when(metricStrMock.getValue()).thenReturn("2-2-22");
 		Mockito.when(metricStrMock.getName()).thenReturn("lastPush");
 		Mockito.when(metricStrMock.getUnit()).thenReturn("date");
-		Mockito.when(metricStrMock.getDescription()).thenReturn("Último push realizado en el repositorio");		
-		Mockito.when(metricStrMock.getDate()).thenReturn(fecha);	
+		Mockito.when(metricStrMock.getDescription()).thenReturn("Último push realizado en el repositorio");
+		Mockito.when(metricStrMock.getDate()).thenReturn(fecha);
 		listaMetric.add(metricStrMock);
-		
+
 		Mockito.when(itemIndicatorIntMock.getValue()).thenReturn(22);
 		Mockito.when(itemIndicatorIntMock.getName()).thenReturn("otracosa");
 		Mockito.when(itemIndicatorIntMock.getUnit()).thenReturn("cosas");
-		Mockito.when(itemIndicatorIntMock.getDescription()).thenReturn("Indicador Ejemplo");		
-		Mockito.when(itemIndicatorIntMock.getDate()).thenReturn(fecha);	
+		Mockito.when(itemIndicatorIntMock.getDescription()).thenReturn("Indicador Ejemplo");
+		Mockito.when(itemIndicatorIntMock.getDate()).thenReturn(fecha);
 		Mockito.when(indicatorIntMock.getState()).thenReturn(IndicatorState.CRITICAL);
 		Mockito.when(itemIndicatorIntMock.getIndicator()).thenReturn(indicatorIntMock);
 		listaInd.add(itemIndicatorIntMock);
-		
+
 		Mockito.when(itemIndicatorIntMock2.getValue()).thenReturn(67);
 		Mockito.when(itemIndicatorIntMock2.getName()).thenReturn("indicador2");
 		Mockito.when(itemIndicatorIntMock2.getUnit()).thenReturn("unidad2");
-		Mockito.when(itemIndicatorIntMock2.getDescription()).thenReturn("Indicador Ejemplo 2");		
-		Mockito.when(itemIndicatorIntMock2.getDate()).thenReturn(fecha);	
+		Mockito.when(itemIndicatorIntMock2.getDescription()).thenReturn("Indicador Ejemplo 2");
+		Mockito.when(itemIndicatorIntMock2.getDate()).thenReturn(fecha);
 		Mockito.when(indicatorIntMock2.getState()).thenReturn(IndicatorState.WARNING);
 		Mockito.when(itemIndicatorIntMock2.getIndicator()).thenReturn(indicatorIntMock2);
 		listaInd.add(itemIndicatorIntMock2);
-		
+
 		Mockito.when(itemIndicatorIntMock3.getValue()).thenReturn(98);
 		Mockito.when(itemIndicatorIntMock3.getName()).thenReturn("indicador3");
 		Mockito.when(itemIndicatorIntMock3.getUnit()).thenReturn("unidad3");
-		Mockito.when(itemIndicatorIntMock3.getDescription()).thenReturn("IndicadorEjemplo3");		
-		Mockito.when(itemIndicatorIntMock3.getDate()).thenReturn(fecha);	
+		Mockito.when(itemIndicatorIntMock3.getDescription()).thenReturn("IndicadorEjemplo3");
+		Mockito.when(itemIndicatorIntMock3.getDate()).thenReturn(fecha);
 		Mockito.when(indicatorIntMock3.getState()).thenReturn(IndicatorState.CRITICAL);
 		Mockito.when(itemIndicatorIntMock3.getIndicator()).thenReturn(indicatorIntMock3);
 		listaInd.add(itemIndicatorIntMock3);
-				
+
 		Mockito.when(informe.getAllMetrics()).thenReturn(listaMetric);
 		Mockito.when(informe.getAllIndicators()).thenReturn(listaInd);
 		Mockito.when(informe.getEntityId()).thenReturn("entidadTest");
-		
-		excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
-		excelName= new String("excelTest.xlsx");
-		underTest=new ExcelReportManager(excelPath,excelName);	
-	
+
+		excelPath = new String("src" + File.separator + "test" + File.separator + "resources" + File.separator);
+		excelName = new String("excelTest.xlsx");
+		underTest = new ExcelReportManager(excelPath, excelName);
+
 		underTest.setFormater(new ReportFormater());
-	
-		log.info("El informe tiene el id "+informe.getEntityId());
+
+		log.info("El informe tiene el id " + informe.getEntityId());
 		underTest.saveReport(informe);
-		
 
 	}
+
 	/**
-	 * <p>Test para el m�todo de eliminar un informe en excel, solo verifica que si es null da excepcion</p>
+	 * <p>
+	 * Test para el m�todo de eliminar un informe en excel, solo verifica que si es
+	 * null da excepcion
+	 * </p>
+	 * 
 	 * @author Mariana Reyes Henriquez
 	 */
 	@Test
 	void ExcelDelete() {
-		excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
-		excelName= new String("excelTest.xlsx");
+		excelPath = new String("src" + File.separator + "test" + File.separator + "resources" + File.separator);
+		excelName = new String("excelTest.xlsx");
 		Mockito.when(informe.getEntityId()).thenReturn("entidadTest");
-		
-		underTest=new ExcelReportManager(excelPath,excelName);	
+
+		underTest = new ExcelReportManager(excelPath, excelName);
 		underTest.setFormater(new ReportFormater());
-		
-		log.info("El informe tiene el id "+informe.getEntityId());
+
+		log.info("El informe tiene el id " + informe.getEntityId());
 		underTest.saveReport(informe);
 		try {
 			log.info("Se intenta eliminar un informe que no existe");
@@ -181,5 +186,5 @@ class ExcelReportManagerTest {
 			e.printStackTrace();
 		}
 	}
-		
+
 }

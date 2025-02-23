@@ -14,105 +14,110 @@ import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.exceptions.ReportItemException;
 import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.remote.GitHubRepositoryEnquirer;
+
 /**
  * 
  */
 class GitHubRepositoryEnquirerTest {
-	
+
 	private static Logger log = Logger.getLogger(GitHubOrganizationEnquirerTest.class.getName());
 	GitHubRepositoryEnquirer ghEnquirer = new GitHubRepositoryEnquirer();
 
 	/**
-	 * Test method for
-	 * GitHubRepositoryEnquirer, verifing that issuesLastMonth is correctly obtained
-	 * @throws MetricException 
-	 * @throws ReportItemException 
+	 * Test method for GitHubRepositoryEnquirer, verifing that issuesLastMonth is
+	 * correctly obtained
+	 * 
+	 * @throws MetricException
+	 * @throws ReportItemException
 	 */
 	@Test
-	void testIssuesLastMonth() throws MetricException, ReportItemException {		
-		ReportItem<Integer> metric = ghEnquirer.getMetric("issuesLastMonth", "MIT-FS/Audit4Improve-API");		
-		assertEquals(metric.getName(),"issuesLastMonth");
+	void testIssuesLastMonth() throws MetricException, ReportItemException {
+		ReportItem<Integer> metric = ghEnquirer.getMetric("issuesLastMonth", "MIT-FS/Audit4Improve-API");
+		assertEquals(metric.getName(), "issuesLastMonth");
 		log.info(metric.getValue().toString());
 		log.info(metric.getDescription());
 	}
-	
-	/**
-	 * Test method for
-	 * GitHubRepositoryEnquirer, verifing that closedIssuesLastMonth is correctly obtained
-	 * @throws MetricException 
-	 * @throws ReportItemException 
-	 */
-	@Test
-	void testClosedIssuesLastMonth() throws MetricException, ReportItemException {		
-		ReportItem<Integer> metric = ghEnquirer.getMetric("closedIssuesLastMonth", "MIT-FS/Audit4Improve-API");		
-		assertEquals(metric.getName(),"closedIssuesLastMonth");
-		log.info(metric.getValue().toString());
-		log.info(metric.getDescription());
-	}
-	/**
-	 * Test method for
-	 * GitHubRepositoryEnquirer, verifing that closedIssuesLastMonth is correctly obtained
-	 * @throws MetricException 
-	 * @throws ReportItemException 
-	 */
-	@Test
-	void testMeanClosedIssuesLastMonth() throws MetricException, ReportItemException {		
-		ReportItem<Double> metric = ghEnquirer.getMetric("meanClosedIssuesLastMonth", "MIT-FS/Audit4Improve-API");		
-		assertEquals(metric.getName(),"meanClosedIssuesLastMonth");
-		log.info(metric.getValue().toString());
-		log.info(metric.getDescription());
-	}
-	
 
 	/**
-	 * Test method for {@link us.muit.fs.a4i.model.remote.GitHubEnquirer#getAvailableMetrics()}.
+	 * Test method for GitHubRepositoryEnquirer, verifing that closedIssuesLastMonth
+	 * is correctly obtained
+	 * 
+	 * @throws MetricException
+	 * @throws ReportItemException
+	 */
+	@Test
+	void testClosedIssuesLastMonth() throws MetricException, ReportItemException {
+		ReportItem<Integer> metric = ghEnquirer.getMetric("closedIssuesLastMonth", "MIT-FS/Audit4Improve-API");
+		assertEquals(metric.getName(), "closedIssuesLastMonth");
+		log.info(metric.getValue().toString());
+		log.info(metric.getDescription());
+	}
+
+	/**
+	 * Test method for GitHubRepositoryEnquirer, verifing that closedIssuesLastMonth
+	 * is correctly obtained
+	 * 
+	 * @throws MetricException
+	 * @throws ReportItemException
+	 */
+	@Test
+	void testMeanClosedIssuesLastMonth() throws MetricException, ReportItemException {
+		ReportItem<Double> metric = ghEnquirer.getMetric("meanClosedIssuesLastMonth", "MIT-FS/Audit4Improve-API");
+		assertEquals(metric.getName(), "meanClosedIssuesLastMonth");
+		log.info(metric.getValue().toString());
+		log.info(metric.getDescription());
+	}
+
+	/**
+	 * Test method for
+	 * {@link us.muit.fs.a4i.model.remote.GitHubEnquirer#getAvailableMetrics()}.
 	 */
 	@Test
 	void testGetAvailableMetrics() {
-		List<String> availableMetrics=ghEnquirer.getAvailableMetrics();
+		List<String> availableMetrics = ghEnquirer.getAvailableMetrics();
 		log.info(availableMetrics.toString());
 	}
-	
+
 	@Test
 	void testGetTotalPullRequests() throws MetricException {
-		
+
 		// Nombre de la métrica que queremos consultar
 		String nombreMetrica = "totalPullReq";
-		
+
 		// Repositorio del que se quiere obtener la métrica
 		String repositoryId = "MIT-FS/Audit4Improve-API";
-		
-		// Variable para almacenar el número total de pull requests 
+
+		// Variable para almacenar el número total de pull requests
 		ReportItem<Integer> metrica = null;
-				
-        // Creamos el RemoteEnquirer para el repositorio GitHub
-        GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
 
-        // Obtenemos el número total de pull requests
-        metrica = enquirer.getMetric(nombreMetrica, repositoryId);
-        log.info(metrica.toString());
+		// Creamos el RemoteEnquirer para el repositorio GitHub
+		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
 
-        // Comprobamos que el resultado coincida con el número total de pull requests real
-        assertTrue(metrica.getValue()>0,"Bad number of PR");
-     		
+		// Obtenemos el número total de pull requests
+		metrica = enquirer.getMetric(nombreMetrica, repositoryId);
+		log.info(metrica.toString());
+
+		// Comprobamos que el resultado coincida con el número total de pull requests
+		// real
+		assertTrue(metrica.getValue() > 0, "Bad number of PR");
+
 	}
-	
+
 	/**
 	 * @throws MetricException
 	 */
 	@Test
 	void testCompletedPullRequests() throws MetricException {
-		
+
 		// Nombre de la métrica que queremos consultar
 		String nombreMetrica = "closedPullReq";
-				
+
 		// Repositorio del que se quiere obtener la métrica
 		String repositoryId = "MIT-FS/Audit4Improve-API";
-				
+
 		// Variable para almacenar el número de pull requests completados
 		ReportItem<Integer> metrica = null;
-				
-						
+
 		// Creamos el RemoteEnquirer para el repositorio GitHub
 		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
 
@@ -120,9 +125,10 @@ class GitHubRepositoryEnquirerTest {
 		metrica = enquirer.getMetric(nombreMetrica, repositoryId);
 		log.info(metrica.toString());
 
-		// Comprobamos que el resultado coincida con el número de pull requests completados real
-		
-		assertTrue(0<metrica.getValue(),"Bad number of closed PR");	
+		// Comprobamos que el resultado coincida con el número de pull requests
+		// completados real
+
+		assertTrue(0 < metrica.getValue(), "Bad number of closed PR");
 	}
 
 }

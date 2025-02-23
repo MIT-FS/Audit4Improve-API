@@ -54,6 +54,6 @@ public interface IndicatorsCalculator {
 	 * @return El tipo de informes
 	 */
 	public ReportI.ReportType getReportType();
-	
+
 	public void setIndicator(String indicatorName, IndicatorStrategy strategy);
 }
