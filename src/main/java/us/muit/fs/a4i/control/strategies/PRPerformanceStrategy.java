@@ -5,6 +5,7 @@ package us.muit.fs.a4i.control.strategies;
 
 /**
  * Strategy for the calculation of the indicator PRPerformance
+ * REMEMBER: metrics must be included in a4iDefault.json
  */
 
 import java.util.Arrays;
