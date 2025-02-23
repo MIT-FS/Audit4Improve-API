@@ -227,7 +227,13 @@
 			"type": "java.lang.Double",
 			"description": "Ratio de PRs convencionales",
 			"unit": "ratio"
-		}
+		},
+		{
+			"name": "teamsBalance",
+			"type": "java.lang.Integer",
+			"description": "Balance de equipos y open issues",
+			"unit": "ratio"
+		}	
 	],
 	"indicators": [
 		{
@@ -291,6 +297,13 @@
 			"type": "java.lang.Double",
 			"description": "Indicador de conformidad con las convenciones en el repo",
 			"unit": "ratio"
+		},
+		{
+			"name": "teamsBalanceI",
+			"type": "java.lang.Double",
+			"description": "Balance de equipos y open issues",
+			"unit": "ratio",
+			"limits": { "ok": 0.2, "warning": 0.6, "critical": 0.8 }
 		}
 	]
 }

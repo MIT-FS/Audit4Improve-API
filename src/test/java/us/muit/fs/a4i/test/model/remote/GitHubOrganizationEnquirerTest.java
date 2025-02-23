@@ -5,6 +5,7 @@ package us.muit.fs.a4i.test.model.remote;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -151,5 +152,18 @@ public class GitHubOrganizationEnquirerTest {
 		assertTrue(metricsRepositoriesWithOpenPullRequest.getValue().intValue() > 0,
 				"El número de repositorios con pull requests abiertos no es el esperado");
 	}
+	/**
+	 * Test method for
+	 * GitHubOrganizationEnquirer
+	 * @throws MetricException 
+	 * @throws ReportItemException 
+	 */
+	@Test
+	void testTeamsBalance() throws MetricException, ReportItemException {
+		//"message":"Must have admin rights to Repository."
+		//Es necesario tener permisos de administrador en la cuenta dueña de la organización
+		ReportItem<Integer> teamsBalance = ghEnquirer.getMetric("teamsBalance", "MIT-FS");
+		assertNotNull(teamsBalance.getValue(), "No se ha podido obtener el balance equipos-repositorios");
+		}
 
 }
