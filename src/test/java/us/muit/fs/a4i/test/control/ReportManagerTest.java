@@ -22,7 +22,7 @@ import us.muit.fs.a4i.model.entities.ReportI;
  * @author isabo
  *
  */
-class ReportManagerTest {
+public class ReportManagerTest {
 	private static Logger log = Logger.getLogger(ReportManagerTest.class.getName());
 
 	/**

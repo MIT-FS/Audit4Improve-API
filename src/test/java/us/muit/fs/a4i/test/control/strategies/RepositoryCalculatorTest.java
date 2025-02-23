@@ -1,4 +1,4 @@
-package us.muit.fs.a4i.test.control;
+package us.muit.fs.a4i.test.control.strategies;
 
 /***
  * @author celllarod, curso 22/23
@@ -33,6 +33,7 @@ import us.muit.fs.a4i.model.entities.IndicatorI;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
+import us.muit.fs.a4i.test.control.ReportManagerTest;
 import us.muit.fs.a4i.model.entities.ReportItemI;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

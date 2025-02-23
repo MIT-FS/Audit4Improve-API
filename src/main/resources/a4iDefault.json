@@ -173,7 +173,32 @@
 			"type": "java.lang.Integer",
 			"description": "Número de pull requests cerradas en un repositorio",
 			"unit": "PR"
-		}
+		},
+		{
+			"name": "PRAcceptedLastYear",
+			"type": "java.lang.Integer",
+			"description": "Número de pull requests aceptadas el pasado año",
+			"unit": "PR"
+		},
+		{
+			"name": "PRAcceptedLastMonth",
+			"type": "java.lang.Integer",
+			"description": "Número de pull requests aceptadas el pasado mes",
+			"unit": "PR"
+		},
+		{
+			"name": "PRRejectedLastMonth",
+			"type": "java.lang.Integer",
+			"description": "Número de pull requests rechazadas el pasado mes",
+			"unit": "PR"
+		},
+		{
+			"name": "PRRejectedLastYear",
+			"type": "java.lang.Integer",
+			"description": "Número de pull requests rechazadas el pasado año",
+			"unit": "PR"
+		}		
+		
 	],
 	"indicators": [
 		{
@@ -221,5 +246,16 @@
 			"description": "Ratio de issues cerradas frente a creadas del desarrollador frente al equipo",
 			"unit": "ratio"
 		},
+		{
+			"name": "PRPerformance",
+			"type": "java.lang.Double",
+			"description": "% de PR rechazados en el mes comparado con el % rechazado en el año",
+			"unit": "%",
+			"limits": {
+				"ok": 25,
+				"warning": 50,
+				"critical": 75
+			}
+		}
 	]
 }
