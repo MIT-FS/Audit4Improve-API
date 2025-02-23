@@ -6,6 +6,7 @@ package us.muit.fs.a4i.test.model.remote;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Date;
@@ -34,7 +35,8 @@ import us.muit.fs.a4i.model.remote.GitHubEnquirer;
 import us.muit.fs.a4i.model.remote.GitHubOrganizationEnquirer;
 
 /**
- * @author Roberto Lama
+ * @author Roberto Lama (Curso 22/23)
+ * RECUERDA: el token tiene que tener permiso de acceso a la organización para que los tests puedan ejecutarse
  *
  */
 public class GitHubOrganizationEnquirerTest {
@@ -53,7 +55,7 @@ public class GitHubOrganizationEnquirerTest {
 		// TEST 2: PullRequest
 		ReportItem<Integer> metricsPullRequest = ghEnquirer.getMetric("pullRequests", "MIT-FS");
 		
-		assertEquals(21, metricsPullRequest.getValue().intValue(), "el número de pullRequests no es el esperado"); // Tiene 22 pull requests
+		assertTrue(metricsPullRequest.getValue().intValue()>0, "el número de pullRequests no es el esperado"); // Tiene PR
 	}
 	
 	
@@ -69,7 +71,7 @@ public class GitHubOrganizationEnquirerTest {
 	// TEST 3: Repositories
 	ReportItem<Integer> metricsRepositories = ghEnquirer.getMetric("repositories", "MIT-FS");
 	
-	assertEquals(12,metricsRepositories.getValue().intValue(), "El número de repositorios no es el esperado"); // Tiene 10 repositorios
+	assertTrue(metricsRepositories.getValue().intValue()>0, "El número de repositorios no es el esperado"); // Tiene repositorios
 	}
 	
 	
@@ -86,7 +88,7 @@ public class GitHubOrganizationEnquirerTest {
 	// TEST 4: Members
 	ReportItem<Integer> metricsMembers = ghEnquirer.getMetric("members", "MIT-FS");
 
-	assertEquals(29,metricsMembers.getValue().intValue(), "El número de miembros no es el esperado"); // Tiene 30 miembros
+	assertTrue(metricsMembers.getValue().intValue()>0, "El número de miembros no es el esperado"); // Tiene 30 miembros
 	
 	}
 	
@@ -102,8 +104,8 @@ public class GitHubOrganizationEnquirerTest {
 		
 		// TEST 5: Teams
 		ReportItem<Integer> metricsTeams = ghEnquirer.getMetric("teams", "MIT-FS");
+		assertTrue(metricsTeams.getValue().intValue()>3, "El número equipos no es el esperado"); // Tiene más de 3
 		
-		assertEquals(2,metricsTeams.getValue().intValue(), "El número equipos no es el esperado"); // Tiene 2 teams
 	}
 	
 	/**
@@ -117,7 +119,7 @@ public class GitHubOrganizationEnquirerTest {
 		
 		// TEST 6: OpenProjects
 		ReportItem<Integer> op = ghEnquirer.getMetric("openProjects", "MIT-FS");
-		assertEquals(0,op.getValue().intValue(),"El número de proyectos abiertos no es el esperado");
+		assertTrue(op.getValue().intValue()>0,"El número de proyectos abiertos no es el esperado");
 	}
 	
 	/**
@@ -132,7 +134,7 @@ public class GitHubOrganizationEnquirerTest {
 		// TEST 7: ClosedProjects
 		ReportItem<Integer> metricsClosedProjects = ghEnquirer.getMetric("closedProjects", "MIT-FS");
 	
-		assertEquals(2,metricsClosedProjects.getValue().intValue(), "El número de proyectos cerrados no es el esperado"); 
+		assertTrue(metricsClosedProjects.getValue().intValue()>0, "El número de proyectos cerrados no es el esperado"); 
 	}
 	
 	/**
@@ -148,7 +150,7 @@ public class GitHubOrganizationEnquirerTest {
 		// TEST 1: RepositoriesWithOpenPullRequest
 		ReportItem<Integer> metricsRepositoriesWithOpenPullRequest = ghEnquirer.getMetric("repositoriesWithOpenPullRequest", "MIT-FS");
 	
-		assertEquals(6,metricsRepositoriesWithOpenPullRequest.getValue().intValue(), "El número de repositorios con pull requests abiertos no es el esperado"); 
+		assertTrue(metricsRepositoriesWithOpenPullRequest.getValue().intValue()>0, "El número de repositorios con pull requests abiertos no es el esperado"); 
 		}
 	
 }

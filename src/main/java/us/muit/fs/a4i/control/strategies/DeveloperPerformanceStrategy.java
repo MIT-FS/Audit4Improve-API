@@ -22,6 +22,7 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
  * 
  * @author fracrusan (year 23/24)
  * @author Isabel Román
+ * RECUERDA: los indicadores tienen que estar incluidos en el fichero de configuración a4iDefault.json
  */
 public class DeveloperPerformanceStrategy implements IndicatorStrategy<Double> {
 

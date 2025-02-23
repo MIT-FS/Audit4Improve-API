@@ -160,6 +160,18 @@
 			"type": "java.lang.Integer",
 			"description": "Issues asignados a un desarrollador en el último mes",
 			"unit": "issues/month"
+		},
+			{
+			"name": "totalPullReq",
+			"type": "java.lang.Integer",
+			"description": "Número de pull requests en un repositorio",
+			"unit": "PR"
+		},
+			{
+			"name": "closedPullReq",
+			"type": "java.lang.Integer",
+			"description": "Número de pull requests cerradas en un repositorio",
+			"unit": "PR"
 		}
 		
 		

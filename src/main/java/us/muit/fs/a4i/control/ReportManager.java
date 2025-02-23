@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import us.muit.fs.a4i.config.Context;
+import us.muit.fs.a4i.control.strategies.RepositoryCalculator;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItemI;

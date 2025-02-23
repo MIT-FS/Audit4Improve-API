@@ -17,7 +17,8 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
 
 /**
  * % de pull requests cerrados, sobre el total
- * @author Sergio García López
+ * @author Sergio García López (equipo 4 del curso 23/24)
+ * RECUERDA: los indicadores tienen que estar incluidos en el fichero de configuración a4iDefault.json
  *
  */
 public class PullRequestIndicatorStrategy implements IndicatorStrategy<Double> {
@@ -52,6 +53,7 @@ public class PullRequestIndicatorStrategy implements IndicatorStrategy<Double> {
 			
 
 			// Criterios de calidad (porcentuales)
+				//estos límites deben estar configurados en el fichero a4iDefault.json, no aquí
 			if (pullRequestCompletion > 75) {
 				estado = IndicatorState.OK;
 			} else if (pullRequestCompletion > 50) {

@@ -1,12 +1,15 @@
 /**
  * 
  */
-package us.muit.fs.a4i.control;
+package us.muit.fs.a4i.control.strategies;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import us.muit.fs.a4i.control.IndicatorStrategy;
+import us.muit.fs.a4i.control.IndicatorsCalculator;
+import us.muit.fs.a4i.control.ReportManagerI;
 import us.muit.fs.a4i.exceptions.IndicatorException;
 import us.muit.fs.a4i.exceptions.NotAvailableMetricException;
 import us.muit.fs.a4i.model.entities.Indicator;
@@ -17,12 +20,11 @@ import java.util.stream.Collectors;
 /**
  * <p>
  * Implementa los métodos para calcular indicadores referidos a un repositorio
- * repositorio
  * </p>
  * <p>
  * Puede hacerse uno a uno o todos a la vez
  * </p>
- * 
+ * RECUERDA: los indicadores tienen que estar incluidos en el fichero de configuración a4iDefault.json
  * @author Isabel Román
  *
  */
@@ -84,5 +86,7 @@ public class RepositoryCalculator implements IndicatorsCalculator {
 		strategies.put(indicatorName, strategy);
 
 	}
+
+	
 
 }

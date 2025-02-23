@@ -27,6 +27,7 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
  * Ahora mismo está en estado lamentable
  * Simplemente busca los eventos de un desarrollador
  * No localiza eventos de tipo ISSUE, que son los que se quería
+ * RECUERDA: las métricas tienen que estar incluidas en el fichero de configuración a4iDefault.json
  */
 public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 	public GitHubDeveloperEnquirer() {

@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.control.IndicatorStrategy;
 import us.muit.fs.a4i.control.ReportManagerI;
-import us.muit.fs.a4i.control.RepositoryCalculator;
 import us.muit.fs.a4i.control.strategies.IssuesRatioIndicatorStrategy;
+import us.muit.fs.a4i.control.strategies.RepositoryCalculator;
 import us.muit.fs.a4i.exceptions.IndicatorException;
 import us.muit.fs.a4i.exceptions.NotAvailableMetricException;
 import us.muit.fs.a4i.exceptions.ReportItemException;

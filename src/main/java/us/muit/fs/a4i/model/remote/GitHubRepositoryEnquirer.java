@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHRepositoryStatistics;
@@ -34,6 +33,7 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
  *         GitHubOrganizationEnquirer para evitar la replicación de código
  * deuda técnica:
  * las métricas tras la etiqueta //equipo 3 tienen problemas, no están acordes al indicador para el que fueron creadas
+ * RECUERDA: las métricas tienen que estar incluidas en el fichero de configuración a4iDefault.json
  */
 public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	/**

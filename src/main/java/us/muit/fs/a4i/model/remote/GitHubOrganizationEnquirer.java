@@ -15,8 +15,7 @@ import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.PagedIterable;
 import org.kohsuke.github.GHProject;
-
-
+import org.kohsuke.github.GHRepository;
 
 import us.muit.fs.a4i.exceptions.MetricException;
 
@@ -34,6 +33,7 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
  * <p>
  * Deuda técnica: sería necesario verificar mejor el funcionamiento de las consultas de proyectos cerrados y abiertos, no parece hacer lo esperado
  * Habría que incluir más métricas y algún indicador
+ * RECUERDA: las métricas tienen que estar incluidas en el fichero de configuración a4iDefault.json
  * </p>
  * 
  * @author Isabel Román
@@ -250,11 +250,13 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		log.info("Consultando los equipos");
 		ReportItemBuilder<Integer> builder=null;
 		try {
+			int size=organization.getTeams().size();
+			log.info("Numero de equipos"+size);
 			builder = new ReportItem.ReportItemBuilder<Integer>("teams",
 					organization.getTeams().size());
 			builder.source("GitHub");
 		} catch (ReportItemException | IOException e) {
-			// TODO Auto-generated catch block
+			log.fine("unable to retry teams");
 			e.printStackTrace();
 		}		
 		return builder.build();
@@ -289,16 +291,28 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 	}
 	
 	private ReportItem getOpenProjects(GHOrganization organization) {
-		log.info("Consultando los proyectos abiertos");
+		
 		ReportItemBuilder<Integer> builder=null;
 		try {
+			log.info("Consultando los proyectos abiertos en "+organization.getUrl());
+			int number=0;
+			//first we look for projects associated with the organization
 			PagedIterable<GHProject> pagina=organization.listProjects(GHProject.ProjectStateFilter.OPEN);
-			
 			List<GHProject> proyectos=pagina.toList();
-			builder = new ReportItem.ReportItemBuilder<Integer>("openProjects",
-					proyectos.size());
+			number=number+proyectos.size();
+			//second we look for projects associated with the repos
+			PagedIterable<GHRepository> repositories=organization.listRepositories();
 			
-			log.info("Proyectos "+proyectos);
+			for(GHRepository repo:repositories) {
+				PagedIterable<GHProject> repoproyects=repo.listProjects(GHProject.ProjectStateFilter.OPEN);
+				number=number+repoproyects.toList().size();
+			}
+			
+			
+			log.info("Open projects "+number);
+			builder = new ReportItem.ReportItemBuilder<Integer>("openProjects",
+					number);
+			
 			for(GHProject pro:proyectos) {
 				log.info("Proyecto "+pro.getName()+" en estado "+pro.getState());
 			}
@@ -311,24 +325,37 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 	}
 	
 	private ReportItem getClosedProjects(GHOrganization organization) {
-		log.info("Consultando los proyectos cerrados");
 		ReportItemBuilder<Integer> builder=null;
 		try {
-PagedIterable<GHProject> pagina=organization.listProjects(GHProject.ProjectStateFilter.CLOSED);
-			
+			log.info("Consultando los proyectos cerrados en "+organization.getUrl());
+			int number=0;
+			//first we look for projects associated with the organization
+			PagedIterable<GHProject> pagina=organization.listProjects(GHProject.ProjectStateFilter.CLOSED);
 			List<GHProject> proyectos=pagina.toList();
+			number=number+proyectos.size();
+			//second we look for projects associated with the repos
+			PagedIterable<GHRepository> repositories=organization.listRepositories();
+			
+			for(GHRepository repo:repositories) {
+				PagedIterable<GHProject> repoproyects=repo.listProjects(GHProject.ProjectStateFilter.CLOSED);
+				number=number+repoproyects.toList().size();
+			}
+			
+			
+			log.info("Closed projects "+number);
 			builder = new ReportItem.ReportItemBuilder<Integer>("closedProjects",
-					proyectos.size());
-			log.info("Proyectos "+proyectos);
+					number);
+			
 			for(GHProject pro:proyectos) {
 				log.info("Proyecto "+pro.getName()+" en estado "+pro.getState());
 			}
 			builder.source("GitHub");
-		} catch (ReportItemException | IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		} 	
 		return builder.build();
+	
 	}
 	
 }

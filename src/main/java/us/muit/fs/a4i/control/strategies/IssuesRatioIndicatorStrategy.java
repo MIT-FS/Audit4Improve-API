@@ -12,7 +12,10 @@ import us.muit.fs.a4i.model.entities.Indicator;
 import us.muit.fs.a4i.model.entities.IndicatorI.IndicatorState;
 import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItemI;
-
+/**
+ * @author alumnos del curso 23/24, grupo 3
+ * RECUERDA: los indicadores tienen que estar incluidos en el fichero de configuración a4iDefault.json
+ */
 public class IssuesRatioIndicatorStrategy implements IndicatorStrategy<Double> {
 
 	private static Logger log = Logger.getLogger(Indicator.class.getName());
