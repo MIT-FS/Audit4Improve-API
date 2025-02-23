@@ -60,7 +60,6 @@
 			"description": "Eliminaciones desde que se inició el repositorio",
 			"unit": "deletions"
 		},
-	
 		{
 			"name": "stars",
 			"type": "java.lang.Integer",
@@ -121,7 +120,7 @@
 			"description": "Número de repositorios con pull requests pendientes",
 			"unit": "repositories"
 		},
-				{
+		{
 			"name": "closedIssues",
 			"type": "java.lang.Integer",
 			"description": "Numero de issues cerrados",
@@ -198,8 +197,37 @@
 			"type": "java.lang.Integer",
 			"description": "Número de pull requests rechazadas el pasado año",
 			"unit": "PR"
-		}		
-		
+		},
+		{
+			"name": "conventionalCommits",
+			"type": "java.lang.Double",
+			"description": "Ratio de commits convencionales",
+			"unit": "ratio"
+		},
+		{
+			"name": "commitsWithDescription",
+			"type": "java.lang.Double",
+			"description": "Ratio de commits con descripción",
+			"unit": "ratio"
+		},
+		{
+			"name": "issuesWithLabels",
+			"type": "java.lang.Double",
+			"description": "Ratio de issues con más de una etiqueta",
+			"unit": "ratio"
+		},
+		{
+			"name": "gitFlowBranches",
+			"type": "java.lang.Double",
+			"description": "Ratio de ramas que siguen gitflow",
+			"unit": "ratio"
+		},
+		{
+			"name": "conventionalPullRequests",
+			"type": "java.lang.Double",
+			"description": "Ratio de PRs convencionales",
+			"unit": "ratio"
+		}
 	],
 	"indicators": [
 		{
@@ -257,6 +285,12 @@
 				"warning": 50,
 				"critical": 75
 			}
+		},
+		{
+			"name": "conventionsCompliant",
+			"type": "java.lang.Double",
+			"description": "Indicador de conformidad con las convenciones en el repo",
+			"unit": "ratio"
 		}
 	]
 }

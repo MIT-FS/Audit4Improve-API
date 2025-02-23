@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.kohsuke.github.GHBranch;
+import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPullRequest;
@@ -24,6 +26,7 @@ import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.PagedIterable;
 
+import us.muit.fs.a4i.config.GitFlow;
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.exceptions.ReportItemException;
 import us.muit.fs.a4i.model.entities.Report;
@@ -80,6 +83,13 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		metricNames.add("PRAcceptedLastMonth");
 		metricNames.add("PRRejectedLastYear");
 		metricNames.add("PRRejectedLastMonth");
+		// Equipo 1
+		metricNames.add("conventionalCommits");
+		metricNames.add("commitsWithDescription");
+		metricNames.add("issuesWithLabels");
+		metricNames.add("gitFlowBranches");
+		metricNames.add("conventionalPullRequests");
+		
 		log.info("A�adidas m�tricas al GHRepositoryEnquirer");
 	}
 
@@ -291,6 +301,23 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 			break;
 		case "PRRejectedLastMonth":
 			metric = getPRRejectedLastMonth(remoteRepo);
+			break;
+		// equipo 1
+		// Begin: RepositoryIndicatorStrategy metrics
+		case "conventionalCommits":
+			metric = getConventionalCommits(remoteRepo);
+			break;
+		case "commitsWithDescription":
+			metric = getCommitsWithDescription(remoteRepo);
+			break;
+		case "issuesWithLabels":
+			metric = getIssuesWithLabels(remoteRepo);
+			break;
+		case "gitFlowBranches":
+			metric = getGitFlowBranches(remoteRepo);
+			break;
+		case "conventionalPullRequests":
+			metric = getConventionalPullRequests(remoteRepo);
 			break;
 		default:
 			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
@@ -1028,4 +1055,241 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 					"Error al obtener las solicitudes de extracción rechazadas en el último mes\n" + e);
 		}
 	}
+
+	// Metricas equipo 1 curso 23/24
+	/**
+	 * <p>
+	 * Obtiene el ratio de commits convencionales en el último mes
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return La métrica con el ratio de commits convencionales
+	 * @throws MetricException Si se produce un error al consultar los commits o al
+	 *                         crear la métrica
+	 */
+	private ReportItem<Double> getConventionalCommits(GHRepository remoteRepo) throws MetricException {
+		// Attributes
+		ReportItem<Double> metric = null;
+		List<GHCommit> commits;
+
+		// Logic
+		// Query the commits in the last month to check if they are conventional
+		try {
+			commits = remoteRepo.queryCommits().since(new Date(System.currentTimeMillis() - 30 * 24 * 60 * 60 * 1000))
+					.list().toList();
+
+			// Calculate the ratio of conventional commits
+			Double conventionalRatio;
+			if (commits.size() == 0) {
+				conventionalRatio = 0.0;
+			} else {
+				int conventionalCommits = 0;
+				for (GHCommit commit : commits) {
+					if (commit.getCommitShortInfo().getMessage().matches(
+							"^(revert: )?(feat|fix|docs|style|refactor|perf|test|chore)(\\(.+\\))?: .{1,50}")) {
+						conventionalCommits++;
+					}
+				}
+				conventionalRatio = (double) conventionalCommits / commits.size();
+			}
+
+			// Create the metric
+			ReportItemBuilder<Double> conventionalCommitsMetric = new ReportItem.ReportItemBuilder<Double>(
+					"conventionalCommits", conventionalRatio);
+			conventionalCommitsMetric.source("GitHub, calculada")
+					.description("Número de commits convencionales en el último mes");
+			metric = conventionalCommitsMetric.build();
+		} catch (IOException e) {
+			throw new MetricException("Error al consultar los commits del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+		return metric;
+	}
+
+	/**
+	 * <p>
+	 * Obtiene el ratio de commits con descripción en el último mes
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return La métrica con el ratio de commits con descripción
+	 * @throws MetricException Si se produce un error al consultar los commits o al
+	 *                         crear la métrica
+	 */
+	private ReportItem<Double> getCommitsWithDescription(GHRepository remoteRepo) throws MetricException {
+		// Attributes
+		ReportItem<Double> metric = null;
+		List<GHCommit> commits;
+
+		// Logic
+		// Query the commits in the last month to check if they have a description
+		try {
+			commits = remoteRepo.queryCommits().since(new Date(System.currentTimeMillis() - 30 * 24 * 60 * 60 * 1000))
+					.list().toList();
+
+			// Calculate the ratio of commits with description
+			Double commitsWithDescriptionRatio;
+			if (commits.size() == 0) {
+				commitsWithDescriptionRatio = 0.0;
+			} else {
+				int commitsWithDescription = 0;
+				for (GHCommit commit : commits) {
+					if (commit.getCommitShortInfo().getMessage().matches(".*\\n\\n.*")) {
+						commitsWithDescription++;
+					}
+				}
+				commitsWithDescriptionRatio = (double) commitsWithDescription / commits.size();
+			}
+
+			// Create the metric
+			ReportItemBuilder<Double> commitsWithDescriptionMetric = new ReportItem.ReportItemBuilder<Double>(
+					"commitsWithDescription", commitsWithDescriptionRatio);
+			commitsWithDescriptionMetric.source("GitHub, calculada")
+					.description("Número de commits con descripción en el último mes");
+			metric = commitsWithDescriptionMetric.build();
+		} catch (IOException e) {
+			throw new MetricException("Error al consultar los commits del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+		return metric;
+	}
+
+	/**
+	 * <p>
+	 * Obtiene el ratio de issues con etiquetas en el repositorio
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return La métrica con el ratio de issues con etiquetas
+	 * @throws MetricException Si se produce un error al consultar los issues o al
+	 *                         crear la métrica
+	 */
+	private ReportItem<Double> getIssuesWithLabels(GHRepository remoteRepo) throws MetricException {
+		// Attributes
+		ReportItem<Double> metric = null;
+		List<GHIssue> issues;
+
+		// Logic
+		// Query the open issues to check if they have labels
+		try {
+			issues = remoteRepo.getIssues(GHIssueState.OPEN);
+
+			// Calculate the ratio of issues with labels
+			// By default, the ratio is 1.0 (100%) if there are no issues
+			Double issuesWithLabelsRatio = 1.0;
+
+			if (issues.size() > 0) {
+				int issuesWithLabels = issues.stream().filter(issue -> issue.getLabels().size() > 0).toList().size();
+				issuesWithLabelsRatio = (double) issuesWithLabels / issues.size();
+			}
+
+			ReportItemBuilder<Double> issuesWithLabelsMetric = new ReportItem.ReportItemBuilder<Double>(
+					"issuesWithLabels", issuesWithLabelsRatio);
+			issuesWithLabelsMetric.source("GitHub, calculada")
+					.description("Número de issues con etiquetas en el repositorio");
+			metric = issuesWithLabelsMetric.build();
+		} catch (IOException e) {
+			throw new MetricException("Error al consultar los issues del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+		return metric;
+	}
+
+	/**
+	 * <p>
+	 * Obtiene el ratio de ramas que siguen las convenciones de Git Flow en el
+	 * repositorio
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return La métrica con el ratio de ramas que siguen las convenciones de Git
+	 *         Flow
+	 * @throws MetricException Si se produce un error al consultar las ramas o al
+	 *                         crear la métrica
+	 */
+	private ReportItem<Double> getGitFlowBranches(GHRepository remoteRepo) throws MetricException {
+		// Attributes
+		ReportItem<Double> metric = null;
+		List<GHBranch> branches;
+
+		// Logic
+		// Query the branches to check if they follow the Git Flow naming conventions
+		try {
+			branches = remoteRepo.getBranches().values().stream().toList();
+
+			// Calculate the ratio of Git Flow branches
+			Double gitFlowBranchesRatio;
+			if (branches.size() == 0) {
+				gitFlowBranchesRatio = 0.0;
+			} else {
+				gitFlowBranchesRatio = (double) branches.stream()
+						.filter(branch -> GitFlow.isGitFlowBranch(branch.getName())).toList().size() / branches.size();
+			}
+
+			// Create the metric
+			ReportItemBuilder<Double> gitFlowBranchesMetric = new ReportItem.ReportItemBuilder<Double>(
+					"gitFlowBranches", gitFlowBranchesRatio);
+			gitFlowBranchesMetric.source("GitHub, calculada")
+					.description("Número de ramas que siguen las convenciones de Git Flow en el repositorio");
+			metric = gitFlowBranchesMetric.build();
+		} catch (IOException e) {
+			throw new MetricException("Error al consultar las ramas del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+		return metric;
+	}
+
+	/**
+	 * <p>
+	 * Obtiene el ratio de pull requests convencionales en el último mes
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return La métrica con el ratio de pull requests convencionales
+	 * @throws MetricException Si se produce un error al consultar los pull requests
+	 *                         o al crear la métrica
+	 */
+	private ReportItem<Double> getConventionalPullRequests(GHRepository remoteRepo) throws MetricException {
+		ReportItem<Double> metric = null;
+		List<GHPullRequest> pullRequests;
+
+		// Logic
+		// Query the pull requests in the last month to check if they are conventional
+		try {
+			pullRequests = remoteRepo.queryPullRequests().state(GHIssueState.OPEN).list().toList();
+
+			// Calculate the ratio of conventional pull requests
+			Double conventionalPullRequestsRatio;
+			if (pullRequests.size() == 0) {
+				conventionalPullRequestsRatio = 0.0;
+			} else {
+				int conventionalPullRequests = 0;
+				for (GHPullRequest pullRequest : pullRequests) {
+					if (pullRequest.getTitle().matches(
+							"^(revert: )?(feat|fix|docs|style|refactor|perf|test|chore)(\\(.+\\))?: .{1,50}")) {
+						conventionalPullRequests++;
+					}
+				}
+				conventionalPullRequestsRatio = (double) conventionalPullRequests / pullRequests.size();
+			}
+
+			// Create the metric
+			ReportItemBuilder<Double> conventionalPullRequestsMetric = new ReportItem.ReportItemBuilder<Double>(
+					"conventionalPullRequests", conventionalPullRequestsRatio);
+			conventionalPullRequestsMetric.source("GitHub, calculada")
+					.description("Número de pull requests convencionales en el último mes");
+			metric = conventionalPullRequestsMetric.build();
+		} catch (IOException e) {
+			throw new MetricException("Error al consultar los pull requests del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+
+		return metric;
+	}
+
 }
