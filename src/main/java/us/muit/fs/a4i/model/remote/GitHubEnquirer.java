@@ -4,11 +4,17 @@
 package us.muit.fs.a4i.model.remote;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.function.*;
+import java.util.Map;
 
+import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+
+import us.muit.fs.a4i.model.entities.ReportItem;
 
 /**
  * <p>
@@ -29,7 +35,7 @@ import org.kohsuke.github.GitHubBuilder;
 public abstract class GitHubEnquirer implements RemoteEnquirer {
 	private static Logger log = Logger.getLogger(GitHubEnquirer.class.getName());
 	protected List<String> metricNames;
-
+	protected Map<String,Function<GHRepository,ReportItem>> myQueries=new HashMap<String,Function<GHRepository,ReportItem>>();
 	/**
 	 * <p>
 	 * Referencia al objeto GitHub que permite hacer consultas al servidor Github

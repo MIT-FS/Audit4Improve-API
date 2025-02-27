@@ -4,7 +4,7 @@ package us.muit.fs.a4i.exceptions;
  * @author Isabel Román
  *
  */
-public class MetricException extends Exception {
+public class MetricException extends RuntimeException {
 	/**
 	 * Excepción al manejar métrica
 	 */

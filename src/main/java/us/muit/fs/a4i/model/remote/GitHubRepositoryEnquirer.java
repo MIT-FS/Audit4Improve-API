@@ -41,6 +41,11 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
  *         no están acordes al indicador para el que fueron creadas RECUERDA:
  *         las métricas tienen que estar incluidas en el fichero de
  *         configuración a4iDefault.json
+ *         
+ *  TODO: esto está en periodo de limpieza, vamos a utilizar un mapa de punteros a funciones para quitarnos el case de enmedio, y ya que estamos
+ *  podemos eliminar la lista de métricas y usar las keys del mapa (Esto falta)
+ *  Debería haber un constructor para esto, para que la creación del mapa esté fuera
+ *        
  */
 public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	/**
@@ -56,6 +61,22 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 	public GitHubRepositoryEnquirer() {
 		super();
+		myQueries.put("subscribers", GitHubRepositoryEnquirer::getSubscribers);
+		myQueries.put("forks", GitHubRepositoryEnquirer::getForks);
+		myQueries.put("watchers", GitHubRepositoryEnquirer::getWatchers);
+		myQueries.put("starts", GitHubRepositoryEnquirer::getStars);
+		myQueries.put("issues", GitHubRepositoryEnquirer::getIssues);
+		myQueries.put("closedIssues", GitHubRepositoryEnquirer::getClosedIssues);
+		myQueries.put("openIssues", GitHubRepositoryEnquirer::getOpenIssues);
+		myQueries.put("creation", GitHubRepositoryEnquirer::getCreation);
+		myQueries.put("lastUpdated", GitHubRepositoryEnquirer::getLastUpdated);
+		myQueries.put("lastPush", GitHubRepositoryEnquirer::getLastPush);		
+		myQueries.put("totalAdditions", GitHubRepositoryEnquirer::getTotalAdditions);
+		
+		myQueries.put("totalDeletions", GitHubRepositoryEnquirer::getTotalDeletions);
+		myQueries.put("collaborators", GitHubRepositoryEnquirer::getCollaborators);
+		myQueries.put("ownerCommits", GitHubRepositoryEnquirer::getOwnerCommits);
+		
 		metricNames.add("subscribers");
 		metricNames.add("forks");
 		metricNames.add("watchers");
@@ -67,23 +88,40 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		metricNames.add("lastUpdated");
 		metricNames.add("lastPush");
 		metricNames.add("totalAdditions");
+		
 		metricNames.add("totalDeletions");
 		metricNames.add("collaborators");
 		metricNames.add("ownerCommits");
 		// equipo3
+		myQueries.put("issuesLastMonth", GitHubRepositoryEnquirer::getIssuesLastMonth);
+		myQueries.put("closedIssuesLastMonth", GitHubRepositoryEnquirer::getClosedIssuesLastMonth);
+		myQueries.put("meanClosedIssuesLastMonth", GitHubRepositoryEnquirer::getMeanClosedIssuesLastMonth);
+		myQueries.put("issues4DevLastMonth", GitHubRepositoryEnquirer::getIssues4DevLastMonth);
 		metricNames.add("issuesLastMonth");
 		metricNames.add("closedIssuesLastMonth");
 		metricNames.add("meanClosedIssuesLastMonth");
 		metricNames.add("issues4DevLastMonth");
 		// equipo 4
+		myQueries.put("totalPullReq", GitHubRepositoryEnquirer::getTotalPullReq);
+		myQueries.put("closedPullReq", GitHubRepositoryEnquirer::getClosedPullReq);
 		metricNames.add("totalPullReq");
 		metricNames.add("closedPullReq");
 		// equipo 5
+		myQueries.put("PRAcceptedLastYear", GitHubRepositoryEnquirer::getPRAcceptedLastYear);
+		myQueries.put("PRAcceptedLastMonth", GitHubRepositoryEnquirer::getPRAcceptedLastMonth);
+		myQueries.put("PRRejectedLastYear", GitHubRepositoryEnquirer::getPRRejectedLastYear);
+		myQueries.put("PRRejectedLastMonth", GitHubRepositoryEnquirer::getPRRejectedLastMonth);
+		
 		metricNames.add("PRAcceptedLastYear");
 		metricNames.add("PRAcceptedLastMonth");
 		metricNames.add("PRRejectedLastYear");
 		metricNames.add("PRRejectedLastMonth");
 		// Equipo 1
+		myQueries.put("conventionalCommits", GitHubRepositoryEnquirer::getConventionalCommits);
+		myQueries.put("commitsWithDescription", GitHubRepositoryEnquirer::getCommitsWithDescription);
+		myQueries.put("issuesWithLabels", GitHubRepositoryEnquirer::getIssuesWithLabels);
+		myQueries.put("gitFlowBranches", GitHubRepositoryEnquirer::getGitFlowBranches);
+		myQueries.put("conventionalPullRequests", GitHubRepositoryEnquirer::getConventionalPullRequests);
 		metricNames.add("conventionalCommits");
 		metricNames.add("commitsWithDescription");
 		metricNames.add("issuesWithLabels");
@@ -227,6 +265,8 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		if (remoteRepo == null) {
 			throw new MetricException("Intenta obtener una métrica sin haber obtenido los datos del repositorio");
 		}
+		metric=myQueries.get(metricName).apply(remoteRepo);
+		/*
 		switch (metricName) {
 		case "totalAdditions":
 			metric = getTotalAdditions(remoteRepo);
@@ -322,6 +362,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		default:
 			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
 		}
+		*/
 
 		return metric;
 	}
@@ -340,7 +381,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @return la métrica con el número total de adiciones desde el inicio
 	 * @throws MetricException Intenta crear una métrica no definida
 	 */
-	private ReportItem getTotalAdditions(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getTotalAdditions(GHRepository remoteRepo) throws MetricException {
 		ReportItem metric = null;
 
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
@@ -383,7 +424,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @return la métrica con el n�mero total de eliminaciones desde el inicio
 	 * @throws MetricException Intenta crear una métrica no definida
 	 */
-	private ReportItem getTotalDeletions(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getTotalDeletions(GHRepository remoteRepo) throws MetricException {
 		ReportItem metric = null;
 
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
@@ -425,7 +466,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getSubscribers(GHRepository repo) {
+	static private ReportItem getSubscribers(GHRepository repo) {
 		log.info("Consultando los subscriptores");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -444,7 +485,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getForks(GHRepository repo) {
+	static private ReportItem getForks(GHRepository repo) {
 		log.info("Consultando los forks");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -463,7 +504,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getWatchers(GHRepository repo) {
+	static private ReportItem getWatchers(GHRepository repo) {
 		log.info("Consultando los watchers");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -482,7 +523,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getStars(GHRepository repo) {
+	static private ReportItem getStars(GHRepository repo) {
 		log.info("Consultando las starts");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -501,7 +542,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getOwnerCommits(GHRepository repo) {
+	static private ReportItem getOwnerCommits(GHRepository repo) {
 		log.info("Consultando los commits del responsable del repositorio");
 		ReportItemBuilder<Integer> builder = null;
 		GHRepositoryStatistics data = repo.getStatistics();
@@ -524,7 +565,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getIssues(GHRepository repo) {
+	static private ReportItem getIssues(GHRepository repo) {
 		log.info("Consultando los issues");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -543,7 +584,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para incluir en el informe
 	 */
-	private ReportItem getOpenIssues(GHRepository repo) {
+	static private ReportItem getOpenIssues(GHRepository repo) {
 		log.info("Consultando los issues abiertos");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -562,7 +603,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para incluir en el informe
 	 */
-	private ReportItem getClosedIssues(GHRepository repo) {
+	static private ReportItem getClosedIssues(GHRepository repo) {
 		log.info("Consultando los issues cerrados");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -582,7 +623,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getCollaborators(GHRepository repo) {
+	static private ReportItem getCollaborators(GHRepository repo) {
 		log.info("Consultando los colaboradores");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -601,7 +642,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo
 	 * @return item para el informe
 	 */
-	private ReportItem getCreation(GHRepository repo) {
+	static private ReportItem getCreation(GHRepository repo) {
 		log.info("Consultando fecha de creación");
 		ReportItemBuilder<Date> builder = null;
 		try {
@@ -621,7 +662,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para el informe
 	 */
-	private ReportItem getLastPush(GHRepository repo) {
+	static private ReportItem getLastPush(GHRepository repo) {
 		log.info("Consultando el ultimo push");
 		ReportItemBuilder<Date> builder = null;
 		try {
@@ -640,7 +681,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @param repo repositorio que se consulta
 	 * @return item para incluir en el informe del repositorio
 	 */
-	private ReportItem getLastUpdated(GHRepository repo) {
+	static private ReportItem getLastUpdated(GHRepository repo) {
 		log.info("Consultando la ultima actualización");
 		ReportItemBuilder<Date> builder = null;
 		try {
@@ -661,7 +702,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @return ReportItem with the number of issues created last month
 	 * @throws MetricException
 	 */
-	private ReportItem getIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
 		log.info("Consultando los issues abiertos un mes");
 		int issuesLastMonth = 0;
 		ReportItemBuilder<Integer> builder = null;
@@ -707,7 +748,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @return ReportItem with the issues closed last month
 	 * @throws MetricException
 	 */
-	private ReportItem getClosedIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getClosedIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
 		int closedIssuesLastMonth = 0;
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -750,7 +791,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @return ReportItem with the average of closed issues per member in a month
 	 * @throws MetricException
 	 */
-	private ReportItem getMeanClosedIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getMeanClosedIssuesLastMonth(GHRepository remoteRepo) throws MetricException {
 		int closedIssuesLastMonth = 0;
 		int activeMembers = 0;
 		Map<String, Integer> issuesClosedByMember = new HashMap<>();
@@ -814,7 +855,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 *                         reportitem es un mapa y luego lo tratan como si fuera
 	 *                         un double... no es coherente una parte con la otra.
 	 */
-	private ReportItem issues4DevLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getIssues4DevLastMonth(GHRepository remoteRepo) throws MetricException {
 		Map<String, Integer> issuesAssignedByMember = new HashMap<>();
 		ReportItemBuilder<Map<String, Integer>> builder = null;
 
@@ -856,7 +897,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getClosedPullReq(GHRepository repo) {
+	static private ReportItem getClosedPullReq(GHRepository repo) {
 		log.info("Consultando los pull requests completados");
 		ReportItemBuilder<Integer> builder = null;
 
@@ -877,7 +918,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getTotalPullReq(GHRepository repo) {
+	static private ReportItem getTotalPullReq(GHRepository repo) {
 		log.info("Consultando los pull requests totales");
 		ReportItemBuilder<Integer> builder = null;
 
@@ -941,7 +982,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException si ocurre un error al obtener las solicitudes de
 	 *                         extracción
 	 */
-	private ReportItem getPRAcceptedLastYear(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getPRAcceptedLastYear(GHRepository remoteRepo) throws MetricException {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime oneYearAgo = now.minusYears(1);
 
@@ -972,7 +1013,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException si ocurre un error al obtener las solicitudes de
 	 *                         extracción
 	 */
-	private ReportItem getPRAcceptedLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getPRAcceptedLastMonth(GHRepository remoteRepo) throws MetricException {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime oneMonthAgo = now.minusMonths(1);
 
@@ -1004,7 +1045,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException si ocurre un error al obtener las solicitudes de
 	 *                         extracción
 	 */
-	private ReportItem getPRRejectedLastYear(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getPRRejectedLastYear(GHRepository remoteRepo) throws MetricException {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime oneYearAgo = now.minusYears(1);
 
@@ -1036,7 +1077,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException si ocurre un error al obtener las solicitudes de
 	 *                         extracción
 	 */
-	private ReportItem getPRRejectedLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem getPRRejectedLastMonth(GHRepository remoteRepo) throws MetricException {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime oneMonthAgo = now.minusMonths(1);
 
@@ -1067,7 +1108,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException Si se produce un error al consultar los commits o al
 	 *                         crear la métrica
 	 */
-	private ReportItem<Double> getConventionalCommits(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem<Double> getConventionalCommits(GHRepository remoteRepo) throws MetricException {
 		// Attributes
 		ReportItem<Double> metric = null;
 		List<GHCommit> commits;
@@ -1117,7 +1158,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException Si se produce un error al consultar los commits o al
 	 *                         crear la métrica
 	 */
-	private ReportItem<Double> getCommitsWithDescription(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem<Double> getCommitsWithDescription(GHRepository remoteRepo) throws MetricException {
 		// Attributes
 		ReportItem<Double> metric = null;
 		List<GHCommit> commits;
@@ -1166,7 +1207,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException Si se produce un error al consultar los issues o al
 	 *                         crear la métrica
 	 */
-	private ReportItem<Double> getIssuesWithLabels(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem<Double> getIssuesWithLabels(GHRepository remoteRepo) throws MetricException {
 		// Attributes
 		ReportItem<Double> metric = null;
 		List<GHIssue> issues;
@@ -1210,7 +1251,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException Si se produce un error al consultar las ramas o al
 	 *                         crear la métrica
 	 */
-	private ReportItem<Double> getGitFlowBranches(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem<Double> getGitFlowBranches(GHRepository remoteRepo) throws MetricException {
 		// Attributes
 		ReportItem<Double> metric = null;
 		List<GHBranch> branches;
@@ -1253,7 +1294,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * @throws MetricException Si se produce un error al consultar los pull requests
 	 *                         o al crear la métrica
 	 */
-	private ReportItem<Double> getConventionalPullRequests(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem<Double> getConventionalPullRequests(GHRepository remoteRepo) throws MetricException {
 		ReportItem<Double> metric = null;
 		List<GHPullRequest> pullRequests;
 
