@@ -15,6 +15,7 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import us.muit.fs.a4i.model.entities.ReportItem;
+import us.muit.fs.a4i.model.remote.RemoteEnquirer.RemoteType;
 
 /**
  * <p>
@@ -36,6 +37,7 @@ import us.muit.fs.a4i.model.entities.ReportItem;
 public abstract class GitHubEnquirer<T> implements RemoteEnquirer {
 	private static Logger log = Logger.getLogger(GitHubEnquirer.class.getName());	
 	protected Map<String,Function<T,ReportItem>> myQueries;
+	private RemoteEnquirer.RemoteType type= RemoteEnquirer.RemoteType.GITHUB;
 
 	/**
 	 * <p>
@@ -84,5 +86,9 @@ public abstract class GitHubEnquirer<T> implements RemoteEnquirer {
 		List<String> metrics=new ArrayList<String>(myQueries.keySet());
 		return metrics;
 	}
+	public RemoteType getRemoteType() {
+		return type;
+	}
+
 
 }

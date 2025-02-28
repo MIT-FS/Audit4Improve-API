@@ -122,4 +122,10 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer<GHUser> {
 		return null;
 	}
 
+	@Override
+	public RemoteType getRemoteType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

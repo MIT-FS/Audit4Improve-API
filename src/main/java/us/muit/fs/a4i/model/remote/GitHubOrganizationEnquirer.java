@@ -369,7 +369,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer<GHOrganization> {
     }
 
 	static private Map <GHRepository,Integer> getTeamsPerRepository(GHOrganization organization) {
-		log.info("Consultando el númerdo de equipos por repositorio");
+		log.info("Consultando el número de equipos por repositorio");
 		ReportItemBuilder<Map<GHRepository,Integer>> builder=null;
 		Map <GHRepository,Integer> mapa = new HashMap<>();
 		try {
