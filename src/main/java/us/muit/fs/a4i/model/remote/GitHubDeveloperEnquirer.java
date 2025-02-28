@@ -28,11 +28,11 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
  * quería RECUERDA: las métricas tienen que estar incluidas en el fichero de
  * configuración a4iDefault.json
  */
-public class GitHubDeveloperEnquirer extends GitHubEnquirer {
+public class GitHubDeveloperEnquirer extends GitHubEnquirer<GHUser> {
 	public GitHubDeveloperEnquirer() {
 		super();
-		metricNames.add("closedIssuesLastMonth");
-		metricNames.add("assignedIssuesLastMonth");
+		myQueries.put("closedIssuesLastMonth",GitHubDeveloperEnquirer::getClosedIssuesLastMonth);
+		myQueries.put("assignedIssuesLastMonth",GitHubDeveloperEnquirer::getAssignedIssuesLastMonth);
 		log.info("Incluidos nombres metricas en Enquirer");
 	}
 
@@ -74,6 +74,7 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 			throw new MetricException(
 					"Intenta obtener una métrica de desarrollador sin haber obtenido el desarrollador");
 		}
+		/*
 		switch (metricName) {
 		case "closedIssuesLastMonth":
 			metric = getClosedIssuesLastMonth(developer);
@@ -84,11 +85,12 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 		default:
 			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
 		}
+		*/
 
-		return metric;
+		return myQueries.get(metricName).apply(developer);
 	}
 
-	private ReportItem getClosedIssuesLastMonth(GHUser developer) {
+	static private ReportItem getClosedIssuesLastMonth(GHUser developer) {
 		log.info("Consultando los issues asignados a un desarrollador");
 		ReportItemBuilder<Integer> builder = null;
 		int issues = 0;
@@ -115,7 +117,7 @@ public class GitHubDeveloperEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getAssignedIssuesLastMonth(GHUser developer) {
+	static private ReportItem getAssignedIssuesLastMonth(GHUser developer) {
 		// TODO Auto-generated method stub
 		return null;
 	}

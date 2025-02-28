@@ -41,7 +41,7 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
  *
  */
 
-public class GitHubOrganizationEnquirer extends GitHubEnquirer {
+public class GitHubOrganizationEnquirer extends GitHubEnquirer<GHOrganization> {
 	private static Logger log = Logger.getLogger(GitHubOrganizationEnquirer.class.getName());
 	/**
 	 * <p>
@@ -53,17 +53,19 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 
 	public GitHubOrganizationEnquirer() {
 		super();
-		metricNames.add("repositoriesWithOpenPullRequest");
-		metricNames.add("repositories");
-		metricNames.add("pullRequests");
-		metricNames.add("members");
-		metricNames.add("teams");
-		metricNames.add("openProjects");
-		metricNames.add("closedProjects");
-		metricNames.add("followers");
+		myQueries.put("repositoriesWithOpenPullRequest",GitHubOrganizationEnquirer::getRepositoriesWithOpenPullRequest);
+		myQueries.put("repositories",GitHubOrganizationEnquirer::getRepositories);
+		myQueries.put("pullRequests",GitHubOrganizationEnquirer::getPullRequests);
+		myQueries.put("members",GitHubOrganizationEnquirer::getMembers);
+		myQueries.put("teams",GitHubOrganizationEnquirer::getTeams);
+		myQueries.put("openProjects",GitHubOrganizationEnquirer::getOpenProjects);
+		myQueries.put("closedProjects",GitHubOrganizationEnquirer::getClosedProjects);
+		myQueries.put("followers",GitHubOrganizationEnquirer::getFollowers);
+		
 		//Equipo 7 23/24
-		metricNames.add("teamsBalance");
-		log.info("Incluidos nombres metricas en Enquirer");
+		myQueries.put("teamsBalance",GitHubOrganizationEnquirer::getTeamsBalance);
+	
+		log.info("Incluidas métricas en Enquirer");
 	}
 
 	@Override
@@ -206,7 +208,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return metric;
 	}
 
-	private ReportItem getRepositoriesWithOpenPullRequest(GHOrganization organization) {
+	static private ReportItem getRepositoriesWithOpenPullRequest(GHOrganization organization) {
 		log.info("Consultando los repositorios con pull requests abiertos");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -220,7 +222,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getRepositories(GHOrganization organization) {
+	static private ReportItem getRepositories(GHOrganization organization) {
 		log.info("Consultando los repositorios");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -233,7 +235,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getMembers(GHOrganization organization) {
+	static private ReportItem getMembers(GHOrganization organization) {
 		log.info("Consultando los miembros");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -246,7 +248,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getTeams(GHOrganization organization) {
+	static private ReportItem getTeams(GHOrganization organization) {
 		log.info("Consultando los equipos");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -261,7 +263,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getFollowers(GHOrganization organization) {
+	static private ReportItem getFollowers(GHOrganization organization) {
 		log.info("Consultando los seguidores");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -274,7 +276,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getPullRequests(GHOrganization organization) {
+	static private ReportItem getPullRequests(GHOrganization organization) {
 		log.info("Consultando los pull requests");
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -287,7 +289,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getOpenProjects(GHOrganization organization) {
+	static private ReportItem getOpenProjects(GHOrganization organization) {
 
 		ReportItemBuilder<Integer> builder = null;
 		try {
@@ -319,7 +321,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 	}
 
-	private ReportItem getClosedProjects(GHOrganization organization) {
+	static private ReportItem getClosedProjects(GHOrganization organization) {
 		ReportItemBuilder<Integer> builder = null;
 		try {
 			log.info("Consultando los proyectos cerrados en " + organization.getUrl());
@@ -350,7 +352,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return builder.build();
 
 	}
-	private Map <GHRepository,Integer> getIssuesPerRepository(GHOrganization organization) {
+	static private Map <GHRepository,Integer> getIssuesPerRepository(GHOrganization organization) {
         log.info("Consultando los issues de cada uno de los repositorios de la organización");
 		Map <GHRepository,Integer> mapa = new HashMap<>();
         try {
@@ -366,7 +368,7 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
         return mapa;
     }
 
-	private Map <GHRepository,Integer> getTeamsPerRepository(GHOrganization organization) {
+	static private Map <GHRepository,Integer> getTeamsPerRepository(GHOrganization organization) {
 		log.info("Consultando el númerdo de equipos por repositorio");
 		ReportItemBuilder<Map<GHRepository,Integer>> builder=null;
 		Map <GHRepository,Integer> mapa = new HashMap<>();
@@ -382,14 +384,14 @@ public class GitHubOrganizationEnquirer extends GitHubEnquirer {
 		return mapa;
 	}
 
-	private ReportItem getTeamsBalance(GHOrganization organization) {
+	static private ReportItem getTeamsBalance(GHOrganization organization) {
 
 		log.info("Consultando el equilibrio entre equipos e issues de los repositorios");
-		Integer issuesTotales= this.getIssuesPerRepository(organization).size();
-        Integer desarrolladoresTotales=(Integer) this.getTeams(organization).getValue();
-		Integer numProjects = (Integer) this.getRepositories(organization).getValue();
-		Map <GHRepository,Integer> issuesPerProject =this.getIssuesPerRepository(organization);
-		Map <GHRepository,Integer> teamsPerProject = this.getTeamsPerRepository(organization);
+		Integer issuesTotales= getIssuesPerRepository(organization).size();
+        Integer desarrolladoresTotales=(Integer) getTeams(organization).getValue();
+		Integer numProjects = (Integer) getRepositories(organization).getValue();
+		Map <GHRepository,Integer> issuesPerProject =getIssuesPerRepository(organization);
+		Map <GHRepository,Integer> teamsPerProject = getTeamsPerRepository(organization);
 		
         Double desajustePromedioOrganizacion=0.0;
         List<Double> desajustePromedioProyecto = new ArrayList<Double>();
