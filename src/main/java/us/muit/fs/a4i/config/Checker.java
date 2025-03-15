@@ -55,7 +55,6 @@ public class Checker {
 	 * </p>
 	 * 
 	 * @param metricName nombre de la métrica que se quiere comprobar
-	 * @param metricType tipo de la métrica
 	 * @return metricDefinition Si la métrica está definida y el tipo es correcto se devuelve un mapa con las unidades y la descripción
 	 * @throws FileNotFoundException Si no se localiza el fichero de configuración
 	 */
@@ -124,7 +123,6 @@ public class Checker {
 	 * </p>
 	 * 
 	 * @param indicatorName nombre del indicador que se quiere comprobar
-	 * @param indicatorType tipo del indicador
 	 * @return indicatorDefinition Si el indicador está definido y el tipo es correcto se devuelve un mapa con las unidades y la descripción
 	 * @throws FileNotFoundException Si no se localiza el fichero de configuración
 	 */

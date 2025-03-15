@@ -123,7 +123,7 @@ public class Report implements ReportI {
 
 	}
 	/**
-	 * <p>Calcula el indicador solicitado y lo incluye en el informe, si se necesita alguna métrica que no exista la calculadora la busca y la incluye</p>
+	 * <p>Calcula el indicador solicitado y lo incluye en el informe, si se necesita alguna métrica que no exista la calculadora la busca y la incluye<p>
 	 */
 	@Override
 	public void calcIndicator(String name) {
