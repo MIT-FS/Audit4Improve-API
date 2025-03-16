@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_LOGIN: ${{ github.actor }}
-      GITHUB_PACKAGES: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PACKAGES: ${{ secrets.GHTOKEN }}
+      GITHUB_OAUTH: ${{ secrets.GHTOKEN }}
     steps:
       - name: Clonando el repositorio y estableciendo el espacio de trabajo
         uses: actions/checkout@v3
