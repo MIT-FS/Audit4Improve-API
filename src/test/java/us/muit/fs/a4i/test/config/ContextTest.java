@@ -19,6 +19,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.config.Context;
@@ -168,8 +169,8 @@ class ContextTest {
 	 * Test method for {@link us.muit.fs.a4i.config.Context#getMetricFont()}.
 	 * @throws IOException 
 	 */
-	@Test
-	
+	@DisplayName("Verificación lectura de configuración de fuente de métricas")
+	@Test	
 	void testGetMetricFont(){
 		try {
 	
@@ -192,6 +193,7 @@ class ContextTest {
 	 * Test method for
 	 * {@link us.muit.fs.a4i.config.Context#getIndicatorFont(us.muit.fs.a4i.model.entities.Indicator.State)}.
 	 */
+	@DisplayName("Verificación lectura de configuración de fuente de indicadores")
 	@Test
 	void testGetIndicatorFont() {
 		try {
@@ -232,6 +234,7 @@ class ContextTest {
 	 * Este método de verificación está incompleto, deberá ser completado commo ejercicio
 	 * Verificar que los nombres son correctos 
 	 */
+	@DisplayName("Verificación obtención nombre de propiedades configuradas")
 	@Test
 	void testGetPropertiesNames() throws IOException {
 		log.info(Context.getContext().getPropertiesNames().toString());
