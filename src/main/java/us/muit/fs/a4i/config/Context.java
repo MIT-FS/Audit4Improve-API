@@ -4,6 +4,7 @@
 package us.muit.fs.a4i.config;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,16 +20,21 @@ import us.muit.fs.a4i.model.entities.Font;
  * Clase para la gestión de los parámetros de contexto
  * </p>
  * <p>
- * El objetivo de Context es el manejo de la configuración
+ * El objetivo de Context es el manejo de la configuración de la api. La configuración por defecto se separa en dos ficheros principales:
+ * <ol>
+ * <li>a4i.conf: contiene la configuración por defecto de la api. Permite seleccionar el tipo de remoto con el que se quiere interaccionar, el tipo de persistencia de los informes y características de presentación de estos informes.</li>
+ * <li>a4iDefault.json: contiene la configuración por defecto de métricas e indicadores. Esta configuración se maneja en la clase checker</li>
+ * </ol>
+ * Hay una configuración embebida en el jar, es decir, una configuración por defecto. Pero esta puede ser modificada si la aplicación cliente define ficheros de configuración personalizados.
  * </p>
  * <p>
- * En el estado actual Contexto sólo es una aproximación a las posiblidades de
+ * En el estado actual Context es una aproximación a las posiblidades de
  * configuración. Se presentan posibilidades para:
  * </p>
  * <ul>
- * <li>Localizar el fichero en la carpeta resources, incluida en el jar</li>
- * <li>Localizar el fichero en el home de usuario</li>
- * <li>Localizar el fichero en una ruta introducida de forma "programada"</li>
+ * <li>Localizar el fichero a4i.conf en la carpeta resources, incluida en el jar</li>
+ * <li>Localizar el fichero *.conf (configuración personalizada) en el home de usuario</li>
+ * <li>Localizar el fichero *.conf (configuración personalizada) en una ruta introducida de forma "programada"</li>
  * </ul>
  * <p>
  * Único punto para acceso a variables que pueden ser leídas por cualquiera,
