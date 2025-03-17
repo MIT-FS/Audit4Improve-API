@@ -112,7 +112,7 @@ class CheckerTest {
 	 */
 	@Test
 	@Tag("unidad")
-	@DisplayName("Prueba para el m�todo definedMetric, que verifica si la m�trica est� definida con un tipo determinado y devuelve su configuraci�n")
+	@DisplayName("Prueba para el método definedMetric, que verifica si la métrica est� definida con un tipo determinado y devuelve su configuración")
 	void testDefinedMetric() {
 
 		// Creo valores Mock para verificar si comprueba bien el tipo

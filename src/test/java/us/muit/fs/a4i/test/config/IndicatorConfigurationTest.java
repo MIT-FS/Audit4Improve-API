@@ -80,7 +80,6 @@ class IndicatorConfigurationTest {
 		log.info("Acabo de ejecutar un test definido en esta clase"); 
 	}
 
-	
 	@Test
 	void testDefinedIndicator() {
 		// Creo un par de variables, que me servirán de valores para verificar si comprueba bien el tipo
@@ -91,22 +90,37 @@ class IndicatorConfigurationTest {
 		HashMap<String, String> returnedMap = null;
 		// Primero, sin fichero de configuración de aplicación
 		try {
+	
 			// Consulta un indicador no definido, con valor de tipo entero
 			// debe devolver null, no está definido
-			log.info("Busco el indicador llamado pullReqGlory");
-			returnedMap = underTest.definedIndicator("pullReqGlory", valOKMock.getClass().getName());
-			assertNull(returnedMap, "Debería ser nulo, el indicador pullReqGlory no está definido");
+			log.info("Busco el indicador llamado noexiste");
+			returnedMap = underTest.definedIndicator("noexiste", valOKMock.getClass().getName());
+			assertNull(returnedMap, "Debería ser nulo, el indicador noexiste no está definido");
 
+			/*
+			 * Indicador que existe en el fichero de configuración por defecto
+			 * {
+			"name": "issuesProgress",
+			"type": "java.lang.Double",
+			"description": "Ratio de issues cerrados frente a totales",
+			"unit": "ratio",
+			"limits": {
+				"ok": 2,
+				"warning": 4,
+				"critical": 6
+			}
+		}
+			 */
 			// Busco el indicador overdued con valor double, no debería dar problemas
-			log.info("Busco el indicador overdued");
-			returnedMap = underTest.definedIndicator("overdued", valOKMock.getClass().getName());
-			assertNotNull(returnedMap, "Debería devolver un hashmap, el indicador overdued está definido");
+			log.info("Busco el indicador issuesProgress");
+			returnedMap = underTest.definedIndicator("issuesProgress", valOKMock.getClass().getName());
+			assertNotNull(returnedMap, "Debería devolver un hashmap, el indicador issuesProgress está definido");
 			assertTrue(returnedMap.containsKey("unit"), "La clave unit tiene que estar en el mapa");
 			assertTrue(returnedMap.containsKey("description"), "La clave description tiene que estar en el mapa");
 			// Se comprueba que los indicadores incluyen los limites definidos
-			assertTrue(returnedMap.containsKey(underTest.OK_LIMIT), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey(underTest.WARNING_LIMIT), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey(underTest.CRITICAL_LIMIT), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("limits.ok"), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("limits.warning"), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("limits.critical"), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
 			// Busco una métrica que existe pero con un tipo incorrecto
 			assertNull(underTest.definedIndicator("overdued", valKOMock.getClass().getName()),
 					"Debería ser nulo, el indicador overdued está definido para Double");
@@ -114,6 +128,16 @@ class IndicatorConfigurationTest {
 			fail("El fichero está en la carpeta resources");
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	void testDefinedIndicatorCustom() {
+		// Creo un par de variables, que me servirán de valores para verificar si comprueba bien el tipo
+		// Las métricas del test son de tipo entero, así que creo un entero y un string
+		// (el primero no dará problemas el segundo sí)
+		Double valOKMock = Double.valueOf(0.3);
+		String valKOMock = "KO";
+		HashMap<String, String> returnedMap = null;
 		// Ahora establezco el fichero de configuración de la aplicación, con un
 		// nombre de fichero que no existe
 		Context.setAppRI("pepe");
@@ -123,14 +147,15 @@ class IndicatorConfigurationTest {
 			fail("Debería lanzar una excepción porque intenta buscar en un fichero que no existe");
 		} catch (FileNotFoundException e) {
 			log.info("Lanza la excepción adecuada, FileNotFoud");
+			Context.setAppRI(appConfPath);
 		} catch (Exception e) {
 			fail("Lanza la excepción equivocada " + e);
 		}
 
-		// Ahora establezco un fichero de configuración de la aplicación que sí
-		// existe
+		// Ahora establezco un fichero de configuración de la aplicación 
 		Context.setAppRI(appConfPath);
 		try {
+			
 			// Busco una métrica que se que no está en la configuración de la api pero
 			// sí en la de la aplicación
 			log.info("Busco el indicador llamado pullReqGlory");
@@ -139,9 +164,9 @@ class IndicatorConfigurationTest {
 			assertTrue(returnedMap.containsKey("unit"), "La clave unit tiene que estar en el mapa");
 			assertTrue(returnedMap.containsKey("description"), "La clave description tiene que estar en el mapa");
 			// Se comprueba que los indicadores incluyen los limites definidos
-			assertTrue(returnedMap.containsKey(underTest.OK_LIMIT), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey(underTest.WARNING_LIMIT), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey(underTest.CRITICAL_LIMIT), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("limits.ok"), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("limits.warning"), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("limits.critical"), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
 		} catch (FileNotFoundException e) {
 			fail("No debería devolver esta excepción");
 		} catch (Exception e) {

@@ -18,6 +18,17 @@ public class MetricConfiguration implements MetricConfigurationI {
 
 	private static Logger log = Logger.getLogger(Checker.class.getName());
 
+	/**
+	 * Método privado que verifica si una métrica está definida en un fichero de
+	 * configuración determinado y si efectivamente tiene el tipo esperado
+	 * 
+	 * @param metricName String con el nombre de la métrica a buscar
+	 * @param metricType String con el tipo de la métrica
+	 * @param isr        InputStreamReader del fichero de configuración
+	 * @return Mapa de parámetros de la métrica, siempre que exista y sea del tipo
+	 *         especificado
+	 * @throws FileNotFoundException
+	 */
 	private HashMap<String, String> isDefinedMetric(String metricName, String metricType, InputStreamReader isr)
 			throws FileNotFoundException {
 
@@ -40,6 +51,8 @@ public class MetricConfiguration implements MetricConfigurationI {
 				log.info("tipo: " + metrics.get(i).asJsonObject().getString("type"));
 				if (metrics.get(i).asJsonObject().getString("type").equals(metricType)) {
 					metricDefinition = new HashMap<String, String>();
+					metricDefinition.put("name", metricName);
+					metricDefinition.put("type", metricType);
 					metricDefinition.put("description", metrics.get(i).asJsonObject().getString("description"));
 					metricDefinition.put("unit", metrics.get(i).asJsonObject().getString("unit"));
 				}
@@ -50,6 +63,14 @@ public class MetricConfiguration implements MetricConfigurationI {
 		return metricDefinition;
 	}
 
+	/**
+	 * Obtiene los datos de una métrica en un fichero de configuración
+	 * 
+	 * @param metricName String con el nombre de la métrica buscada
+	 * @param isr        InputStreamReader del fichero de configuración
+	 * @return Mapa con las características de la métrica
+	 * @throws FileNotFoundException
+	 */
 	private HashMap<String, String> getMetric(String metricName, InputStreamReader isr) throws FileNotFoundException {
 
 		HashMap<String, String> metricDefinition = null;
