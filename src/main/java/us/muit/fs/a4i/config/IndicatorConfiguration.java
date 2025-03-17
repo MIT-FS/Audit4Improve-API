@@ -26,12 +26,24 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
  *
  */
 public class IndicatorConfiguration implements IndicatorConfigurationI {
+	 /**
+     * El creador de IndicatorConfiguration tiene que indicar los nombres de los ficheros de métricas por defecto y del cliente
+     * @param defaultRI nombre del fichero de métricas por defecto
+     * @param appRI nombre del fichero de métricas definido por el cliente
+     */
+	public IndicatorConfiguration(String defaultRI, String appRI) {
+		super();
+		this.defaultRI = defaultRI;
+		this.appRI = appRI;
+	}
 
 	private static Logger log = Logger.getLogger(Checker.class.getName());
 
 	private String CRITICAL_LIMIT = "limits.critical";
 	private String WARNING_LIMIT = "limits.warning";
 	private String OK_LIMIT = "limits.ok";
+	private String defaultRI;
+	private String appRI;
 
 	@Override
 	/**
@@ -53,15 +65,15 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 		HashMap<String, String> indicatorDefinition = null;
 		log.info("Checker solicitud de búsqueda indicador " + name);
 
-		String filePath = "/" + Context.getDefaultRI();
+		String filePath = "/" + defaultRI;
 		log.info("Buscando el archivo " + filePath);
 		InputStream is = this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream " + is + " para " + filePath);
 		InputStreamReader isr = new InputStreamReader(is);
 
 		indicatorDefinition = isDefinedIndicator(name, type, isr);
-		if ((indicatorDefinition == null) && Context.getAppRI() != null) {
-			is = new FileInputStream(Context.getAppRI());
+		if ((indicatorDefinition == null) && appRI != null) {
+			is = new FileInputStream(appRI);
 			isr = new InputStreamReader(is);
 			indicatorDefinition = isDefinedIndicator(name, type, isr);
 		}
@@ -135,7 +147,7 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 
 		List<String> allmetrics = new ArrayList<String>();
 
-		String filePath = "/" + Context.getDefaultRI();
+		String filePath = "/" + defaultRI;
 		log.info("Buscando el archivo " + filePath);
 		InputStream is = this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream " + is + " para " + filePath);
@@ -155,8 +167,8 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 			log.info("Añado nombre: " + metrics.get(i).asJsonObject().getString("name"));
 			allmetrics.add(metrics.get(i).asJsonObject().getString("name"));
 		}
-		if (Context.getAppRI() != null) {
-			is = new FileInputStream(Context.getAppRI());
+		if (appRI != null) {
+			is = new FileInputStream(appRI);
 			isr = new InputStreamReader(is);
 			reader = Json.createReader(isr);
 			confObject = reader.readObject();

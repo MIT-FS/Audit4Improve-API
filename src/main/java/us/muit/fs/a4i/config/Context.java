@@ -51,7 +51,8 @@ import us.muit.fs.a4i.model.entities.Font;
  * configuradas sólo por la clase context
  * </p>
  * <p>
- * Sigue el patrón singleton
+ * Sigue el patrón singleton. Context tiene la responsabilidad de crear Checker, es decir, debe seleccionar el IndicatorConfiguration y el MetricConfiguration adecuados al contexto.
+ * Se crean la primera vez que se solicita Context, por lo que los ficheros de configuración no se pueden cambiar "en caliente", sólo al inicio de la ejecución
  * </p>
  * 
  * @author Isabel Román
@@ -102,11 +103,10 @@ public class Context {
 	 * 
 	 * @throws IOException
 	 */
-	private Context() throws IOException {
-		setProperties();
+	private Context(Checker checker) throws IOException {
+		setProperties();	
+		this.checker = checker;
 		log.info("Propiedades del contexto establecidas");
-		checker = new Checker();
-		log.info("Checker creado");
 	}
 
 	/**
@@ -119,6 +119,7 @@ public class Context {
 	 *                 la aplicación cliente
 	 */
 	public static void setAppRI(String filename) {
+		log.fine("Fichero configuración de métricas establecido "+filename);
 		appFile = filename;
 	}
 
@@ -158,9 +159,22 @@ public class Context {
 		 * Si no está creada crea la instancia única con las propiedades por defecto
 		 */
 		if (contextInstance == null) {
-			contextInstance = new Context();
+			Checker checker=createChecker();
+			contextInstance = new Context(checker);
 		}
 		return contextInstance;
+	}
+	/**
+	 * Método responsable de seleccionar el IndicatorConfiguration y el MetricConfiguration adecuado al contexto
+	 * DEUDA TÉCNICA:
+	 * En esta versión al crear el checker no hay ninguna comprobación de contexto, pero en el futuro deberá primero examinarse las propiedas de configuración para decidir que configuradores hay que crear. 
+	 * @return
+	 */
+	static private Checker createChecker(){
+		IndicatorConfigurationI indConf=new IndicatorConfiguration(Context.getDefaultRI(),Context.getAppRI());
+		MetricConfigurationI metConf=new MetricConfiguration(Context.getDefaultRI(),Context.getAppRI());
+		log.info("Creados los configuradores de métricas e indicadores, se crea checker");
+		return new Checker(metConf,indConf);
 	}
 
 	/**
@@ -178,7 +192,7 @@ public class Context {
 		 * Vuelve a leer las propiedades incluyendo las establecidas por la aplicación
 		 */
 		appConfFile = appConPath;
-
+		log.fine("Fichero configuración de la API establecido "+appConPath);
 		// customFile=System.getenv("APP_HOME")+customFile;
 		// Otra opción, Usar una variable de entorno para localizar la ruta de
 		// instalación y de ahí coger el fichero de configuración

@@ -19,10 +19,12 @@ public class Checker {
 
 	private MetricConfigurationI metricConf;
 	private IndicatorConfigurationI indiConf;
-
-	Checker() {
-		this.metricConf = new MetricConfiguration();
-		this.indiConf = new IndicatorConfiguration();
+/**
+ * El constructor recibe los objetos configuradores, que podrán ser diferentes según el contexto.
+ */
+	Checker(MetricConfigurationI metricConf, IndicatorConfigurationI indiConf) {
+		this.metricConf = metricConf;
+		this.indiConf = indiConf;
 	}
 
 	/**

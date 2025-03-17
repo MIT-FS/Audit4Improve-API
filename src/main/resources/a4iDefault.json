@@ -304,6 +304,12 @@
 			"description": "Balance de equipos y open issues",
 			"unit": "ratio",
 			"limits": { "ok": 0.2, "warning": 0.6, "critical": 0.8 }
+		},
+			{
+			"name": "fixTime",
+			"type": "java.lang.Double",
+			"description": "Tiempo para arreglos",
+			"unit": "ratio"
 		}
 	]
 }

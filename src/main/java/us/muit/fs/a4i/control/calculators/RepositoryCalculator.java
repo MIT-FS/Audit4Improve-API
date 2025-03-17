@@ -1,7 +1,7 @@
 /**
  * 
  */
-package us.muit.fs.a4i.control.strategies;
+package us.muit.fs.a4i.control.calculators;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,21 +45,25 @@ public class RepositoryCalculator implements IndicatorsCalculator {
 		 */
 		IndicatorStrategy indicatorStrategy = strategies.get(indicatorName);
 		List<String> requiredMetrics = indicatorStrategy.requiredMetrics();
-		log.info("Las m�tricas necesarias son: " + requiredMetrics.toString());
+		log.fine("Las métricas necesarias son: " + requiredMetrics.toString());
 		List<ReportItemI> metrics = reportManager.getReport().getAllMetrics().stream().collect(Collectors.toList());
 		List<String> metricsName = metrics.stream().map(ReportItemI::getName).collect(Collectors.toList());
-		if (metricsName.containsAll(requiredMetrics)) {
-			try {
-				// ¡¡Faltaba añadir el indicador al informe!!
-				reportManager.getReport().addIndicator(indicatorStrategy.calcIndicator(metrics));
-				log.info("Añadido al informe indicador");
-			} catch (NotAvailableMetricException e) {
-				log.info("No se han proporcionado las m�tricas necesarias");
-				e.printStackTrace();
+		for (String metric : requiredMetrics) {
+			if (!metricsName.contains(metric)) {
+				log.fine("se añade la métrica " + metric + " que no estaba disponible aún en el informe");
+				reportManager.addMetric(metric);
 			}
-		} else {
-			log.info("No se han proporcionado las metricas necesarias");
 		}
+
+		try {
+			// añadir el indicador al informe
+			reportManager.getReport().addIndicator(indicatorStrategy.calcIndicator(reportManager.getReport().getAllMetrics().stream().collect(Collectors.toList())));
+			log.info("Añadido al informe indicador");
+		} catch (NotAvailableMetricException e) {
+			log.info("No se han proporcionado todas las métricas necesarias");
+			e.printStackTrace();
+		}
+
 	}
 
 	/**

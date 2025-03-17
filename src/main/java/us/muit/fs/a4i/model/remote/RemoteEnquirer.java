@@ -28,7 +28,9 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
  *
  */
 public interface RemoteEnquirer {
-
+	/**
+	 * Hasta el momento sólo se ha desarrollado la conexión con github como backend
+	 */
 	public static enum RemoteType {
 		GITHUB
 	}

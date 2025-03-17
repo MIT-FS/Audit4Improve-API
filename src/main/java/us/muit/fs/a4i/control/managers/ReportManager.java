@@ -1,13 +1,15 @@
 /**
  * 
  */
-package us.muit.fs.a4i.control;
+package us.muit.fs.a4i.control.managers;
 
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import us.muit.fs.a4i.config.Context;
-import us.muit.fs.a4i.control.strategies.RepositoryCalculator;
+import us.muit.fs.a4i.control.IndicatorsCalculator;
+import us.muit.fs.a4i.control.ReportManagerI;
+import us.muit.fs.a4i.control.calculators.RepositoryCalculator;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItemI;
@@ -19,7 +21,7 @@ import us.muit.fs.a4i.persistence.ReportFormater;
 import us.muit.fs.a4i.persistence.ReportFormaterI;
 
 /**
- * @author Isabel Rom�n
+ * @author Isabel Román
  *
  */
 public class ReportManager implements ReportManagerI {

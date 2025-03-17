@@ -15,8 +15,21 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 public class MetricConfiguration implements MetricConfigurationI {
+	
+    /**
+     * El creador de MetricConfiguration tiene que indicar los nombres de los ficheros de métricas por defecto y del cliente
+     * @param defaultRI nombre del fichero de métricas por defecto
+     * @param appRI nombre del fichero de métricas definido por el cliente
+     */
+	public MetricConfiguration(String defaultRI, String appRI) {
+		super();
+		this.defaultRI = defaultRI;
+		this.appRI = appRI;
+	}
 
 	private static Logger log = Logger.getLogger(Checker.class.getName());
+	private String defaultRI;
+	private String appRI;
 
 	/**
 	 * Método privado que verifica si una métrica está definida en un fichero de
@@ -106,7 +119,7 @@ public class MetricConfiguration implements MetricConfigurationI {
 
 		HashMap<String, String> metricDefinition = null;
 
-		String filePath = "/" + Context.getDefaultRI();
+		String filePath = "/" + defaultRI;
 		log.info("Buscando el archivo " + filePath);
 		InputStream is = this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream " + is + " para " + filePath);
@@ -120,8 +133,8 @@ public class MetricConfiguration implements MetricConfigurationI {
 		 * En caso de que no estuviera ahí la métrica busco en el fichero de
 		 * configuración de la aplicación
 		 */
-		if ((metricDefinition == null) && Context.getAppRI() != null) {
-			is = new FileInputStream(Context.getAppRI());
+		if ((metricDefinition == null) && appRI != null) {
+			is = new FileInputStream(appRI);
 			isr = new InputStreamReader(is);
 			metricDefinition = isDefinedMetric(name, type, isr);
 		}
@@ -134,7 +147,7 @@ public class MetricConfiguration implements MetricConfigurationI {
 		log.info("Consulta información de la métrica " + name);
 		HashMap<String, String> metricDefinition = null;
 
-		String filePath = "/" + Context.getDefaultRI();
+		String filePath = "/" + defaultRI;
 		log.info("Buscando el archivo " + filePath);
 		InputStream is = this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream " + is + " para " + filePath);
@@ -148,8 +161,8 @@ public class MetricConfiguration implements MetricConfigurationI {
 		 * En caso de que no estuviera ahí la métrica busco en el fichero de
 		 * configuración de la aplicación
 		 */
-		if ((metricDefinition == null) && Context.getAppRI() != null) {
-			is = new FileInputStream(Context.getAppRI());
+		if ((metricDefinition == null) && appRI != null) {
+			is = new FileInputStream(appRI);
 			isr = new InputStreamReader(is);
 			metricDefinition = getMetric(name, isr);
 		}
@@ -163,7 +176,7 @@ public class MetricConfiguration implements MetricConfigurationI {
 
 		List<String> allmetrics = new ArrayList<String>();
 
-		String filePath = "/" + Context.getDefaultRI();
+		String filePath = "/" + defaultRI;
 		log.info("Buscando el archivo " + filePath);
 		InputStream is = this.getClass().getResourceAsStream(filePath);
 		log.info("InputStream " + is + " para " + filePath);
@@ -183,8 +196,8 @@ public class MetricConfiguration implements MetricConfigurationI {
 			log.info("Añado nombre: " + metrics.get(i).asJsonObject().getString("name"));
 			allmetrics.add(metrics.get(i).asJsonObject().getString("name"));
 		}
-		if (Context.getAppRI() != null) {
-			is = new FileInputStream(Context.getAppRI());
+		if (appRI != null) {
+			is = new FileInputStream(appRI);
 			isr = new InputStreamReader(is);
 			reader = Json.createReader(isr);
 			confObject = reader.readObject();

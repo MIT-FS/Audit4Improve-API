@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.exceptions.ReportItemException;
+import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItemI;
 import us.muit.fs.a4i.model.remote.GitHubRepositoryEnquirer;
@@ -210,5 +211,13 @@ class GitHubRepositoryEnquirerTest {
 
 		assertNotNull(reportItem, "Getting the metric (" + metricString + ") failed: reportItem is null");
 		return reportItem;
+	}
+	
+	//Test de construcción del informe (ReportI)
+	@Test
+	void testGetReport() {
+		ReportI report=ghEnquirer.buildReport("MIT-FS/Audit4Improve-API");
+		assertNotNull(report,"No construye el informe");
+		log.info("Informe construido "+report.toString());
 	}
 }

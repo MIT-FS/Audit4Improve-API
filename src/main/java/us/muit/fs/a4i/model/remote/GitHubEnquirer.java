@@ -19,15 +19,20 @@ import us.muit.fs.a4i.model.remote.RemoteEnquirer.RemoteType;
 
 /**
  * <p>
- * Clase abstracta con los métodos comunes a los constructores que recogen la
- * información del servicio GitHub
+ * Clase abstracta con los métodos comunes a los constructores que consultan la
+ * información del servicio GitHub. Usan Github como backend
  * </p>
  * <p>
  * Para las consultas a github se recurre a la API github-API
  * </p>
  * <p>
  * Actualmente sólo incluye el establecimiento del identificador de entidad y la
- * obtención del objeto GitHub para las consultas
+ * obtención del objeto GitHub para las consultas.
+ * </p>
+ * protected Map<String,Function<T,ReportItem>> myQueries; será un mapa de
+ * funciones, en el que la clave es el nombre de la métrica y el valor es la
+ * referencia a la función que permite recuperar esa métrica
+ * <p>
  * </p>
  * 
  * @author Isabel Román
@@ -35,9 +40,9 @@ import us.muit.fs.a4i.model.remote.RemoteEnquirer.RemoteType;
  *
  */
 public abstract class GitHubEnquirer<T> implements RemoteEnquirer {
-	private static Logger log = Logger.getLogger(GitHubEnquirer.class.getName());	
-	protected Map<String,Function<T,ReportItem>> myQueries;
-	private RemoteEnquirer.RemoteType type= RemoteEnquirer.RemoteType.GITHUB;
+	private static Logger log = Logger.getLogger(GitHubEnquirer.class.getName());
+	protected Map<String, Function<T, ReportItem>> myQueries;
+	private RemoteEnquirer.RemoteType type = RemoteEnquirer.RemoteType.GITHUB;
 
 	/**
 	 * <p>
@@ -51,7 +56,7 @@ public abstract class GitHubEnquirer<T> implements RemoteEnquirer {
 	private GitHub github = null;
 
 	public GitHubEnquirer() {
-		myQueries=new HashMap<String,Function<T,ReportItem>>();
+		myQueries = new HashMap<String, Function<T, ReportItem>>();
 	}
 
 	/**
@@ -78,17 +83,24 @@ public abstract class GitHubEnquirer<T> implements RemoteEnquirer {
 		return github;
 	}
 
-	protected void setMetric(String newMetric,Function<T,ReportItem> functionPointer) {
+	/**
+	 * Permite añadir una nueva función de búsqueda de métrica al mapa
+	 * 
+	 * @param newMetric       Nombre de la métrica nueva
+	 * @param functionPointer Referencia a la función que implementa el algoritmo
+	 *                        para recuperar la métrica
+	 */
+	protected void setMetric(String newMetric, Function<T, ReportItem> functionPointer) {
 		myQueries.put(newMetric, functionPointer);
 	}
 
 	public List<String> getAvailableMetrics() {
-		List<String> metrics=new ArrayList<String>(myQueries.keySet());
+		List<String> metrics = new ArrayList<String>(myQueries.keySet());
 		return metrics;
 	}
+
 	public RemoteType getRemoteType() {
 		return type;
 	}
-
 
 }

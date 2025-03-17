@@ -52,7 +52,7 @@ public class TeamsBalanceStrategy implements IndicatorStrategy<Double> {
 				// Se crea el indicador
 				// No se entiende por qué el indicador tiene el mismo nombere que una de las
 				// métricas
-				indicatorReport = new ReportItem.ReportItemBuilder<Double>("teamsBalanceI", teamsBalanceResult)
+				indicatorReport = new ReportItem.ReportItemBuilder<Double>("teamsBalance", teamsBalanceResult)
 						.metrics(Arrays.asList(teamsBalance.get(), repositories.get()))
 						.indicator(IndicatorState.UNDEFINED).build();
 

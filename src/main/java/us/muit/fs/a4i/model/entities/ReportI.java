@@ -77,7 +77,7 @@ public interface ReportI {
 	Collection<ReportItemI> getAllIndicators();
 
 	/**
-	 * A�ade un indicador al informe
+	 * Añaade un indicador al informe
 	 * 
 	 * @param newIndicator nuevo indicador
 	 */

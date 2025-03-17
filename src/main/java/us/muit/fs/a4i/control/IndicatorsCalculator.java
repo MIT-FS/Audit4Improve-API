@@ -4,6 +4,7 @@
 package us.muit.fs.a4i.control;
 
 import us.muit.fs.a4i.exceptions.IndicatorException;
+import us.muit.fs.a4i.exceptions.NotAvailableMetricException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.control.IndicatorStrategy;
 
@@ -26,7 +27,7 @@ public interface IndicatorsCalculator {
 	/**
 	 * <p>
 	 * Calcula el indicador con el nombre que se pasa y lo incluye en el informe Si
-	 * las métricas que necesita no están en el informe las busca y las añade
+	 * las métricas que necesita no están en el informe usa ReportManagerI para localizarla antes
 	 * </p>
 	 * 
 	 * @param indicatorName Nombre del indicador a calcular
@@ -45,6 +46,7 @@ public interface IndicatorsCalculator {
 	 * @param reportManager Informe sobre el que realizar el c�lculo
 	 * @throws IndicatorException Si el tipo del informe no coincide con el de la
 	 *                            calculadora
+	 * @throws NotAvailableMetricException Si falta alguna métrica en el informe
 	 */
 	public void calcAllIndicators(ReportManagerI reportManager) throws IndicatorException;
 

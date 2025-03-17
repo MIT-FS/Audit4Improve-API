@@ -23,8 +23,8 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
  * Estrategia de indicador equipo 6 del curso 23/24, no coincide con lo que
  * decían ni las métricas están incluidas en ningún Enquirer Aparece una clase
  * Equirer MetricasG6.java pero es una copia incompleta del que se les da y no
- * añade los indicadores que aquí aparecen REMEMBER: metrics must be included in
- * a4iDefault.json
+ * añade los indicadores que aquí aparecen 
+ * REMEMBER: metrics and indicators must be included in a4iDefault.json
  */
 
 public class FixTimeStrategy implements IndicatorStrategy<Double> {

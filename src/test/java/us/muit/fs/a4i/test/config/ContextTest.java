@@ -27,15 +27,12 @@ import us.muit.fs.a4i.config.Context;
 import us.muit.fs.a4i.model.entities.IndicatorI.IndicatorState;
 import us.muit.fs.a4i.model.entities.Font; // Clase que sustituye a java.awt.Font
 
-
-
-
 /**
- * @author Isabel Román
- * Verificación de la clase Context cuando sólo se utiliza el fichero de configuración por defecto (a4i.conf)
+ * @author Isabel Román Verificación de la clase Context cuando sólo se utiliza
+ *         el fichero de configuración por defecto (a4i.conf)
  */
 class ContextTest {
-	private static Logger log = Logger.getLogger(CheckerTest.class.getName());
+	private static Logger log = Logger.getLogger(ContextTest.class.getName());
 	/**
 	 * Ruta al fichero de configuración de indicadores y métricas establecidos por
 	 * la aplicación
@@ -49,13 +46,13 @@ class ContextTest {
 
 	/**
 	 * @throws java.lang.Exception
-	
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-		appConfPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator
-				+ "appConfTest.json";
-		appPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "appTest.conf";
-	} */
+	 * 
+	 * @BeforeAll static void setUpBeforeClass() throws Exception { appConfPath =
+	 *            "src" + File.separator + "test" + File.separator + "resources" +
+	 *            File.separator + "appConfTest.json"; appPath = "src" +
+	 *            File.separator + "test" + File.separator + "resources" +
+	 *            File.separator + "appTest.conf"; }
+	 */
 
 	/**
 	 * @throws java.lang.Exception
@@ -76,7 +73,7 @@ class ContextTest {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
-		//Ejecutar tras cada test
+		// Ejecutar tras cada test
 	}
 
 	/**
@@ -95,6 +92,7 @@ class ContextTest {
 		}
 
 	}
+
 	/**
 	 * Test method for {@link us.muit.fs.a4i.config.Context#getChecker()}.
 	 */
@@ -140,7 +138,11 @@ class ContextTest {
 	}
 
 	/**
-	 * <p>Este test permite verificar que se lee bien la fuente, además es independiente del orden de ejecución del resto de test. La complejidad de la verifiación está impuesta por estar probando un singleton</p>
+	 * <p>
+	 * Este test permite verificar que se lee bien la fuente, además es
+	 * independiente del orden de ejecución del resto de test. La complejidad de la
+	 * verifiación está impuesta por estar probando un singleton
+	 * </p>
 	 * Test method for {@link us.muit.fs.a4i.config.Context#getDefaultFont()}.
 	 */
 	@Test
@@ -149,15 +151,22 @@ class ContextTest {
 			Font font = null;
 			String color; // No entiendo cómo usarlo, ¿para darle valor luego?//
 			// Uso esto para ver los tipos de fuentes de los que dispongo
-			//String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-			//log.info("listado de fuentes " + Arrays.toString(fontNames));
+			// String[] fontNames =
+			// GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+			// log.info("listado de fuentes " + Arrays.toString(fontNames));
 			font = Context.getContext().getDefaultFont();
 			assertNotNull(font, "No se ha inicializado bien la fuente");
-			//Al ser Context un singleton una vez creada la instancia no se puede eliminar "desde fuera"
-			//De manera que el valor de la fuente depende del orden en el que se ejecuten los test, y para que el test sea independiente de eso la verificación comprueba los dos posibles valores
-			assertEquals(Color.BLACK.toString(),font.getColor().toString(),"No es el color de fuente especificado en el fichero de propiedades");
-			assertEquals(10,font.getFont().getSize(),"No es el tamaño de fuente especificado en el fichero de propiedades");
-			assertEquals("Arial",font.getFont().getFamily(),"No es el tipo de fuente especificado en el fichero de propiedades");
+			// Al ser Context un singleton una vez creada la instancia no se puede eliminar
+			// "desde fuera"
+			// De manera que el valor de la fuente depende del orden en el que se ejecuten
+			// los test, y para que el test sea independiente de eso la verificación
+			// comprueba los dos posibles valores
+			assertEquals(Color.BLACK.toString(), font.getColor().toString(),
+					"No es el color de fuente especificado en el fichero de propiedades");
+			assertEquals(10, font.getFont().getSize(),
+					"No es el tamaño de fuente especificado en el fichero de propiedades");
+			assertEquals("Arial", font.getFont().getFamily(),
+					"No es el tipo de fuente especificado en el fichero de propiedades");
 
 		} catch (IOException e) {
 			fail("No debería devolver esta excepción");
@@ -167,26 +176,29 @@ class ContextTest {
 
 	/**
 	 * Test method for {@link us.muit.fs.a4i.config.Context#getMetricFont()}.
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	@DisplayName("Verificación lectura de configuración de fuente de métricas")
-	@Test	
-	void testGetMetricFont(){
+	@Test
+	void testGetMetricFont() {
 		try {
-	
-		Font font = null;
-		
-		font = Context.getContext().getMetricFont();
-		assertNotNull(font, "No se ha inicializado bien la fuente");
-		assertEquals(Color.GREEN.toString(),font.getColor().toString(),"No es el color de fuente especificado en el fichero de propiedades");
-		assertTrue(10 == font.getFont().getSize(),"No es el tamaño de fuente especificado en el fichero de propiedades");
-		assertEquals(java.awt.Font.SERIF,font.getFont().getFamily(),"No es el tipo de fuente especificado en el fichero de propiedades");
 
-		
-	}catch (IOException e) {
-		fail("No debería devolver esta excepción");
-		e.printStackTrace();
-		}	
+			Font font = null;
+
+			font = Context.getContext().getMetricFont();
+			assertNotNull(font, "No se ha inicializado bien la fuente");
+			assertEquals(Color.GREEN.toString(), font.getColor().toString(),
+					"No es el color de fuente especificado en el fichero de propiedades");
+			assertTrue(10 == font.getFont().getSize(),
+					"No es el tamaño de fuente especificado en el fichero de propiedades");
+			assertEquals(java.awt.Font.SERIF, font.getFont().getFamily(),
+					"No es el tipo de fuente especificado en el fichero de propiedades");
+
+		} catch (IOException e) {
+			fail("No debería devolver esta excepción");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -198,41 +210,52 @@ class ContextTest {
 	void testGetIndicatorFont() {
 		try {
 			Font font = null;
-			
-			// Se le solicita la fuente del estado indefinido, que tendrá los valores por defecto Font.Default.xxx al no estar 
-			// definidas sus propiedades en el fichero de configuración utilizados en los tests.
+
+			// Se le solicita la fuente del estado indefinido, que tendrá los valores por
+			// defecto Font.Default.xxx al no estar
+			// definidas sus propiedades en el fichero de configuración utilizados en los
+			// tests.
 			font = Context.getContext().getIndicatorFont(IndicatorState.OK);
 			assertNotNull(font, "No se ha inicializado bien la fuente");
-			// El nombre o tipo de la fuente podrá ser Arial o Times según el momento en el que se realicen los tests.
-			log.info("familia "+font.getFont().getFamily());
-			assertEquals("Serif",font.getFont().getFamily(),"No es el tipo de fuente especificado en el fichero de propiedades");		
-			assertEquals(Color.BLACK,font.getColor(),"No es el color de fuente especificado en el fichero de propiedades");
-			assertEquals(10,font.getFont().getSize(),"No es el tamaño de fuente especificado en el fichero de propiedades");
-			
-			// Se le solicita al contexto la fuente del estao "CRITICAL", cuyas propiedades están definidas en el 
+			// El nombre o tipo de la fuente podrá ser Arial o Times según el momento en el
+			// que se realicen los tests.
+			log.info("familia " + font.getFont().getFamily());
+			assertEquals("Serif", font.getFont().getFamily(),
+					"No es el tipo de fuente especificado en el fichero de propiedades");
+			assertEquals(Color.BLACK, font.getColor(),
+					"No es el color de fuente especificado en el fichero de propiedades");
+			assertEquals(10, font.getFont().getSize(),
+					"No es el tamaño de fuente especificado en el fichero de propiedades");
+
+			// Se le solicita al contexto la fuente del estao "CRITICAL", cuyas propiedades
+			// están definidas en el
 			// fichero de configuración por defecto.
 			font = Context.getContext().getIndicatorFont(IndicatorState.CRITICAL);
-			
+
 			assertNotNull(font, "No se ha inicializado bien la fuente");
-			
-			
-			log.info("Datos fuente estado CRITICAL familia "+font.getFont().getFamily()+" tamano "+font.getFont().getSize()+" color "+font.getColor());
-	
-			assertTrue(font.getFont().getFamily().equals("Arial"),"No es el tipo de fuente especificado en el fichero de propiedades");
-			assertEquals(Color.RED,font.getColor(),"No es el color de fuente especificado en el fichero de propiedades");
-			assertEquals(12,font.getFont().getSize(),"No es el tamaño de fuente especificado en el fichero de propiedades");
-			
-			} catch (IOException e) {
-				fail("No debería devolver esta excepción");
-				e.printStackTrace();
-			}
+
+			log.info("Datos fuente estado CRITICAL familia " + font.getFont().getFamily() + " tamano "
+					+ font.getFont().getSize() + " color " + font.getColor());
+
+			assertTrue(font.getFont().getFamily().equals("Arial"),
+					"No es el tipo de fuente especificado en el fichero de propiedades");
+			assertEquals(Color.RED, font.getColor(),
+					"No es el color de fuente especificado en el fichero de propiedades");
+			assertEquals(12, font.getFont().getSize(),
+					"No es el tamaño de fuente especificado en el fichero de propiedades");
+
+		} catch (IOException e) {
+			fail("No debería devolver esta excepción");
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Test method for {@link us.muit.fs.a4i.config.Context#getPropertiesNames()}.
-	 * @throws IOException
-	 * Este método de verificación está incompleto, deberá ser completado commo ejercicio
-	 * Verificar que los nombres son correctos 
+	 * 
+	 * @throws IOException Este método de verificación está incompleto, deberá ser
+	 *                     completado commo ejercicio Verificar que los nombres son
+	 *                     correctos
 	 */
 	@DisplayName("Verificación obtención nombre de propiedades configuradas")
 	@Test

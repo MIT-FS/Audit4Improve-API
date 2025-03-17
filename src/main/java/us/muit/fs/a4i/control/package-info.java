@@ -1,6 +1,7 @@
 /**
  * <p>
  * Clases e interfaces controladoras
+ * Facilitan el cálculo de indicadores y la gestión de informes
  * </p>
  * <img src=
  * "https://raw.githubusercontent.com/MIT-FS/Audit4Improve-API/gh-pages/doc-files/controlPackage.gif"

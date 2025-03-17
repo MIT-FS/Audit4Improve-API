@@ -44,27 +44,6 @@ public class ConventionsCompliantStrategyTest {
         calculation = (0.2 * 0.86) + (0.2 * 0) + (0.2 * 0.92) + (0.2 * 0) + (0.2 * 0.98);
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
     // MARK: - Test methods
     /**
      * The indicator is calculated based on the following metrics:

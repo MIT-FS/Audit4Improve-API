@@ -36,9 +36,8 @@ import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
 
 /**
- * @author Isabel Román Deuda técnica: debería seguir la misma filosofía que
- *         GitHubOrganizationEnquirer para evitar la replicación de código deuda
- *         técnica: las métricas tras la etiqueta //equipo 3 tienen problemas,
+ * @author Isabel Román y alumnos de factoría software del MUIT de la ETSI (US)
+ *         deuda técnica: las métricas tras la etiqueta //equipo 3 tienen problemas,
  *         no están acordes al indicador para el que fueron creadas RECUERDA:
  *         las métricas tienen que estar incluidas en el fichero de
  *         configuración a4iDefault.json
@@ -53,7 +52,6 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 	 * para trazar el código
 	 */
 	private static Logger log = Logger.getLogger(GitHubRepositoryEnquirer.class.getName());
-//	protected Map<String,Function<GHRepository,ReportItem>> myQueries=new HashMap<String,Function<GHRepository,ReportItem>>();
 
 	/**
 	 * <p>
@@ -63,6 +61,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 
 	public GitHubRepositoryEnquirer() {
 		super();
+		//para cada métrica se añade en el mapa la función que la consulta y como clave el nombre de la métrica
 		myQueries.put("subscribers", GitHubRepositoryEnquirer::getSubscribers);
 		myQueries.put("forks", GitHubRepositoryEnquirer::getForks);
 		myQueries.put("watchers", GitHubRepositoryEnquirer::getWatchers);
@@ -78,23 +77,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 		myQueries.put("totalDeletions", GitHubRepositoryEnquirer::getTotalDeletions);
 		myQueries.put("collaborators", GitHubRepositoryEnquirer::getCollaborators);
 		myQueries.put("ownerCommits", GitHubRepositoryEnquirer::getOwnerCommits);
-		/*
-		metricNames.add("subscribers");
-		metricNames.add("forks");
-		metricNames.add("watchers");
-		metricNames.add("starts");
-		metricNames.add("issues");
-		metricNames.add("closedIssues");
-		metricNames.add("openIssues");
-		metricNames.add("creation");
-		metricNames.add("lastUpdated");
-		metricNames.add("lastPush");
-		metricNames.add("totalAdditions");
-		
-		metricNames.add("totalDeletions");
-		metricNames.add("collaborators");
-		metricNames.add("ownerCommits");
-		*/
+
 		// equipo3
 		myQueries.put("issuesLastMonth", GitHubRepositoryEnquirer::getIssuesLastMonth);
 		myQueries.put("closedIssuesLastMonth", GitHubRepositoryEnquirer::getClosedIssuesLastMonth);
@@ -118,7 +101,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 		myQueries.put("gitFlowBranches", GitHubRepositoryEnquirer::getGitFlowBranches);
 		myQueries.put("conventionalPullRequests", GitHubRepositoryEnquirer::getConventionalPullRequests);
 			
-		log.info("A�adidas m�tricas al GHRepositoryEnquirer");
+		log.info("Añadidas métricas al GHRepositoryEnquirer");
 	}
 
 	/**
@@ -127,7 +110,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 	@Override
 	public ReportI buildReport(String repositoryId) {
 		ReportI report = null;
-		log.info("Invocado el m�todo que construye un objeto RepositoryReport");
+		log.info("Invocado el método que construye un objeto RepositoryReport");
 		/**
 		 * <p>
 		 * Información sobre el repositorio obtenida de GitHub
@@ -147,66 +130,41 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 
 		try {
 			log.info("Nombre repo = " + repositoryId);
-
+/*
 			GitHub gb = getConnection();
 			repo = gb.getRepository(repositoryId);
 			log.info("El repositorio es de " + repo.getOwnerName() + " Y su descripción es " + repo.getDescription());
 			log.info("leído " + repo);
+			*/
 			report = new Report(repositoryId);
 
 			/**
 			 * Métricas más elaboradas, requieren más "esfuerzo"
 			 */
 
-			report.addMetric(getTotalAdditions(repo));
+			report.addMetric(getMetric("totalAdditions", repositoryId));
 			log.info("Incluida metrica totalAdditions ");
 
-			report.addMetric(getTotalDeletions(repo));
+			report.addMetric(getMetric("totalDeletions", repositoryId));
 			log.info("Incluida metrica totalDeletions ");
 
 			/**
 			 * Métricas directas de tipo conteo
 			 */
 
-			report.addMetric(getSubscribers(repo));
+			report.addMetric(getMetric("subscribers", repositoryId));
 			log.info("Incluida metrica suscribers ");
 
-			report.addMetric(getCollaborators(repo));
-			log.info("Incluida metrica collaborators ");
-
-			report.addMetric(getOwnerCommits(repo));
-			log.info("Incluida metrica ownerCommits ");
-
-			report.addMetric(getForks(repo));
-			log.info("Incluida metrica forks ");
-
-			report.addMetric(getWatchers(repo));
-			log.info("Incluida metrica watchers ");
-
-			report.addMetric(getStars(repo));
-			log.info("Incluida metrica stars ");
-
-			report.addMetric(getIssues(repo));
-			log.info("Incluida metrica issues ");
-
-			report.addMetric(getOpenIssues(repo));
-			log.info("Incluida metrica openIssues ");
-
-			report.addMetric(getClosedIssues(repo));
-			log.info("Incluida metrica closedIssues ");
-
+				
 			/**
 			 * Métricas directas de tipo fecha
 			 */
-			report.addMetric(getCreation(repo));
+			report.addMetric(getMetric("creation", repositoryId));
 			log.info("Incluida metrica creation ");
 
-			report.addMetric(getLastPush(repo));
+			report.addMetric(getMetric("lastPush", repositoryId));
 			log.info("Incluida metrica lastPush ");
-
-			report.addMetric(getLastUpdated(repo));
-			log.info("Incluida metrica lastUpdates ");
-
+		
 		} catch (Exception e) {
 			log.severe("Problemas en la conexión " + e);
 		}
@@ -256,104 +214,6 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 			throw new MetricException("Intenta obtener una métrica sin haber obtenido los datos del repositorio");
 		}
 		metric=myQueries.get(metricName).apply(remoteRepo);
-		/*
-		switch (metricName) {
-		case "totalAdditions":
-			metric = getTotalAdditions(remoteRepo);
-			break;
-		case "totalDeletions":
-			metric = getTotalDeletions(remoteRepo);
-			break;
-		case "starts":
-			metric = getStars(remoteRepo);
-			break;
-		case "forks":
-			metric = getForks(remoteRepo);
-			break;
-		case "watchers":
-			metric = getWatchers(remoteRepo);
-			break;
-		case "subscribers":
-			metric = getSubscribers(remoteRepo);
-			break;
-		case "issues":
-			metric = getIssues(remoteRepo);
-			break;
-		case "creation":
-			metric = getCreation(remoteRepo);
-			break;
-		case "lastUpdated":
-			metric = getLastUpdated(remoteRepo);
-			break;
-		case "lastPush":
-			metric = getLastPush(remoteRepo);
-			break;
-		case "collaborators":
-			metric = getCollaborators(remoteRepo);
-			break;
-		case "ownerCommits":
-			metric = getOwnerCommits(remoteRepo);
-			break;
-		case "openIssues":
-			metric = getOpenIssues(remoteRepo);
-			break;
-		case "closedIssues":
-			metric = getClosedIssues(remoteRepo);
-			break;
-		// equipo 3
-		case "issuesLastMonth":
-			metric = getIssuesLastMonth(remoteRepo);
-			break;
-		case "closedIssuesLastMonth":
-			metric = getClosedIssuesLastMonth(remoteRepo);
-			break;
-		case "meanClosedIssuesLastMonth":
-			metric = getMeanClosedIssuesLastMonth(remoteRepo);
-			break;
-		case "issues4DevLastMonth":
-			metric = issues4DevLastMonth(remoteRepo);
-			break;
-		// equipo 4
-		case "totalPullReq":
-			metric = getTotalPullReq(remoteRepo);
-			break;
-		case "closedPullReq":
-			metric = getClosedPullReq(remoteRepo);
-			break;
-		case "PRAcceptedLastYear":
-			metric = getPRAcceptedLastYear(remoteRepo);
-			break;
-		case "PRAcceptedLastMonth":
-			metric = getPRAcceptedLastMonth(remoteRepo);
-			break;
-		case "PRRejectedLastYear":
-			metric = getPRRejectedLastYear(remoteRepo);
-			break;
-		case "PRRejectedLastMonth":
-			metric = getPRRejectedLastMonth(remoteRepo);
-			break;
-		// equipo 1
-		// Begin: RepositoryIndicatorStrategy metrics
-		case "conventionalCommits":
-			metric = getConventionalCommits(remoteRepo);
-			break;
-		case "commitsWithDescription":
-			metric = getCommitsWithDescription(remoteRepo);
-			break;
-		case "issuesWithLabels":
-			metric = getIssuesWithLabels(remoteRepo);
-			break;
-		case "gitFlowBranches":
-			metric = getGitFlowBranches(remoteRepo);
-			break;
-		case "conventionalPullRequests":
-			metric = getConventionalPullRequests(remoteRepo);
-			break;
-		default:
-			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
-		}
-		*/
-
 		return metric;
 	}
 
@@ -372,16 +232,17 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 	 * @throws MetricException Intenta crear una métrica no definida
 	 */
 	static private ReportItem getTotalAdditions(GHRepository remoteRepo) throws MetricException {
+		log.fine("buscando totaladditions");
 		ReportItem metric = null;
 
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
-
+        log.fine("estadisticas "+data.toString());
 		List<CodeFrequency> codeFreq;
 		try {
 			codeFreq = data.getCodeFrequency();
 
 			int additions = 0;
-
+             
 			for (CodeFrequency freq : codeFreq) {
 
 				if (freq.getAdditions() != 0) {
@@ -397,7 +258,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 			metric = builder.build();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			log.warning("Problemas al leer codefrequency en getTotalAdditions");
 			e.printStackTrace();
 		}

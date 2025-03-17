@@ -46,7 +46,7 @@ class FixTimeStrategyTest {
 		ReportItemI<Double> result = strategy.calcIndicator(metrics);
 
 		// Comprobamos que el resultado es el esperado
-		Assertions.assertEquals("ProcesoDeIssues", result.getName());
+		Assertions.assertEquals("fixTime", result.getName());
 		Assertions.assertEquals(3.0, result.getValue());
 		Assertions.assertDoesNotThrow(() -> strategy.calcIndicator(metrics));
 
