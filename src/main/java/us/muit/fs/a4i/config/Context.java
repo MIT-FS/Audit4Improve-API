@@ -4,6 +4,7 @@
 package us.muit.fs.a4i.config;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,16 +20,31 @@ import us.muit.fs.a4i.model.entities.Font;
  * Clase para la gestión de los parámetros de contexto
  * </p>
  * <p>
- * El objetivo de Context es el manejo de la configuración
+ * El objetivo de Context es el manejo de la configuración de la api. La
+ * configuración por defecto se separa en dos ficheros principales:
+ * <ol>
+ * <li>a4i.conf: contiene la configuración por defecto de la api. Permite
+ * seleccionar el tipo de remoto con el que se quiere interaccionar, el tipo de
+ * persistencia de los informes y características de presentación de estos
+ * informes.</li>
+ * <li>a4iDefault.json: contiene la configuración por defecto de métricas e
+ * indicadores. Esta configuración se maneja en la clase checker</li>
+ * </ol>
+ * Hay una configuración embebida en el jar, es decir, una configuración por
+ * defecto. Pero esta puede ser modificada si la aplicación cliente define
+ * ficheros de configuración personalizados.
  * </p>
  * <p>
- * En el estado actual Contexto sólo es una aproximación a las posiblidades de
+ * En el estado actual Context es una aproximación a las posiblidades de
  * configuración. Se presentan posibilidades para:
  * </p>
  * <ul>
- * <li>Localizar el fichero en la carpeta resources, incluida en el jar</li>
- * <li>Localizar el fichero en el home de usuario</li>
- * <li>Localizar el fichero en una ruta introducida de forma "programada"</li>
+ * <li>Localizar el fichero a4i.conf en la carpeta resources, incluida en el
+ * jar</li>
+ * <li>Localizar el fichero *.conf (configuración personalizada) en el home de
+ * usuario</li>
+ * <li>Localizar el fichero *.conf (configuración personalizada) en una ruta
+ * introducida de forma "programada"</li>
  * </ul>
  * <p>
  * Único punto para acceso a variables que pueden ser leídas por cualquiera,
@@ -112,7 +128,8 @@ public class Context {
 	 * cliente/aplicación
 	 * </p>
 	 * 
-	 * @return ruta del fichero de configuración de métricas e indicadores de la aplicación cliente
+	 * @return ruta del fichero de configuración de métricas e indicadores de la
+	 *         aplicación cliente
 	 */
 	public static String getAppRI() {
 		return appFile;
@@ -169,9 +186,9 @@ public class Context {
 		getContext().properties.load(new FileInputStream(appConPath));
 		log.info("Las nuevas propiedades son " + getContext().properties);
 	}
-	
-	public static String getAppConf() throws IOException {		
-		return appConfFile;		
+
+	public static String getAppConf() throws IOException {
+		return appConfFile;
 	}
 
 	/**
@@ -210,9 +227,9 @@ public class Context {
 
 	/**
 	 * <p>
-	 * Lee las propiedades adecuadas, como color, tamaño,
-	 * tipo... y construir un objeto Font Si no se ha establecido un valor por
-	 * defecto se crea una fuente simple
+	 * Lee las propiedades adecuadas, como color, tamaño, tipo... y construir un
+	 * objeto Font Si no se ha establecido un valor por defecto se crea una fuente
+	 * simple
 	 * </p>
 	 * 
 	 * @return La fuente por defecto para indicadores y métricas
@@ -224,33 +241,34 @@ public class Context {
 		// devuelva sea un String con el color
 		log.info("Busca la información de configuración de la fuente, por defecto");
 
-	
-		String color  = getDefaultParam("color");
+		String color = getDefaultParam("color");
 		String height = getDefaultParam("height");
-		String type   = getDefaultParam("type");	
+		String type = getDefaultParam("type");
 
 		log.info("Los datos son, color: " + color + " height: " + height + " type: " + type);
 		log.info("Intento crear la fuente");
 
-		return new Font(type,Integer.valueOf(height),color);
-		
+		return new Font(type, Integer.valueOf(height), color);
+
 	}
+
 	private String getDefaultParam(String param) {
-		String property="Font.default."+param;		
-		String value=properties.getProperty(property);
+		String property = "Font.default." + param;
+		String value = properties.getProperty(property);
 		/**
-		 * Se asegura de que se da un valor por defecto, aunque no esté configurado en el fichero
+		 * Se asegura de que se da un valor por defecto, aunque no esté configurado en
+		 * el fichero
 		 */
-		if (value==null) {
-			switch(param) {
+		if (value == null) {
+			switch (param) {
 			case "type":
-				value="Arial";
+				value = "Arial";
 				break;
 			case "color":
-				value="black";
+				value = "black";
 				break;
 			case "height":
-				value="12";
+				value = "12";
 				break;
 			}
 		}
@@ -259,8 +277,8 @@ public class Context {
 
 	/**
 	 * <p>
-	 * Lee las propiedades adecuadas, como color, tamaño, tipo... y
-	 * construye un objeto Font para la fuente de las métricas
+	 * Lee las propiedades adecuadas, como color, tamaño, tipo... y construye un
+	 * objeto Font para la fuente de las métricas
 	 * </p>
 	 * <p>
 	 * Si no se ha definido una fuente para las métricas se debe devolver la fuente
@@ -276,21 +294,21 @@ public class Context {
 		String height = properties.getProperty("Font.metric.height");
 		String color = properties.getProperty("Font.metric.color");
 
-		if (type==null){
+		if (type == null) {
 			type = getDefaultParam("type");
 			log.info("El tipo de la fuente de las metricas es el valor por defecto");
 		}
-		if (height==null){
-			height =getDefaultParam("height");
+		if (height == null) {
+			height = getDefaultParam("height");
 			log.info("El tamaño de la fuente de las metricas es el valor por defecto");
 		}
-		if (color==null){
+		if (color == null) {
 			color = getDefaultParam("color");
 			log.info("El color de la fuente de las metricas es el valor por defecto");
 		}
 
-		log.info("Llamo a newFont con los datos color: " + color + " height: " + height + " type: " + type);	
-	
+		log.info("Llamo a newFont con los datos color: " + color + " height: " + height + " type: " + type);
+
 		return new Font(type, Integer.valueOf(height), color);
 
 	}
@@ -307,31 +325,32 @@ public class Context {
 	 */
 
 	public Font getIndicatorFont(IndicatorI.IndicatorState state) throws IOException {
-		/**He eliminado el static, así si funciona
-		 * Hay que comprobar si el static estaba puesto con sentido desde un primer momento
-		 * **/
+		/**
+		 * He eliminado el static, así si funciona Hay que comprobar si el static estaba
+		 * puesto con sentido desde un primer momento
+		 **/
 		Font font = null;
 		// TODO:
 		String propertyState = "Font." + state.toString();
-		log.info("Raiz que uso para buscar los datos del indicador en estado "+state+" "+propertyState);
-		
-		String color  = properties.getProperty(propertyState + ".color");
+		log.info("Raiz que uso para buscar los datos del indicador en estado " + state + " " + propertyState);
+
+		String color = properties.getProperty(propertyState + ".color");
 		String height = properties.getProperty(propertyState + ".height");
-		String type   = properties.getProperty(propertyState + ".type");
-		
+		String type = properties.getProperty(propertyState + ".type");
+
 		log.info("Los datos son, color: " + color + " height: " + height + " type: " + type);
 		log.info("Intento crear la fuente");
-		
+
 		if (color == null) {
-			color  = properties.getProperty("Font.default.color");	
-		} 
+			color = properties.getProperty("Font.default.color");
+		}
 		if (height == null) {
 			height = properties.getProperty("Font.default.height");
-		}		
-		if(type == null){
-			type   = properties.getProperty("Font.default.type");	
 		}
-		
+		if (type == null) {
+			type = properties.getProperty("Font.default.type");
+		}
+
 		font = new Font(type, Integer.valueOf(height), color);
 		return font;
 	}

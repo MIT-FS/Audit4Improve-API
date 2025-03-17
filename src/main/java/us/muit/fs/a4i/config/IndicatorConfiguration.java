@@ -177,7 +177,9 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 	@Override
 	public IndicatorState getIndicatorState(ReportItemI indicator) {
 		// TODO: change indicator definitions key name to a constant.
-        //Necesita optimización del cálculo de estado
+
+		// Necesita optimización del cálculo de estado
+
 		String indicatorType = indicator.getValue().getClass().getName();
 
 		IndicatorState finalState = IndicatorState.UNDEFINED;

@@ -3,11 +3,13 @@ package us.muit.fs.a4i.config;
 import java.util.logging.Logger;
 
 /**
- * <p>Esta clase permite acceder a las interfaces para configurar y verificar métricas e indicadores
- * Se mantiene separada la lógica de la gestión de configuración de métricas e
- * indicadores porque en el futuro van a ser bastante diferentes. En la versión
- * actual son muy similares y por tanto el diseño no es bueno ya que no
- * identifica bien la reutilización</p>
+ * <p>
+ * Esta clase permite acceder a las interfaces para configurar y verificar
+ * métricas e indicadores Se mantiene separada la lógica de la gestión de
+ * configuración de métricas e indicadores porque en el futuro van a ser
+ * bastante diferentes. En la versión actual son muy similares y por tanto el
+ * diseño no es bueno ya que no identifica bien la reutilización
+ * </p>
  * 
  * @author Isabel Román
  *

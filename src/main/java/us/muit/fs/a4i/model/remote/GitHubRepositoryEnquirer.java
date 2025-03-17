@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -47,11 +48,12 @@ import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
  *  Debería haber un constructor para esto, para que la creación del mapa esté fuera
  *        
  */
-public class GitHubRepositoryEnquirer extends GitHubEnquirer {
+public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 	/**
 	 * para trazar el código
 	 */
 	private static Logger log = Logger.getLogger(GitHubRepositoryEnquirer.class.getName());
+//	protected Map<String,Function<GHRepository,ReportItem>> myQueries=new HashMap<String,Function<GHRepository,ReportItem>>();
 
 	/**
 	 * <p>
@@ -76,7 +78,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		myQueries.put("totalDeletions", GitHubRepositoryEnquirer::getTotalDeletions);
 		myQueries.put("collaborators", GitHubRepositoryEnquirer::getCollaborators);
 		myQueries.put("ownerCommits", GitHubRepositoryEnquirer::getOwnerCommits);
-		
+		/*
 		metricNames.add("subscribers");
 		metricNames.add("forks");
 		metricNames.add("watchers");
@@ -92,42 +94,30 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		metricNames.add("totalDeletions");
 		metricNames.add("collaborators");
 		metricNames.add("ownerCommits");
+		*/
 		// equipo3
 		myQueries.put("issuesLastMonth", GitHubRepositoryEnquirer::getIssuesLastMonth);
 		myQueries.put("closedIssuesLastMonth", GitHubRepositoryEnquirer::getClosedIssuesLastMonth);
 		myQueries.put("meanClosedIssuesLastMonth", GitHubRepositoryEnquirer::getMeanClosedIssuesLastMonth);
 		myQueries.put("issues4DevLastMonth", GitHubRepositoryEnquirer::getIssues4DevLastMonth);
-		metricNames.add("issuesLastMonth");
-		metricNames.add("closedIssuesLastMonth");
-		metricNames.add("meanClosedIssuesLastMonth");
-		metricNames.add("issues4DevLastMonth");
+	
 		// equipo 4
 		myQueries.put("totalPullReq", GitHubRepositoryEnquirer::getTotalPullReq);
 		myQueries.put("closedPullReq", GitHubRepositoryEnquirer::getClosedPullReq);
-		metricNames.add("totalPullReq");
-		metricNames.add("closedPullReq");
+		
 		// equipo 5
 		myQueries.put("PRAcceptedLastYear", GitHubRepositoryEnquirer::getPRAcceptedLastYear);
 		myQueries.put("PRAcceptedLastMonth", GitHubRepositoryEnquirer::getPRAcceptedLastMonth);
 		myQueries.put("PRRejectedLastYear", GitHubRepositoryEnquirer::getPRRejectedLastYear);
 		myQueries.put("PRRejectedLastMonth", GitHubRepositoryEnquirer::getPRRejectedLastMonth);
-		
-		metricNames.add("PRAcceptedLastYear");
-		metricNames.add("PRAcceptedLastMonth");
-		metricNames.add("PRRejectedLastYear");
-		metricNames.add("PRRejectedLastMonth");
+
 		// Equipo 1
 		myQueries.put("conventionalCommits", GitHubRepositoryEnquirer::getConventionalCommits);
 		myQueries.put("commitsWithDescription", GitHubRepositoryEnquirer::getCommitsWithDescription);
 		myQueries.put("issuesWithLabels", GitHubRepositoryEnquirer::getIssuesWithLabels);
 		myQueries.put("gitFlowBranches", GitHubRepositoryEnquirer::getGitFlowBranches);
 		myQueries.put("conventionalPullRequests", GitHubRepositoryEnquirer::getConventionalPullRequests);
-		metricNames.add("conventionalCommits");
-		metricNames.add("commitsWithDescription");
-		metricNames.add("issuesWithLabels");
-		metricNames.add("gitFlowBranches");
-		metricNames.add("conventionalPullRequests");
-		
+			
 		log.info("A�adidas m�tricas al GHRepositoryEnquirer");
 	}
 

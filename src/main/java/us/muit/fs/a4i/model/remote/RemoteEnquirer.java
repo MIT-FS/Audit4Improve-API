@@ -67,5 +67,12 @@ public interface RemoteEnquirer {
 	 * @return El listado de los nombres de métricas definidas
 	 */
 	public List<String> getAvailableMetrics();
+	/**
+	 * <p>
+	 * Devuelve el tipo de remoto al que se consulta
+	 * </p>
+	 * @return El tipo del remoto consultado
+	 */
+	public RemoteType getRemoteType();
 
 }

@@ -20,22 +20,7 @@ public class Font {
 	 */
 	public Font (String color) {
 		this.font = new java.awt.Font ("Serif", java.awt.Font.PLAIN , 10);
-		switch(color.toLowerCase()){
-		case "red","rojo":
-			this.color=Color.red;
-			break;
-		case "green","verde":
-			this.color=Color.green;
-			break;
-		case "blue","azul":
-			this.color=Color.blue;
-		    break;
-		case "orange","naranja":
-			this.color=Color.ORANGE;
-		    break;
-		default:
-			this.color=Color.black;
-		}			
+		setColor(color);
 	}
 	/**
 	 * Todos los Valores personalizados salvo el estilo
@@ -46,22 +31,7 @@ public class Font {
 	public Font (String family, int size, String color) {
 		log.info("Creando fuente con valores familia "+family+" tamano "+size+" color "+color);
 		this.font=new java.awt.Font (family.toLowerCase(), java.awt.Font.PLAIN , size);
-		switch(color.toLowerCase()){
-		case "red","rojo":
-			this.color=Color.RED;
-			break;
-		case "green","verde":
-			this.color=Color.GREEN;
-			break;
-		case "blue","azul":
-			this.color=Color.BLUE;
-		    break;
-		case "orange","naranja":
-			this.color=Color.ORANGE;
-		    break;
-		default:
-			this.color=Color.BLACK;		
-		}	
+		setColor(color);	
 		log.info("Se ha creado fuente con el tipo "+font.getFamily()+" y el color "+color);
 	}
 	/**
@@ -73,6 +43,17 @@ public class Font {
 	 */
 	public Font (String family, int style, int size, String color) {
 		this.font=new java.awt.Font (family.toLowerCase(), style , size);
+		setColor(color);
+	}
+
+	public Color getColor() {
+		return this.color;
+	}
+	public java.awt.Font getFont() {
+		return this.font;
+	}
+	
+	private void setColor(String color) {
 		switch(color.toLowerCase()){
 		case "red","rojo":
 			this.color=Color.RED;
@@ -90,11 +71,5 @@ public class Font {
 			this.color=Color.BLACK;
 		}			
 	}
-
-	public Color getColor() {
-		return this.color;
-	}
-	public java.awt.Font getFont() {
-		return this.font;
-	}
+	
 }

@@ -15,6 +15,7 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import us.muit.fs.a4i.model.entities.ReportItem;
+import us.muit.fs.a4i.model.remote.RemoteEnquirer.RemoteType;
 
 /**
  * <p>
@@ -30,12 +31,14 @@ import us.muit.fs.a4i.model.entities.ReportItem;
  * </p>
  * 
  * @author Isabel Román
+ * @param <T>
  *
  */
-public abstract class GitHubEnquirer implements RemoteEnquirer {
-	private static Logger log = Logger.getLogger(GitHubEnquirer.class.getName());
-	protected List<String> metricNames;
-	protected Map<String,Function<GHRepository,ReportItem>> myQueries=new HashMap<String,Function<GHRepository,ReportItem>>();
+public abstract class GitHubEnquirer<T> implements RemoteEnquirer {
+	private static Logger log = Logger.getLogger(GitHubEnquirer.class.getName());	
+	protected Map<String,Function<T,ReportItem>> myQueries;
+	private RemoteEnquirer.RemoteType type= RemoteEnquirer.RemoteType.GITHUB;
+
 	/**
 	 * <p>
 	 * Referencia al objeto GitHub que permite hacer consultas al servidor Github
@@ -48,7 +51,7 @@ public abstract class GitHubEnquirer implements RemoteEnquirer {
 	private GitHub github = null;
 
 	public GitHubEnquirer() {
-		metricNames = new ArrayList<String>();
+		myQueries=new HashMap<String,Function<T,ReportItem>>();
 	}
 
 	/**
@@ -75,12 +78,17 @@ public abstract class GitHubEnquirer implements RemoteEnquirer {
 		return github;
 	}
 
-	protected void setMetric(String newMetric) {
-		metricNames.add(newMetric);
+	protected void setMetric(String newMetric,Function<T,ReportItem> functionPointer) {
+		myQueries.put(newMetric, functionPointer);
 	}
 
 	public List<String> getAvailableMetrics() {
-		return metricNames;
+		List<String> metrics=new ArrayList<String>(myQueries.keySet());
+		return metrics;
 	}
+	public RemoteType getRemoteType() {
+		return type;
+	}
+
 
 }

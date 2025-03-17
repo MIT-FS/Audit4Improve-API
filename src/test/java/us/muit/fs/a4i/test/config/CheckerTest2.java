@@ -1,12 +1,6 @@
-/**
- * 
- */
 package us.muit.fs.a4i.test.config;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,23 +19,47 @@ import us.muit.fs.a4i.config.Checker;
 import us.muit.fs.a4i.config.Context;
 
 /**
- * Test de la clase Checker que permite verificar y configurar las métricas e indicadores
- * 
- * @author Isabel Román
- * @see org.junit.jupiter.api.Tag
- *
+ * Verificación de Checker para fichero de configuración de métricas
+ * personalizado
  */
-
-@Tag("unidad")
-class CheckerTest {
+class CheckerTest2 {
 	private static Logger log = Logger.getLogger(CheckerTest.class.getName());
 	static Checker underTest;
 	static String appConfPath;
 
-
+	/**
+	 * <p>
+	 * Acciones a realizar antes de ejecutar los tests definidos en esta clase
+	 * </p>
+	 * 
+	 * @throws java.lang.Exception
+	 * @see org.junit.jupiter.api.BeforeAll
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+		appConfPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator
+				+ "appConfTest.json";
+		Context.setAppRI(appConfPath);
+	}
 
 	/**
-	 * <p> Acciones a realizar antes de cada uno de los tests de esta clase</p>
+	 * <p>
+	 * Acciones a realizar después de ejecutar todos los tests de esta clase
+	 * </p>
+	 * 
+	 * @throws java.lang.Exception
+	 * @see org.junit.jupiter.api.AfterAll
+	 */
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+
+	}
+
+	/**
+	 * <p>
+	 * Acciones a realizar antes de cada uno de los tests de esta clase
+	 * </p>
+	 * 
 	 * @throws java.lang.Exception
 	 * @see org.junit.jupiter.api.BeforeEach
 	 */
@@ -51,9 +69,50 @@ class CheckerTest {
 		underTest = Context.getContext().getChecker();
 	}
 
+	/**
+	 * <p>
+	 * Acciones a realizar después de cada uno de los tests de esta clase
+	 * </p>
+	 * 
+	 * @throws java.lang.Exception
+	 * @see org.junit.jupiter.api.AfterEach
+	 */
+	@AfterEach
+	void tearDown() throws Exception {
+
+	}
 
 	/**
-	 * <p>Test para verificar el método
+	 * <p>
+	 * Test para verificar que el método que establece el fichero de configuración de la
+	 * aplicación devuelve la excepción adecuada si no encuentra el fichero
+	 * </p>
+	 * {@link us.muit.fs.a4i.config.Checker#setAppMetrics(java.lang.String)}.
+	 */
+	@Test
+	void testSetAppMetrics() {
+		HashMap<String, String> returnedMap = null;
+		Integer valOKMock = Integer.valueOf(3);
+		String valKOMock = "KO";
+		// Ahora establezco el fichero de configuraci�n de la aplicaci�n, con un nombre
+		// de fichero que no existe
+		Context.setAppRI("pepe");
+		try {
+			// Busco una m�trica que se que no est� en la configuraci�n de la api
+			returnedMap = underTest.getMetricConfiguration().definedMetric("downloads", valOKMock.getClass().getName());
+			fail("Antes de llegar aquí debería lanzar una excepción, porque intenta buscar en un fichero que no existe");
+		} catch (FileNotFoundException e) {
+			log.info("Lanza la excepci�n adecuada, FileNotFoud");
+		} catch (Exception e) {
+			fail("Lanza la excepci�n equivocada " + e);
+		}
+		//Vuelvo a dejar el fichero de configuración correcto
+		Context.setAppRI(appConfPath);
+	}
+
+	/**
+	 * <p>
+	 * Test para verificar el método
 	 * {@link us.muit.fs.a4i.config.Checker#definedMetric(java.lang.String, java.lang.String)}.
 	 * Si la métrica está definida y el tipo de valor que se quiere establecer es el
 	 * adecuado debe devolver un hashmap con los datos de la métrica, usando como
@@ -69,13 +128,12 @@ class CheckerTest {
 	 * 
 	 * @see org.junit.jupiter.api.Tag
 	 * @see org.junit.jupiter.api.Test
-	 * @see org.junit.jupiter.api.DisplayName	 * 
-	 *    </p>
+	 * @see org.junit.jupiter.api.DisplayName *
+	 * </p>
 	 */
 	@Test
 	@Tag("unidad")
 	@DisplayName("Prueba para el método definedMetric, que verifica si la métrica está definida con un tipo determinado y devuelve su configuración")
-
 	void testDefinedMetric() {
 
 		// Creo valores Mock para verificar si comprueba bien el tipo
@@ -84,29 +142,22 @@ class CheckerTest {
 		Integer valOKMock = Integer.valueOf(3);
 		String valKOMock = "KO";
 		HashMap<String, String> returnedMap = null;
-		// Primero, sin fichero de configuraci�n de aplicaci�n
+		
+
 		try {
-			// Consulta una m�trica no definida, con valor de tipo entero
-			// debe devolver null, no est� definida
+			// Busco una m�trica que se que no est� en la configuraci�n de la api pero s� en
+			// la de la aplicaci�n
 			log.info("Busco la m�trica llamada downloads");
 			returnedMap = underTest.getMetricConfiguration().definedMetric("downloads", valOKMock.getClass().getName());
-			assertNull(returnedMap, "Deber�a ser nulo, la m�trica noexiste no est� definida");
-
-			// Busco la m�trica watchers con valor entero, no deber�a dar problemas
-			log.info("Busco la m�trica watchers");
-			returnedMap = underTest.getMetricConfiguration().definedMetric("watchers", valOKMock.getClass().getName());
 			assertNotNull(returnedMap, "Deber�a devolver un hashmap, la m�trica est� definida");
 			assertTrue(returnedMap.containsKey("unit"), "La clave unit tiene que estar en el mapa");
 			assertTrue(returnedMap.containsKey("description"), "La clave description tiene que estar en el mapa");
-
-			// Busco una m�trica que existe pero con un tipo incorrecto en el valor
-			assertNull(underTest.getMetricConfiguration().definedMetric("watchers", valKOMock.getClass().getName()),
-					"Deber�a ser nulo, la m�trica est� definida para Integer");
 		} catch (FileNotFoundException e) {
-			fail("El fichero NO est� en la carpeta resources");
-			e.printStackTrace();
+			fail("No deber�a devolver esta excepci�n");
+		} catch (Exception e) {
+			fail("Lanza una excepci�n no reconocida " + e);
 		}
-	
+
 	}
 
 	/**
@@ -128,33 +179,22 @@ class CheckerTest {
 		Double valOKMock = Double.valueOf(0.3);
 		String valKOMock = "KO";
 		HashMap<String, String> returnedMap = null;
-		// Primero, sin fichero de configuraci�n de aplicaci�n
+
 		try {
-			// Consulta un indicador no definido, con valor de tipo entero
-			// debe devolver null, no est� definido
+			// Busco una m�trica que se que no est� en la configuraci�n de la api pero s� en
+			// la de la aplicaci�n
 			log.info("Busco el indicador llamado pullReqGlory");
 			returnedMap = underTest.getIndicatorConfiguration().definedIndicator("pullReqGlory",
 					valOKMock.getClass().getName());
-			assertNull(returnedMap, "Deber�a ser nulo, el indicador pullReqGlory no est� definido");
-
-			// Busco el indicador overdued con valor double, no deber�a dar problemas
-			log.info("Busco el indicador overdued");
-			returnedMap = underTest.getIndicatorConfiguration().definedIndicator("overdued",
-					valOKMock.getClass().getName());
-			assertNotNull(returnedMap, "Deber�a devolver un hashmap, el indicador overdued est� definido");
+			assertNotNull(returnedMap, "Deber�a devolver un hashmap, el indicador est� definido");
 			assertTrue(returnedMap.containsKey("unit"), "La clave unit tiene que estar en el mapa");
 			assertTrue(returnedMap.containsKey("description"), "La clave description tiene que estar en el mapa");
-
-			// Busco una m�trica que existe pero con un tipo incorrecto en el valor
-			assertNull(
-					underTest.getIndicatorConfiguration().definedIndicator("overdued", valKOMock.getClass().getName()),
-					"Deber�a ser nulo, el indicador overdued est� definido para Double");
 		} catch (FileNotFoundException e) {
-			fail("El fichero est� en la carpeta resources");
-			e.printStackTrace();
+			fail("No deber�a devolver esta excepci�n");
+		} catch (Exception e) {
+			fail("Lanza una excepci�n no reconocida " + e);
 		}
 
-			
 	}
 
 }
