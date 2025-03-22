@@ -40,7 +40,7 @@ class MetricConfigurationTest2 {
 	static void setUpBeforeClass() throws Exception {
 		appConfPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator
 				+ "appConfTest.json";
-		underTest = new MetricConfiguration(defaultFile, appConfPath);
+
 	}
 
 	/**
@@ -72,6 +72,7 @@ class MetricConfigurationTest2 {
 	@DisplayName("Verificación del método definedMetric")
 	@Test
 	void testDefinedMetric() {
+		underTest = new MetricConfiguration(defaultFile, appConfPath);
 		// Creo valores Mock para verificar si comprueba bien el tipo
 		// Las m�tricas del test son de enteros, as� que creo un entero y un string (el
 		// primero no dar� problemas el segundo sí)
@@ -151,6 +152,7 @@ class MetricConfigurationTest2 {
 	@DisplayName("Verificación de lectura métrica disponible en configuración de la aplicación")
 	@Test
 	void testGetMetricInfo1() {
+		underTest = new MetricConfiguration(defaultFile, appConfPath);
 		HashMap<String, String> returnedMap;
 		try {
 			// Busco una métrica que se que no está en la configuración de la api pero sí en
@@ -176,6 +178,7 @@ class MetricConfigurationTest2 {
 	@DisplayName("Verificación de consulta de métricas con los dos ficheros de configuración")
 	@Test
 	void testListAllMetrics() {
+		underTest = new MetricConfiguration(defaultFile, appConfPath);
 		List<String> metricsList;
 		try {
 			metricsList = underTest.listAllMetrics();
@@ -219,6 +222,7 @@ class MetricConfigurationTest2 {
 	@DisplayName("Verificación de lectura métrica disponible en configuración por defecto")
 	@Test
 	void testGetMetricInfo2() {
+		underTest = new MetricConfiguration(defaultFile, appConfPath);
 		try {
 			/*
 			 * En el fichero por defecto la métrica issues está definida del siguiente modo
@@ -260,6 +264,7 @@ class MetricConfigurationTest2 {
 	@DisplayName("Verificación de lectura métrica no existente")
 	@Test
 	void testGetMetricInfo3() {
+		underTest = new MetricConfiguration(defaultFile, appConfPath);
 		try {
 			/*
 			 * En el fichero por defecto la métrica noexiste no existe
@@ -272,6 +277,49 @@ class MetricConfigurationTest2 {
 			e.printStackTrace();
 
 		}
+	}
+
+	/**
+	 * <p>
+	 * Test para verificar que se lanza adecuadamente la excepción de fichero no
+	 * localizado en todos los métodos
+	 * 
+	 * @see org.junit.jupiter.api.Tag
+	 * @see org.junit.jupiter.api.Test
+	 * @see org.junit.jupiter.api.DisplayName
+	 *      </p>
+	 */
+	@DisplayName("Verificación de excepción FileNotFound cuando el fichero de configuración del cliente no está bien especificado")
+	@Test
+	void testExceptionFile() {
+
+		underTest = new MetricConfiguration(defaultFile, "clienteKO");
+		/*
+		 * el fichero de la api cliente no existe, pruebo los tres métodos
+		 */
+		FileNotFoundException thrown = assertThrows(FileNotFoundException.class,
+
+				() -> underTest.definedMetric("downloads", "java.lang.Integer"),
+				"Debería haber lanzado la excepción de fichero no encontrado, pero no lo ha hecho");
+
+		assertTrue(thrown.getMessage().contains("clienteKO"), "La excepción debería indicar el fichero no localizado");
+
+		thrown = assertThrows(FileNotFoundException.class,
+
+				() -> underTest.listAllMetrics(),
+				"Debería haber lanzado la excepción de fichero no encontrado, pero no lo ha hecho");
+
+		assertTrue(thrown.getMessage().contains("clienteKO"), "La excepción debería indicar el fichero no localizado");
+
+		/*
+		 * el fichero de la api cliente no existe
+		 */
+		thrown = assertThrows(FileNotFoundException.class,
+
+				() -> underTest.getMetricInfo("downloads"),
+				"Debería haber lanzado la excepción de fichero no encontrado, pero no lo ha hecho");
+
+		assertTrue(thrown.getMessage().contains("clienteKO"), "La excepción debería indicar el fichero no localizado");
 	}
 
 }

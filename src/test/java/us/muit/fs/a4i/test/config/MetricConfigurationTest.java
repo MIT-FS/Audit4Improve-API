@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,11 @@ class MetricConfigurationTest {
 	private static String defaultFile = "a4iDefault.json";
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Crea el objeto bajo test únicamente con el
+	 *                             fichero de configuración por defecto
 	 */
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	@BeforeEach
+	void setUp() throws Exception {
 
 		underTest = new MetricConfiguration(defaultFile, null);
 	}
@@ -263,6 +265,46 @@ class MetricConfigurationTest {
 			fail("No debería lanzar esta excepción");
 			e.printStackTrace();
 		}
+
+	}
+
+	/**
+	 * <p>
+	 * Test para verificar que se lanza adecuadamente la excepción de fichero no
+	 * localizado en todos los métodos
+	 * 
+	 * @see org.junit.jupiter.api.Tag
+	 * @see org.junit.jupiter.api.Test
+	 * @see org.junit.jupiter.api.DisplayName
+	 *      </p>
+	 */
+	@DisplayName("Verificación de excepción FileNotFound cuando el fichero por defecto no está bien indicado")
+	@Test
+	void testExceptionFile() {
+		underTest = new MetricConfiguration("defaultKO", appConfPath);
+		/*
+		 * el fichero por defecto no existe, pruebo los tres métodos
+		 */
+		FileNotFoundException thrown = assertThrows(FileNotFoundException.class,
+
+				() -> underTest.getMetricInfo("downloads"),
+				"Debería haber lanzado la excepción de fichero no encontrado, pero no lo ha hecho");
+
+		assertTrue(thrown.getMessage().contains("defaultKO"), "La excepción debería indicar el fichero no localizado");
+
+		thrown = assertThrows(FileNotFoundException.class,
+
+				() -> underTest.definedMetric("downloads", "java.lang.Integer"),
+				"Debería haber lanzado la excepción de fichero no encontrado, pero no lo ha hecho");
+
+		assertTrue(thrown.getMessage().contains("defaultKO"), "La excepción debería indicar el fichero no localizado");
+
+		thrown = assertThrows(FileNotFoundException.class,
+
+				() -> underTest.listAllMetrics(),
+				"Debería haber lanzado la excepción de fichero no encontrado, pero no lo ha hecho");
+
+		assertTrue(thrown.getMessage().contains("defaultKO"), "La excepción debería indicar el fichero no localizado");
 
 	}
 

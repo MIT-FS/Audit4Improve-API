@@ -15,12 +15,14 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 public class MetricConfiguration implements MetricConfigurationI {
-	
-    /**
-     * El creador de MetricConfiguration tiene que indicar los nombres de los ficheros de métricas por defecto y del cliente
-     * @param defaultRI nombre del fichero de métricas por defecto
-     * @param appRI nombre del fichero de métricas definido por el cliente
-     */
+
+	/**
+	 * El creador de MetricConfiguration tiene que indicar los nombres de los
+	 * ficheros de métricas por defecto y del cliente
+	 * 
+	 * @param defaultRI nombre del fichero de métricas por defecto
+	 * @param appRI     nombre del fichero de métricas definido por el cliente
+	 */
 	public MetricConfiguration(String defaultRI, String appRI) {
 		super();
 		this.defaultRI = defaultRI;
@@ -40,10 +42,9 @@ public class MetricConfiguration implements MetricConfigurationI {
 	 * @param isr        InputStreamReader del fichero de configuración
 	 * @return Mapa de parámetros de la métrica, siempre que exista y sea del tipo
 	 *         especificado
-	 * @throws FileNotFoundException
+	 * 
 	 */
-	private HashMap<String, String> isDefinedMetric(String metricName, String metricType, InputStreamReader isr)
-			throws FileNotFoundException {
+	private HashMap<String, String> isDefinedMetric(String metricName, String metricType, InputStreamReader isr) {
 
 		HashMap<String, String> metricDefinition = null;
 
@@ -82,9 +83,9 @@ public class MetricConfiguration implements MetricConfigurationI {
 	 * @param metricName String con el nombre de la métrica buscada
 	 * @param isr        InputStreamReader del fichero de configuración
 	 * @return Mapa con las características de la métrica
-	 * @throws FileNotFoundException
+	 * 
 	 */
-	private HashMap<String, String> getMetric(String metricName, InputStreamReader isr) throws FileNotFoundException {
+	private HashMap<String, String> getMetric(String metricName, InputStreamReader isr) {
 
 		HashMap<String, String> metricDefinition = null;
 
@@ -118,25 +119,36 @@ public class MetricConfiguration implements MetricConfigurationI {
 		log.info("Checker solicitud de búsqueda métrica " + name);
 
 		HashMap<String, String> metricDefinition = null;
-
+		InputStream is = null;
+		InputStreamReader isr = null;
 		String filePath = "/" + defaultRI;
-		log.info("Buscando el archivo " + filePath);
-		InputStream is = this.getClass().getResourceAsStream(filePath);
-		log.info("InputStream " + is + " para " + filePath);
-		InputStreamReader isr = new InputStreamReader(is);
+		try {
 
-		/**
-		 * Busca primero en el fichero de configuración de métricas por defecto
-		 */
-		metricDefinition = isDefinedMetric(name, type, isr);
-		/**
-		 * En caso de que no estuviera ahí la métrica busco en el fichero de
-		 * configuración de la aplicación
-		 */
-		if ((metricDefinition == null) && appRI != null) {
-			is = new FileInputStream(appRI);
+			log.info("Buscando el archivo " + filePath);
+			is = this.getClass().getResourceAsStream(filePath);
+			log.info("InputStream " + is + " para " + filePath);
 			isr = new InputStreamReader(is);
+
+			/**
+			 * Busca primero en el fichero de configuración de métricas por defecto
+			 */
 			metricDefinition = isDefinedMetric(name, type, isr);
+		} catch (NullPointerException e) {
+			throw new FileNotFoundException(
+					"No se localiza el fichero de la configuración por defecto de la API " + filePath);
+		}
+		try {
+			/**
+			 * En caso de que no estuviera ahí la métrica busco en el fichero de
+			 * configuración de la aplicación
+			 */
+			if ((metricDefinition == null) && appRI != null) {
+				is = new FileInputStream(appRI);
+				isr = new InputStreamReader(is);
+				metricDefinition = isDefinedMetric(name, type, isr);
+			}
+		} catch (NullPointerException e) {
+			throw new FileNotFoundException("No se localiza el fichero de la aplicación cliente  " + appRI);
 		}
 
 		return metricDefinition;
@@ -146,25 +158,37 @@ public class MetricConfiguration implements MetricConfigurationI {
 	public HashMap<String, String> getMetricInfo(String name) throws FileNotFoundException {
 		log.info("Consulta información de la métrica " + name);
 		HashMap<String, String> metricDefinition = null;
-
 		String filePath = "/" + defaultRI;
-		log.info("Buscando el archivo " + filePath);
-		InputStream is = this.getClass().getResourceAsStream(filePath);
-		log.info("InputStream " + is + " para " + filePath);
-		InputStreamReader isr = new InputStreamReader(is);
+		InputStream is = null;
+		InputStreamReader isr = null;
+		try {
 
-		/**
-		 * Busca primero en el fichero de configuración de métricas por defecto
-		 */
-		metricDefinition = getMetric(name, isr);
-		/**
-		 * En caso de que no estuviera ahí la métrica busco en el fichero de
-		 * configuración de la aplicación
-		 */
-		if ((metricDefinition == null) && appRI != null) {
-			is = new FileInputStream(appRI);
+			log.info("Buscando el archivo " + filePath);
+
+			is = this.getClass().getResourceAsStream(filePath);
+			log.info("InputStream " + is + " para " + filePath);
 			isr = new InputStreamReader(is);
+
+			/**
+			 * Busca primero en el fichero de configuración de métricas por defecto
+			 */
 			metricDefinition = getMetric(name, isr);
+		} catch (NullPointerException e) {
+			throw new FileNotFoundException(
+					"No se localiza el fichero de la configuración por defecto de la API " + filePath);
+		}
+		try {
+			/**
+			 * En caso de que no estuviera ahí la métrica busco en el fichero de
+			 * configuración de la aplicación
+			 */
+			if ((metricDefinition == null) && appRI != null) {
+				is = new FileInputStream(appRI);
+				isr = new InputStreamReader(is);
+				metricDefinition = getMetric(name, isr);
+			}
+		} catch (NullPointerException e) {
+			throw new FileNotFoundException("No se localiza el fichero de la aplicación cliente  " + appRI);
 		}
 
 		return metricDefinition;
@@ -175,32 +199,24 @@ public class MetricConfiguration implements MetricConfigurationI {
 		log.info("Consulta todas las métricas");
 
 		List<String> allmetrics = new ArrayList<String>();
+		InputStream is = null;
+		InputStreamReader isr = null;
+		JsonReader reader = null;
+		JsonObject confObject = null;
+		JsonArray metrics = null;
 
 		String filePath = "/" + defaultRI;
-		log.info("Buscando el archivo " + filePath);
-		InputStream is = this.getClass().getResourceAsStream(filePath);
-		log.info("InputStream " + is + " para " + filePath);
-		InputStreamReader isr = new InputStreamReader(is);
-
-		JsonReader reader = Json.createReader(isr);
-		log.info("Creo el JsonReader");
-
-		JsonObject confObject = reader.readObject();
-		log.info("Leo el objeto");
-		reader.close();
-
-		log.info("Muestro la configuración leída " + confObject);
-		JsonArray metrics = confObject.getJsonArray("metrics");
-		log.info("El número de métricas es " + metrics.size());
-		for (int i = 0; i < metrics.size(); i++) {
-			log.info("Añado nombre: " + metrics.get(i).asJsonObject().getString("name"));
-			allmetrics.add(metrics.get(i).asJsonObject().getString("name"));
-		}
-		if (appRI != null) {
-			is = new FileInputStream(appRI);
+		try {
+			log.info("Buscando el archivo " + filePath);
+			is = this.getClass().getResourceAsStream(filePath);
+			log.info("InputStream " + is + " para " + filePath);
 			isr = new InputStreamReader(is);
+
 			reader = Json.createReader(isr);
+			log.info("Creo el JsonReader");
+
 			confObject = reader.readObject();
+			log.info("Leo el objeto");
 			reader.close();
 
 			log.info("Muestro la configuración leída " + confObject);
@@ -210,6 +226,29 @@ public class MetricConfiguration implements MetricConfigurationI {
 				log.info("Añado nombre: " + metrics.get(i).asJsonObject().getString("name"));
 				allmetrics.add(metrics.get(i).asJsonObject().getString("name"));
 			}
+		} catch (NullPointerException e) {
+			throw new FileNotFoundException(
+					"No se localiza el fichero de la configuración por defecto de la API " + filePath);
+		}
+
+		try {
+			if (appRI != null) {
+				is = new FileInputStream(appRI);
+				isr = new InputStreamReader(is);
+				reader = Json.createReader(isr);
+				confObject = reader.readObject();
+				reader.close();
+
+				log.info("Muestro la configuración leída " + confObject);
+				metrics = confObject.getJsonArray("metrics");
+				log.info("El número de métricas es " + metrics.size());
+				for (int i = 0; i < metrics.size(); i++) {
+					log.info("Añado nombre: " + metrics.get(i).asJsonObject().getString("name"));
+					allmetrics.add(metrics.get(i).asJsonObject().getString("name"));
+				}
+			}
+		} catch (NullPointerException e) {
+			throw new FileNotFoundException("No se localiza el fichero de la aplicación cliente " + appRI);
 		}
 
 		return allmetrics;
