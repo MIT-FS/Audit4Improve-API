@@ -1,0 +1,237 @@
+[33mcommit 2ddca4b2ca596c94519b181a027493d81f47f498[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdesarrollo[m[33m, [m[1;31morigin/desarrollo[m[33m)[m
+Author: Isabel Román <irm@us.es>
+Date:   Tue May 10 11:35:23 2022 +0200
+
+    Preparación curso 24/25
+    
+    Actualizado gradle
+    Pie de javadoc modificado
+
+[33mcommit 4997837b69cecf28cef6251c14429931fc48daf3[m
+Merge: 7d2eaf7 889ae55
+Author: MIT-FS <irm@us.es>
+Date:   Mon May 9 19:31:56 2022 +0200
+
+    Merge branch 'PracticaPruebasUnidad' into desarrollo
+
+[33mcommit 889ae5580d72f25046f9714e644f0619e66e3a05[m
+Author: MIT-FS <irm@us.es>
+Date:   Mon May 9 19:30:04 2022 +0200
+
+    Corregidos comentarios javadoc
+    
+    Se corrigen errores y se completa el javadoc
+
+[33mcommit 7d2eaf79ed59537f4066bf9d9981a4a22200d4ab[m
+Author: MIT-FS <irm@us.es>
+Date:   Tue May 3 14:29:02 2022 +0200
+
+    Resuelto problema lectura ficheros configuración
+
+[33mcommit 5892eb512a9a77bdf5937b6615e2193684e5d27c[m
+Author: MIT-FS <irm@us.es>
+Date:   Fri Apr 29 11:43:14 2022 +0200
+
+    Nuevo método información sobre métricas
+    
+    Actualizado .gitignore para no subir los secretos de configuración
+    gradle
+
+[33mcommit 5c69f6e11018513f04fe04a7c008bea062cbc731[m[33m ([m[1;33mtag: [m[1;33mv0.1.0[m[33m)[m
+Merge: 39f41ac 4553372
+Author: MIT-FS <irm@us.es>
+Date:   Tue Apr 12 11:27:48 2022 +0200
+
+    Merge branch 'PracticaPruebasUnidad' into desarrollo
+
+[33mcommit 455337277197cf89e0fc402cfac14bf8b9d39bf6[m
+Author: Isabel Román <irm@us.es>
+Date:   Mon Apr 4 14:07:13 2022 +0200
+
+    Avances Tests
+    
+    Configuración de tests para que las rutas no dependan del SO
+    Añadida la verificación assertThrows
+    Añadida información de las fuentes javadoc a build.gradle
+    Solucionado error nombre imagen .GIF
+    Etiquetado de tests en ReportTest
+    Cambio de paquete de ReportTest
+
+[33mcommit c2a58b5ceb06a489eb48181176233f744be25dc0[m
+Author: MIT-FS <irm@us.es>
+Date:   Thu Mar 24 17:32:34 2022 +0100
+
+    Resueltos conflictos fusión
+    
+    Se fusionan versiones de las pruebas unidad
+    Conflictos en checkerTest resueltos
+    Añadidos modelos UML
+
+[33mcommit da26aa059a1b0e06724d1b8a2b42dd9806cdd423[m
+Author: Isabel Román <irm@us.es>
+Date:   Wed Mar 23 13:02:03 2022 +0100
+
+    Trabajos en javadoc
+
+[33mcommit d1a8a6c88d5b5c9b2b22e6de61fcba165e07a319[m
+Author: MIT-FS <irm@us.es>
+Date:   Tue Mar 22 18:46:24 2022 +0100
+
+    CheckerTest V0.0
+    
+    Versión 0.0 del test para la clase que verifica indicadores y métricas
+    Se han añadido además un fichero de configuración de aplicación cliente,
+    en la carpeta de tests
+    Se ha modifiado el fichero de configuración por defecto
+
+[33mcommit 16def12c0503fb371683c94bee45330ced13e936[m
+Author: Isabel Román <irm@us.es>
+Date:   Tue Mar 22 13:57:45 2022 +0100
+
+    Avances en el test de Report
+
+[33mcommit a68b6427f5f958a33ec14881356b430c59537236[m
+Author: MIT-FS <irm@us.es>
+Date:   Mon Mar 21 19:15:37 2022 +0100
+
+    Modificada Report y ReportI
+    
+    Se añade verificación de tipo de calculadora de indicadores
+
+[33mcommit bc3ead292fedac71844ede24e566ae83ff53463b[m
+Author: Isabel Román <irm@us.es>
+Date:   Mon Mar 21 15:14:34 2022 +0100
+
+    Pequeños avances
+
+[33mcommit 93610cb261f75d7fb66933e71b7a39e2c81a8933[m
+Author: Isabel Román <irm@us.es>
+Date:   Mon Mar 21 14:37:15 2022 +0100
+
+    Modificado Constructor de Métricas
+    
+    Ahora los datos de unidades y descripción los lee del fichero de
+    configuración. Esto permitiría que la aplicación pudiera configurarse
+    con distintos idiomas, por ejemplo
+
+[33mcommit e6013392e309ef148e28228c3775c7209c79599a[m
+Author: MIT-FS <irm@us.es>
+Date:   Sun Mar 20 21:50:10 2022 +0100
+
+    Preparando la práctica de test unidad
+    
+    Añadido paquete Config con clas clases Checker y Context
+    Añadida clase checker para verificar las métricas e indicadores
+    Añadida comprobación en el constructor de métricas
+    Añadidos algunos test básicos incompletos
+    Cambiado Context a Singleton
+
+[33mcommit e059e5e94005474f454158a02cf8524d92f2b679[m[33m ([m[1;31morigin/Refactorización[m[33m)[m
+Author: MIT-FS <irm@us.es>
+Date:   Wed Mar 16 18:58:08 2022 +0100
+
+    Cambio referencias de imágenes javadoc
+    
+    Para que gradle no tenga problemas al construir la documentación las
+    imágenes que se quieran incluir se pondrán disponibles en la rama de
+    gh-pages
+
+[33mcommit 106dd2f12515d1917c1c8a1290508c8acad04530[m
+Author: MIT-FS <irm@us.es>
+Date:   Tue Mar 15 13:49:18 2022 +0100
+
+    Primera organización documentación
+    
+    Queda mucho por hacer, pero se han dado algunos pasos para mejorar la
+    documentación
+
+[33mcommit 6a2375bf8ad7b8fc73a78edcedfc242ba40e7844[m
+Author: MIT-FS <irm@us.es>
+Date:   Tue Mar 15 11:14:57 2022 +0100
+
+    Clase Context y renombrado
+    
+    Se incluye la clase context que facilita la configuración de la
+    aplicación por fichero
+    Se renombra la interfaz RemoteBuilder y sus derivados
+
+[33mcommit ae6f92c347753b97025fe31c3c9c9178803c74bc[m
+Author: MIT-FS <irm@us.es>
+Date:   Mon Mar 14 14:21:45 2022 +0100
+
+    Refactorización completa
+    
+    Asignando responsabilidades para optimizar la reutilización
+
+[33mcommit 554b1c3650306a65523f8222d8c748798c3b5800[m
+Author: MIT-FS <irm@us.es>
+Date:   Fri Mar 11 14:41:46 2022 +0100
+
+    Mega refactorización primera
+    
+    Separando responsabilidades para reutilización
+    Creando Informes desde remotos
+    Necesita limpieza y pulido
+
+[33mcommit 0797fd5a10b723722b331cf9cb5a9813324ec9c6[m[33m ([m[1;31morigin/persistenciaExcel[m[33m)[m
+Author: Isabel Román <irm@us.es>
+Date:   Wed Mar 9 17:03:17 2022 +0100
+
+    Inicio de persistencia apachepoi
+    
+    Se decide realizar la persistencia en documentos excel
+    Esta versión incluye un primer acercamiento al manejo de esta librería
+    en la clase HSSFReadWrite (que se eliminará posteriormente),
+    proporcionada por los proveedores de la api
+
+[33mcommit 39f41ac706443c828cbe1dee5996ea294e7e4d91[m
+Author: Isabel Román <irm@us.es>
+Date:   Mon Mar 7 18:24:28 2022 +0100
+
+    Actualiza README
+    
+    Añade el enlace a GitHub Pages
+
+[33mcommit 03a0f2a6397bea3d19b9277e84ae0d7d80073da3[m[33m ([m[1;33mtag: [m[1;33mv0.0.0[m[33m)[m
+Author: MIT-FS <irm@us.es>
+Date:   Mon Mar 7 10:56:42 2022 +0100
+
+    Pequeños cambios en SupervisorControl
+    Probar la clase GHProject
+
+[33mcommit 4a4434957ce71471312917c34af5ac741c937673[m
+Merge: aa02150 1bf593f
+Author: MIT-FS <irm@us.es>
+Date:   Mon Mar 7 10:52:34 2022 +0100
+
+    Merge branch 'desarrolloEnGit' into desarrollo
+
+[33mcommit 1bf593f3859416242fcc7240e1f4339af929cf79[m
+Author: Factoría de Software <71695310+MIT-FS@users.noreply.github.com>
+Date:   Sat Mar 5 11:03:24 2022 +0100
+
+    Actualiza Readme.md
+    
+    Añade la sintaxis markdown al fichero de descripción del proyecto
+
+[33mcommit aa021503acaa75c6fd6fa2dd4afaea9749a1ad0f[m
+Author: MIT-FS <irm@us.es>
+Date:   Thu Feb 24 18:29:28 2022 +0100
+
+    Organización del proyecto:
+    
+    Creación de las carpetas de test
+    Creación de los archivos de información de paquete
+    Añadido fichero de configuración para JPA
+
+[33mcommit 3591b2db096b7c3ce0404f999f67ff02d4517c71[m
+Author: Isabel Román <irm@us.es>
+Date:   Thu Feb 3 12:30:56 2022 +0100
+
+    Punto de partida del proyecto
+
+[33mcommit 6137b5e77ed8a137e1ee74622f4ea3037d921f57[m
+Author: Factoría de Software <71695310+MIT-FS@users.noreply.github.com>
+Date:   Thu Feb 3 11:04:45 2022 +0100
+
+    Initial commit
