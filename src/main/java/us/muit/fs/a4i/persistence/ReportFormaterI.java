@@ -16,19 +16,18 @@ import us.muit.fs.a4i.model.entities.Indicator;
 public interface ReportFormaterI {
 	/**
 	 * <p>Devuelve el formato que debe tener la fuente de una métrica</p>
-	 * @return Fuente de la métrica
+	 * @return
 	 */
 	Font getMetricFont();
 	/**
 	 * <p>Establece la fuente para las métricas</p>
-	 * @param font Fuente de la métrica
+	 * @param font
 	 */
 	void setMetricFont(Font font);
 	/**
 	 * <p>Recupera las fuente para un indicador con el estado indicado.</p>
 	 * <p>Si no se ha configurado para ese estado una fuente específica se devuelve la fuente por defecto</p>
-	 * @param state Estado para el que solicita la fuente
-	 * @return La fuente a utilizar para los indicadores con el estado indicado
+	 * @return La fuente a utilizar para las métricas
 	 * @throws IOException Si no se puede leer la configuración
 	 */
    

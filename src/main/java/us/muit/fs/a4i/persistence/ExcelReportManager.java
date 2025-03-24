@@ -52,7 +52,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	FileInputStream inputStream=null;
 	
 	/**
-	 * <p>Localización del fichero excel</p>
+	 * <p>Localización del fichero excel/<p>
 	 */
 	protected String filePath="";
 	/**
@@ -95,9 +95,9 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	 * Primero hay que abrir el libro
 	 * Busco la hoja correspondiente a esta entidad, si ya existe la elimino
 	 * Creo la hoja
-	 * @return Hoja de excel
-	 * @throws IOException error al abrir el fichero
-	 * @throws EncryptedDocumentException documento protegido
+	 * @return
+	 * @throws IOException 
+	 * @throws EncryptedDocumentException 
 	 */
 	protected HSSFSheet getCleanSheet() throws EncryptedDocumentException, IOException {
 		log.info("Solicita una hoja nueva del libro manejado");
