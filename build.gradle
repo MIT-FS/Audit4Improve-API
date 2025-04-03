@@ -70,7 +70,7 @@ tasks.withType(Javadoc){
     options.version = true
     options.use = true
     options.memberLevel = JavadocMemberLevel.PROTECTED
-    options.footer = "MIT-FS: Curso 2021/22"
+    options.footer = "MIT-FS"
     title = "Audit4Improve-API"    
 }
 
