@@ -122,6 +122,7 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 					int warningLimit = 0;
 					int criticalLimit = 0;
 
+
 					if (limits != null) {
 						okLimit = limits.getInt("ok");
 						warningLimit = limits.getInt("warning");
