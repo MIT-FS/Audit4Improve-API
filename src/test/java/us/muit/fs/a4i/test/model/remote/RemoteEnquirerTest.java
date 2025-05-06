@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItemI;
+import us.muit.fs.a4i.model.remote.ExtraccionMetricas;
 import us.muit.fs.a4i.model.remote.GitHubRepositoryEnquirer;
 import us.muit.fs.a4i.model.remote.RemoteEnquirer;
 
@@ -26,7 +27,7 @@ class RemoteEnquirerTest {
     
     @Test
     void testGetTotalIssuesMetric() throws MetricException {
-        String repoId = "Isabel-Roman"; // Reemplazar con un repositorio válido de prueba
+        String repoId = "MIT-FS"; // Reemplazar con un repositorio válido de prueba
 
         ReportItemI metric = enquirer.getMetric("totalIssues", repoId);
         assertNotNull(metric, "La métrica 'totalIssues' no debe ser null");
@@ -41,7 +42,7 @@ class RemoteEnquirerTest {
     
     @Test
     void testGetLabeledIssuesMetric() throws MetricException {
-        String repoId = "Isabel-Roman"; // Reemplazar con un repositorio válido de prueba
+        String repoId = "MIT-FS";
 
         ReportItemI metric = enquirer.getMetric("labeledIssues", repoId);
         assertNotNull(metric, "La métrica 'labeledIssues' no debe ser null");

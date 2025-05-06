@@ -127,8 +127,8 @@
 			"unit": "issues"
 		},
 		{
-			"name": "issues",
-			"type": "java.lang.Integer",
+			"name": "totalIssues",
+			"type": "java.lang.Double",
 			"description": "Tareas totales",
 			"unit": "issues"
 		},
@@ -297,6 +297,12 @@
 			"type": "java.lang.Double",
 			"description": "Indicador de conformidad con las convenciones en el repo",
 			"unit": "ratio"
+		},
+		{
+  			"name": "labeledIssues",
+  			"type": "java.lang.Double",
+ 			"description": "Número de issues con al menos una etiqueta",
+  			"unit": "issues"
 		},
 		{
 			"name": "teamsBalanceI",
