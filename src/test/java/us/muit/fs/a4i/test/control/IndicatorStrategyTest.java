@@ -57,14 +57,14 @@ public class IndicatorStrategyTest {
 
         // Comprobamos que el resultado es el esperado
         // Cálculo esperado:
-        // Calidad = 0.3 * %MRI + 0.4 * %TRPI + 0.3 * (100 - %IAPC)
+        // Calidad = 0.3 * (100 - %MRI) + 0.4 * %TRPI + 0.3 * (100 - %IAPC)
         // %MRI = (0.5 - 0.3) / 1.7 * 100 = 11.76
         // %TRPI = 80.0
         // %IAPC = 20.0 -> 100 - 20 = 80.0
-        // Calidad = 0.3 * 11.76 + 0.4 * 80 + 0.3 * 80 = 71.76
+        // Calidad = 0.3 * (100 - 11.76) + 0.4 * 80 + 0.3 * 80 = 82.47
 
         Assertions.assertEquals("calidadResolucion", result.getName());
-        Assertions.assertEquals(71.76, result.getValue(), 0.5);  // Con margen de error para la comparación
+        Assertions.assertEquals(82.47, result.getValue(), 0.5);  // Con margen de error para la comparación
         Assertions.assertDoesNotThrow(() -> indicator.calcIndicator(metrics));
     }
 
