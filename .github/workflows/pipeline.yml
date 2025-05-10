@@ -36,4 +36,4 @@ jobs:
       - name: Mostrando contexto strategy
         run: echo '${{ toJSON(strategy) }}'
       - name: Mostrando contexto matrix
-        run: echo '${{ toJSON(matrix)
+        run: echo '${{ toJSON(matrix)}}
