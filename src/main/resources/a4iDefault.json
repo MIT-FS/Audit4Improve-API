@@ -233,7 +233,26 @@
 			"type": "java.lang.Integer",
 			"description": "Balance de equipos y open issues",
 			"unit": "ratio"
-		}	
+		},
+				{
+		  "name": "reopenedIssuesAvg",
+		  "type": "java.lang.Double",
+		  "description": "Media de issues reabiertos en el ultimo sprint",
+		  "unit": "issues/sprint"
+		},
+		    {
+	      "name": "reopenedIssuesResolutionRate",
+	      "type": "java.lang.Double",
+	      "description": "Porcentaje de issues que se resuelven en el primer intento sin necesidad de ser reabiertos",
+	      "unit": "ratio"
+	    },
+	  	{
+		  "name": "postClosureActivityRate",
+		  "type": "java.lang.Double",
+		  "description": "Porcentaje de issues cerrados que reciben comentarios o actividades adicionales",
+		  "unit": "ratio"
+		}
+	  	
 	],
 	"indicators": [
 		{
