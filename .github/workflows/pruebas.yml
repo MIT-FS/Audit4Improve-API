@@ -1,5 +1,4 @@
-name: Flujo de trabajo para construcción y test por separado
-
+name: Flujo de trabajo para ejecutar los test
 on:
   workflow_dispatch:
   push:
@@ -8,39 +7,22 @@ on:
     branches: [ V.0.2 ]
   schedule:
     - cron: '1 23 * * 0-4'
-
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_LOGIN: ${{ github.actor }}
+      GITHUB_PACKAGES: ${{ secrets.GHTOKEN }}
+      GITHUB_OAUTH: ${{ secrets.GHTOKEN }}
     steps:
-      - name: Clonando el repositorio
+      - name: Clonando el repositorio y estableciendo el espacio de trabajo
         uses: actions/checkout@v3
-
-      - name: Configurando Java
+      - name: Configurando java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '16'
-
-      - name: Compilando el proyecto
+      - name: Construyendo y probando el código
         run: |
-          chmod +x gradlew
-          ./gradlew classes
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Clonando el repositorio
-        uses: actions/checkout@v3
-
-      - name: Configurando Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '16'
-
-      - name: Ejecutando pruebas
-        run: |
-          chmod +x gradlew
-          ./gradlew test
+          chmod +x gradlew        
+          ./gradlew build
