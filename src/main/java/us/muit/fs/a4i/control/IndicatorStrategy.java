@@ -59,13 +59,13 @@ public class IndicatorStrategy {
         }
 
         // Cálculo de la calidad
-        double quality = 0.3 * percMRI + 0.4 * trpiValue + 0.3 * (100.0 - iapcValue);
+        double quality = 0.3 * (100-percMRI) + 0.4 * trpiValue + 0.3 * (100.0 - iapcValue);
         
 
         try {
             return new ReportItem.ReportItemBuilder<>(RESULT_NAME, quality)
-                    .source("calculado")
-                    .unit("porcentaje")
+                    .source("auto")
+                    .unit("%")
                     .build();
         } catch (ReportItemException e) {
             throw new RuntimeException("Error al construir ReportItem: " + e.getMessage(), e);
