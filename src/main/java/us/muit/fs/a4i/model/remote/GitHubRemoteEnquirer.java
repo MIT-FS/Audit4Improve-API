@@ -27,7 +27,14 @@ public class GitHubRemoteEnquirer implements RemoteEnquirer {
     
     public GitHubRemoteEnquirer() throws IOException {
     	String token = System.getenv("GITHUB_OAUTH");
-        this.github = new GitHubBuilder().withOAuthToken(token).build();
+    	if (token == null || token.isEmpty()) {
+    	    token = System.getenv("GITHUB_TOKEN");
+    	}
+    	if (token == null || token.isEmpty()) {
+    	    throw new IllegalStateException("No GitHub token provided.");
+    	}
+    	this.github = new GitHubBuilder().withOAuthToken(token).build();
+
     }
 
     @Override
