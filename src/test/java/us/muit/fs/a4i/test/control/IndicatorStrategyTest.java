@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import us.muit.fs.a4i.control.IndicatorCalidadIssues;
 import us.muit.fs.a4i.control.IndicatorStrategy;
 import us.muit.fs.a4i.exceptions.NotAvailableMetricException;
 import us.muit.fs.a4i.model.entities.ReportItemI;
@@ -49,7 +50,7 @@ public class IndicatorStrategyTest {
         Mockito.when(mockIAPC.getValue()).thenReturn(20.0); // Issues con Actividad Posterior al Cierre
 
         // Creamos una instancia de IndicatorStrategy
-        IndicatorStrategy<Double> indicator = new CalidadStrategy();
+        IndicatorCalidadIssues indicator = new IndicatorCalidadIssues();
 
         // Ejecutamos el método que queremos probar con los mocks como argumentos
         List<ReportItemI<Double>> metrics = Arrays.asList(mockMRI, mockTRPI, mockIAPC);
@@ -71,7 +72,7 @@ public class IndicatorStrategyTest {
         Mockito.when(mockMRI.getValue()).thenReturn(0.5);
 
         // Creamos una instancia de IndicatorStrategy
-        IndicatorStrategy<Double> indicator = new CalidadStrategy();
+        IndicatorCalidadIssues indicator = new IndicatorCalidadIssues();
 
         // Ejecutamos el método que queremos probar con métricas insuficientes
         List<ReportItemI<Double>> metrics = Arrays.asList(mockMRI);
@@ -84,7 +85,7 @@ public class IndicatorStrategyTest {
     @Test
     public void testRequiredMetrics() {
         // Creamos una instancia de IndicatorStrategy
-    	IndicatorStrategy<Double> indicatorStrategy = new CalidadStrategy();
+        IndicatorCalidadIssues indicatorStrategy = new IndicatorCalidadIssues();
 
         // Ejecutamos el método que queremos probar
         List<String> requiredMetrics = indicatorStrategy.requiredMetrics();
@@ -109,7 +110,7 @@ public class IndicatorStrategyTest {
         Mockito.when(iapc.getName()).thenReturn("postClosureActivityRate");
         Mockito.when(iapc.getValue()).thenReturn(0.0);
 
-        IndicatorStrategy<Double> indicator = new CalidadStrategy();
+        IndicatorCalidadIssues indicator = new IndicatorCalidadIssues();
         List<ReportItemI<Double>> metrics = Arrays.asList(mri, trpi, iapc);
         ReportItemI<Double> result = indicator.calcIndicator(metrics);
 
