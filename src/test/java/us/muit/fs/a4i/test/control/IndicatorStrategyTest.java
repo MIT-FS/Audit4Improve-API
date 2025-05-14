@@ -49,12 +49,11 @@ public class IndicatorStrategyTest {
         Mockito.when(mockIAPC.getValue()).thenReturn(20.0); // Issues con Actividad Posterior al Cierre
 
         // Creamos una instancia de IndicatorStrategy
-        IndicatorStrategy indicator = new IndicatorStrategy();
+        IndicatorStrategy<Double> indicator = new CalidadStrategy();
 
         // Ejecutamos el método que queremos probar con los mocks como argumentos
         List<ReportItemI<Double>> metrics = Arrays.asList(mockMRI, mockTRPI, mockIAPC);
         ReportItemI<Double> result = indicator.calcIndicator(metrics);
-
        
         // Calidad esperada para los valores del Mock
         Assertions.assertEquals("calidadResolucion", result.getName());
@@ -72,7 +71,7 @@ public class IndicatorStrategyTest {
         Mockito.when(mockMRI.getValue()).thenReturn(0.5);
 
         // Creamos una instancia de IndicatorStrategy
-        IndicatorStrategy indicator = new IndicatorStrategy();
+        IndicatorStrategy<Double> indicator = new CalidadStrategy();
 
         // Ejecutamos el método que queremos probar con métricas insuficientes
         List<ReportItemI<Double>> metrics = Arrays.asList(mockMRI);
@@ -85,7 +84,7 @@ public class IndicatorStrategyTest {
     @Test
     public void testRequiredMetrics() {
         // Creamos una instancia de IndicatorStrategy
-        IndicatorStrategy indicatorStrategy = new IndicatorStrategy();
+    	IndicatorStrategy<Double> indicatorStrategy = new CalidadStrategy();
 
         // Ejecutamos el método que queremos probar
         List<String> requiredMetrics = indicatorStrategy.requiredMetrics();
@@ -110,7 +109,7 @@ public class IndicatorStrategyTest {
         Mockito.when(iapc.getName()).thenReturn("postClosureActivityRate");
         Mockito.when(iapc.getValue()).thenReturn(0.0);
 
-        IndicatorStrategy indicator = new IndicatorStrategy();
+        IndicatorStrategy<Double> indicator = new CalidadStrategy();
         List<ReportItemI<Double>> metrics = Arrays.asList(mri, trpi, iapc);
         ReportItemI<Double> result = indicator.calcIndicator(metrics);
 
