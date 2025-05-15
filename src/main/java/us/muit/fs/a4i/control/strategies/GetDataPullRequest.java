@@ -1,3 +1,5 @@
+package us.muit.fs.a4i.control.strategies;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
