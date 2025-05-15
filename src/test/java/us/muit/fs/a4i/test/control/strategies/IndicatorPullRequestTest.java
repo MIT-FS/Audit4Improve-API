@@ -1,3 +1,5 @@
+package us.muit.fs.a4i.test.control.strategies;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
