@@ -91,6 +91,20 @@
 			"unit": "issues"
 		},
 		{
+			"name": "issues_total",
+			"type": "java.lang.Double",
+			"description": "Número de issues totales",
+			"unit": "issues"
+		
+		},
+		{
+			"name": "issues_etiquetados",
+			"type": "java.lang.Double",
+			"description": "Número de issues etiquetados",
+			"unit": "issues"
+		
+		},
+		{
 			"name": "openProjects",
 			"type": "java.lang.Integer",
 			"description": "Proyectos abiertos",
@@ -273,6 +287,17 @@
 				"ok": 75,
 				"warning": 50,
 				"critical": 25
+			}
+		},
+		{
+			"name": "grado_documentacion_issues",
+			"type": "java.lang.Double",
+			"description": "% Issues etiquetados frente a totales",
+			"unit": "%",
+			"limits": {
+				"ok": 71,
+				"warning": 51,
+				"critical": 31
 			}
 		},
 		{
