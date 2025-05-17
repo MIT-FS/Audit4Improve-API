@@ -25,7 +25,6 @@ public class IEFStrategyTest {
     void setUp() {
         strat = new IEFStrategy();
     }
-
     @Test
     public void testIEF_Excelente() throws NotAvailableMetricException, ReportItemException {
         // Creamos mocks para cada métrica
@@ -52,7 +51,7 @@ public class IEFStrategyTest {
         assertEquals("IEF", result.getName());
         assertEquals(1.0, result.getValue(), 1e-6);
         assertNotNull(result.getIndicator());
-        assertEquals(IndicatorState.EXCELENTE, result.getIndicator().getState());
+        assertEquals(IndicatorState.OK, result.getIndicator().getState());
     }
 
     @Test
@@ -77,7 +76,7 @@ public class IEFStrategyTest {
         assertEquals("IEF", result.getName());
         assertEquals(0.8125, result.getValue(), 1e-4);  // cae en "Excelente"
         assertNotNull(result.getIndicator());
-        assertEquals(IndicatorState.BUENO, result.getIndicator().getState());  // este valor da "Excelente"
+        assertEquals(IndicatorState.OK, result.getIndicator().getState());  // este valor da "Excelente"
     }
 
     @Test
@@ -106,7 +105,7 @@ public class IEFStrategyTest {
         assertEquals("IEF", result.getName());
         assertEquals(0.5, result.getValue(), 1e-6);
         assertNotNull(result.getIndicator());
-        assertEquals(IndicatorState.ACEPTABLE, result.getIndicator().getState());
+        assertEquals(IndicatorState.WARNING, result.getIndicator().getState());
     }
 
     @Test
@@ -135,16 +134,15 @@ public class IEFStrategyTest {
         assertEquals("IEF", result.getName());
         assertEquals(0.0, result.getValue(), 1e-6);
         assertNotNull(result.getIndicator());
-        assertEquals(IndicatorState.BAJO, result.getIndicator().getState());
+        assertEquals(IndicatorState.CRITICAL, result.getIndicator().getState());
     }
 
     @Test
-    public void testIEF_FaltanMetricas() {
-        // Solo una métrica
+    public void testIEF_FaltanMetricas() throws ReportItemException {
         ReportItemI<Double> mC = new ReportItem.ReportItemBuilder<>("cycleTime", 10.0).build();
         List<ReportItemI<Double>> metrics = List.of(mC);
 
-        assertThrows(NotAvailableMetricException.class,() -> strat.calcIndicator(metrics));
+        assertThrows(NotAvailableMetricException.class, () -> strat.calcIndicator(metrics));
     }
 }
 

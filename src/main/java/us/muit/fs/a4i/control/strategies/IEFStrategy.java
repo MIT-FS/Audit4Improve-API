@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.Collection;
+
 
 /**
  * Estrategia para calcular el Índice de Eficiencia del Flujo (IEF).
@@ -58,11 +60,11 @@ public class IEFStrategy implements IndicatorStrategy<Double> {
 
         try {
             return new ReportItem.ReportItemBuilder<Double>("IEF", score)
-                    .metrics(metrics)
-                    .indicator(state)
-                    .build();
+                .metrics((Collection) metrics)
+                .indicator(state)
+                .build();
         } catch (ReportItemException e) {
-            throw new NotAvailableMetricException("Error building IEF ReportItem: " + e.getMessage(), e);
+            throw new NotAvailableMetricException("Error building IEF ReportItem: " + e.getMessage());
         }
     }
 
