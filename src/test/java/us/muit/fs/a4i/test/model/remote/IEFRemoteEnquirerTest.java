@@ -2,11 +2,15 @@ package us.muit.fs.a4i.test.model.remote;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.kohsuke.github.GitHub;
 
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.model.entities.ReportI;
@@ -19,12 +23,20 @@ import us.muit.fs.a4i.model.remote.IEFRemoteEnquirer;
  * consulta las métricas Kanban–Scrum directamente en GitHub.
  */
 class IEFRemoteEnquirerTest {
+        private static final Logger log = Logger.getLogger(IEFRemoteEnquirerTest.class.getName());
 
-    private static final Logger log = Logger.getLogger(IEFRemoteEnquirerTest.class.getName());
-    // Instancia del enquirer; usará la configuración de GitHub (token, etc.) del entorno
-    private final IEFRemoteEnquirer ghEnquirer = new IEFRemoteEnquirer();
+    private static final String REPO = "MIT-FS/Audit4Improve-API-G10";
 
-    private static final String REPO = "MIT-FS/Audit4Improve-API";
+    private GitHub github;
+    private IEFRemoteEnquirer ghEnquirer;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        // Asume que tienes la variable de entorno GITHUB_TOKEN con el token de acceso
+        String token = System.getenv("GITHUB_TOKEN");
+        github = GitHub.connectUsingOAuth(token);
+        ghEnquirer = new IEFRemoteEnquirer(github);
+    }
 
     @Test
     @DisplayName("cycleTime: media horas desde backlog hasta cierre")
@@ -85,7 +97,7 @@ class IEFRemoteEnquirerTest {
     void testBuildReport() {
         ReportI report = ghEnquirer.buildReport(REPO);
         assertNotNull(report, "El reporte no debe ser nulo");
-        List<ReportItemI<?>> items = report.getItems();
+        List<ReportItemI> items = new ArrayList<>(report.getAllMetrics());
         log.info("Informe generado con ítems: " + items);
         assertEquals(4, items.size(), "Informe debe contener 4 métricas");
         // Verificamos rápidamente los nombres
