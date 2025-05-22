@@ -2,11 +2,11 @@ import static org.junit.jupiter.api.Assertions.*; //JUnit methods
 import org.junit.jupiter.api.Test; //to indicate that is a test
 import java.util.List;
 
-public class RemoteEnquirerTest {
+public class GetDataPullRequestTest {
 
     @Test
     public void testGetPullRequests_basic() throws Exception {
-        RemoteEnquirer enquirer = new RemoteEnquirer("owner", "repo", "token"); //to get information about the repository
+        GetDataPullRequest enquirer = new GetDataPullRequest("owner", "repo", "token"); //to get information about the repository
 
         List<PullRequest> pullRequests = enquirer.getPullRequests(); //this calls the method to get the list of PUllRequest
 
