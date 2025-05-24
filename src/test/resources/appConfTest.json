@@ -1,40 +1,63 @@
 {
-	"metrics": [
-		{
-			"name": "downloads",
-			"type": "java.lang.Integer",
-			"description": "Descargas realizadas",
-			"unit": "downloads"
-		},
-		{
-			"name": "comments",
-			"type": "java.lang.Integer",
-			"description": "Número de comentarios",
-			"unit": "comments"
-		}
-	],
-	"indicators": [
-		{
-			"name": "pullReqGlory",
-			"type": "java.lang.Double",
-			"description": "Ratio de pull request aceptados frente a solicitados",
-			"unit": "ratio",
-			"limits": {
-				"ok": 2,
-				"warning": 4,
-				"critical": 6
-			}
-		},
-		{
-			"name": "commentsInterest",
-			"type": "java.lang.Double",
-			"description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
-			"unit": "ratio",
-			"limits": {
-				"ok": 2,
-				"warning": 4,
-				"critical": 6
-			}
-		}
-	]
+  "metrics": [
+    {
+      "name": "downloads",
+      "type": "java.lang.Integer",
+      "description": "Descargas realizadas",
+      "unit": "downloads"
+    },
+    {
+      "name": "comments",
+      "type": "java.lang.Integer",
+      "description": "Número de comentarios",
+      "unit": "comments"
+    },
+    {
+      "name": "uniqueVisitors",
+      "type": "java.lang.Double",
+      "description": "Número de visitantes únicos diarios al repositorio",
+      "unit": "visitors/day"
+    },
+    {
+      "name": "uniqueClones",
+      "type": "java.lang.Double",
+      "description": "Número de clonaciones únicas diarias del repositorio",
+      "unit": "clones/day"
+    }
+  ],
+  "indicators": [
+    {
+      "name": "pullReqGlory",
+      "type": "java.lang.Double",
+      "description": "Ratio de pull request aceptados frente a solicitados",
+      "unit": "ratio",
+      "limits": {
+        "ok": 2,
+        "warning": 4,
+        "critical": 6
+      }
+    },
+    {
+      "name": "commentsInterest",
+      "type": "java.lang.Double",
+      "description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
+      "unit": "ratio",
+      "limits": {
+        "ok": 2,
+        "warning": 4,
+        "critical": 6
+      }
+    },
+    {
+      "name": "GithubTraffic",
+      "type": "java.lang.Double",
+      "description": "Tasa de conversión de visitantes únicos a clonaciones únicas en un repositorio GitHub",
+      "unit": "conversion rate",
+      "limits": {
+        "ok": 50,
+        "warning": 10,
+        "critical": 0
+      }
+    }
+  ]
 }
