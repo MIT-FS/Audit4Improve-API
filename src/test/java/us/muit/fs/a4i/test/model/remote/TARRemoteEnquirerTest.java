@@ -2,7 +2,6 @@ package us.muit.fs.a4i.test.model.remote;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -10,100 +9,102 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.kohsuke.github.GitHub;
 
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.entities.ReportItem;
 import us.muit.fs.a4i.model.entities.ReportItemI;
-import us.muit.fs.a4i.model.remote.IEFRemoteEnquirer;
+import us.muit.fs.a4i.model.remote.TARRemoteEnquirer;
 
 /**
- * Test de integración para IEFRemoteEnquirer,
- * consulta las métricas Kanban–Scrum directamente en GitHub.
+ * Test de integración para TARRemoteEnquirer.
  */
-class IEFRemoteEnquirerTest {
-        private static final Logger log = Logger.getLogger(IEFRemoteEnquirerTest.class.getName());
+class TARRemoteEnquirerTest {
 
+    private static final Logger log = Logger.getLogger(TARRemoteEnquirerTest.class.getName());
     private static final String REPO = "MIT-FS/Audit4Improve-API-G10";
 
-    private GitHub github;
-    private IEFRemoteEnquirer ghEnquirer;
+    private TARRemoteEnquirer ghEnquirer;
 
     @BeforeEach
-    void setUp() throws IOException {
-        // Asume que tienes la variable de entorno GITHUB_TOKEN con el token de acceso
-        String token = System.getenv("GITHUB_TOKEN");
-        github = GitHub.connectUsingOAuth(token);
-        ghEnquirer = new IEFRemoteEnquirer(github);
+    void setUp() {
+        String token = System.getProperty("github.token");
+        assertNotNull(token, "Debe definir github.token como propiedad del sistema con -Dgithub.token=...");
+        ghEnquirer = new TARRemoteEnquirer();
     }
 
     @Test
-    @DisplayName("cycleTime: media horas desde backlog hasta cierre")
-    void testCycleTime() throws MetricException {
-        ReportItem<Double> metric = (ReportItem<Double>) ghEnquirer.getMetric("cycleTime", REPO);
-        assertEquals("cycleTime", metric.getName(), "El nombre debe ser cycleTime");
-        double value = metric.getValue();
-        log.info("cycleTime = " + value + "h");
-        // Debe ser al menos 0
-        assertTrue(value >= 0, "cycleTime debe ser >= 0");
-        assertNotNull(metric.getDescription(), "Debe tener descripción");
+    @DisplayName("uniqueVisitorsLastDay: total visitantes únicos")
+    void testUniqueVisitors() throws MetricException {
+        ReportItem<?> item = (ReportItem<?>) ghEnquirer.getMetric("uniqueVisitorsLastDay", REPO);
+
+        assertTrue(item.getValue() instanceof Integer, "El valor debe ser Integer");
+
+        Integer value = (Integer) item.getValue();
+        ReportItemI<Integer> metric = (ReportItemI<Integer>) item;
+
+        assertEquals("uniqueVisitorsLastDay", metric.getName());
+        log.info("uniqueVisitorsLastDay = " + value);
+        assertTrue(value >= 0);
     }
 
     @Test
-    @DisplayName("waitTime: media horas hasta entrar en progreso")
-    void testWaitTime() throws MetricException {
-        ReportItem<Double> metric = (ReportItem<Double>) ghEnquirer.getMetric("waitTime", REPO);
-        assertEquals("waitTime", metric.getName(), "El nombre debe ser waitTime");
-        double value = metric.getValue();
-        log.info("waitTime = " + value + "h");
-        assertTrue(value >= 0, "waitTime debe ser >= 0");
-        assertNotNull(metric.getDescription(), "Debe tener descripción");
+    @DisplayName("uniqueClonesLastDay: total clones únicos")
+    void testUniqueClones() throws MetricException {
+        ReportItem<?> item = (ReportItem<?>) ghEnquirer.getMetric("uniqueClonesLastDay", REPO);
+
+        assertTrue(item.getValue() instanceof Integer, "El valor debe ser Integer");
+
+        Integer value = (Integer) item.getValue();
+        ReportItemI<Integer> metric = (ReportItemI<Integer>) item;
+
+        assertEquals("uniqueClonesLastDay", metric.getName());
+        log.info("uniqueClonesLastDay = " + value);
+        assertTrue(value >= 0);
     }
 
     @Test
-    @DisplayName("throughput: tareas cerradas última semana")
-    void testThroughput() throws MetricException {
-        ReportItem<Double> metric = (ReportItem<Double>) ghEnquirer.getMetric("throughput", REPO);
-        assertEquals("throughput", metric.getName(), "El nombre debe ser throughput");
-        double value = metric.getValue();
-        log.info("throughput = " + value + " tareas/semana");
-        assertTrue(value >= 0, "throughput debe ser >= 0");
-        assertNotNull(metric.getDescription(), "Debe tener descripción");
+    @DisplayName("cloneConversionRate: conversión (%) de visitas a clones")
+    void testCloneConversionRate() throws MetricException {
+        ReportItem<?> item = (ReportItem<?>) ghEnquirer.getMetric("cloneConversionRate", REPO);
+
+        assertTrue(item.getValue() instanceof Double, "El valor debe ser Double");
+
+        Double value = (Double) item.getValue();
+        ReportItemI<Double> metric = (ReportItemI<Double>) item;
+
+        assertEquals("cloneConversionRate", metric.getName());
+        log.info("cloneConversionRate = " + value + "%");
+        assertTrue(value >= 0.0);
     }
 
     @Test
-    @DisplayName("WIP: promedio tareas en curso en cuatro etapas")
-    void testWIP() throws MetricException {
-        ReportItem<Double> metric = (ReportItem<Double>) ghEnquirer.getMetric("WIP", REPO);
-        assertEquals("WIP", metric.getName(), "El nombre debe ser WIP");
-        double value = metric.getValue();
-        log.info("WIP = " + value + " tareas");
-        assertTrue(value >= 0, "WIP debe ser >= 0");
-        assertNotNull(metric.getDescription(), "Debe tener descripción");
-    }
-
-    @Test
-    @DisplayName("getAvailableMetrics() debe listar las cuatro métricas")
+    @DisplayName("getAvailableMetrics() debe listar las 3 métricas")
     void testGetAvailableMetrics() {
         List<String> list = ghEnquirer.getAvailableMetrics();
         log.info("Available metrics: " + list);
-        assertEquals(4, list.size(), "Deben ser cuatro métricas");
-        assertTrue(list.containsAll(List.of("cycleTime","waitTime","throughput","WIP")));
+        assertEquals(3, list.size());
+        assertTrue(list.contains("uniqueVisitorsLastDay"));
+        assertTrue(list.contains("uniqueClonesLastDay"));
+        assertTrue(list.contains("cloneConversionRate"));
     }
 
     @Test
-    @DisplayName("buildReport() debe devolver ReportI con 4 ítems")
+    @DisplayName("buildReport() debe devolver ReportI con 3 ítems")
     void testBuildReport() {
         ReportI report = ghEnquirer.buildReport(REPO);
         assertNotNull(report, "El reporte no debe ser nulo");
-        List<ReportItemI> items = new ArrayList<>(report.getAllMetrics());
+
+        List<ReportItemI<?>> items = new ArrayList<ReportItemI<?>>();
+        for (ReportItemI<?> metric : report.getAllMetrics()) {
+            items.add(metric);
+        }
+
         log.info("Informe generado con ítems: " + items);
-        assertEquals(4, items.size(), "Informe debe contener 4 métricas");
-        // Verificamos rápidamente los nombres
-        assertTrue(items.stream().anyMatch(i -> "cycleTime".equals(i.getName())));
-        assertTrue(items.stream().anyMatch(i -> "waitTime".equals(i.getName())));
-        assertTrue(items.stream().anyMatch(i -> "throughput".equals(i.getName())));
-        assertTrue(items.stream().anyMatch(i -> "WIP".equals(i.getName())));
+        assertEquals(3, items.size(), "Informe debe contener 3 métricas");
+
+        assertTrue(items.stream().anyMatch(i -> "uniqueVisitorsLastDay".equals(i.getName())));
+        assertTrue(items.stream().anyMatch(i -> "uniqueClonesLastDay".equals(i.getName())));
+        assertTrue(items.stream().anyMatch(i -> "cloneConversionRate".equals(i.getName())));
     }
 }
