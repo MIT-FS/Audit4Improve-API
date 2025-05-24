@@ -129,6 +129,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
     //JAVADOC: https://github-api.kohsuke.org/apidocs/index.html
      api 'org.kohsuke:github-api:1.301'
+
     //Para la persistencia de informes usaremos la api apachepoi
     // https://mvnrepository.com/artifact/org.apache.poi/poi
     //JAVADOC: https://poi.apache.org/apidocs/5.0/
