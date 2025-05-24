@@ -1,7 +1,8 @@
 /**
- * Este paquete contiene los test para las clases de getiÛn de configuraciÛn y contexto de la api Audit4Improve
+ * Este paquete contiene los test para las clases de gesti√≥n de configuraci√≥n y
+ * contexto de la api Audit4Improve
  *
- * @author Isabel Rom·n
+ * @author Isabel Rom√°n
  * @version 0.0
  */
 package us.muit.fs.a4i.test.config;

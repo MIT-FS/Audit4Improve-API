@@ -1,9 +1,17 @@
 /**
- * <p>Este paquete contiene las interfaces y clases especializadas en la consulta a remotos</p>
- * <p>Construyen informes y mÈtricas a partir de la informaciÛn extraÌda de servidores remotos</p>
- * <img src="https://raw.githubusercontent.com/MIT-FS/Audit4Improve-API/gh-pages/doc-files/remotePackage.gif" alt="Paquete para la consulta a remotos" height="25%" width="50%"> 
+ * <p>
+ * Este paquete contiene las interfaces y clases especializadas en la consulta a
+ * remotos
+ * </p>
+ * <p>
+ * Construyen informes y m√©tricas a partir de la informaci√≥n extra√≠da de
+ * servidores remotos
+ * </p>
+ * <img src=
+ * "https://raw.githubusercontent.com/MIT-FS/Audit4Improve-API/gh-pages/doc-files/remotePackage.gif"
+ * alt="Paquete para la consulta a remotos" height="25%" width="50%">
  *
- * @author Isabel Rom·n
- * @version 0.0
+ * @author Isabel Rom√°n
+ * @version V.0.2
  */
 package us.muit.fs.a4i.model.remote;

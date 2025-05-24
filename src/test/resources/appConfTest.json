@@ -9,7 +9,7 @@
 		{
 			"name": "comments",
 			"type": "java.lang.Integer",
-			"description": "Númeoro de comentarios",
+			"description": "NÃºmero de comentarios",
 			"unit": "comments"
 		}
 	],
@@ -18,13 +18,23 @@
 			"name": "pullReqGlory",
 			"type": "java.lang.Double",
 			"description": "Ratio de pull request aceptados frente a solicitados",
-			"unit": "ratio"
+			"unit": "ratio",
+			"limits": {
+				"ok": 2,
+				"warning": 4,
+				"critical": 6
+			}
 		},
 		{
 			"name": "commentsInterest",
 			"type": "java.lang.Double",
-			"description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
-			"unit": "ratio"
+			"description": "Ratio de comentarios con mÃ¡s de 1 respuesta frente al nÃºmero total de comentarios",
+			"unit": "ratio",
+			"limits": {
+				"ok": 2,
+				"warning": 4,
+				"critical": 6
+			}
 		}
 	]
 }

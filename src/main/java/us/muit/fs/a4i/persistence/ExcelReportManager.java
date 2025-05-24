@@ -1,226 +1,397 @@
-/**
- * 
- */
 package us.muit.fs.a4i.persistence;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.sl.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import us.muit.fs.a4i.control.ReportManagerI;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.model.StylesTable;
+
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
-import us.muit.fs.a4i.model.entities.Indicator;
-import us.muit.fs.a4i.model.entities.Metric;
 import us.muit.fs.a4i.model.entities.ReportI;
-
-
+import us.muit.fs.a4i.model.entities.ReportItemI;
+import us.muit.fs.a4i.model.entities.Font;
 
 /**
- * <p>Clase que cotendr·n las funciones de manejo de excel comunes al manejo de cualquier informe</p>
- * <p>Se utiliza la API apachePOI para manejar los ficheros excel</p>
- * <p>Las primeras versiones se centran en la escritura</p>
- * <p>PolÌtica de informes: un informe es una hoja de un documento excel, identificada con el id del informe</p>
- * <p>Este Gestor tiene los mÈtodos para obtener la hoja y persistirla</p>
- * <p>Si la hoja existÌa la recupera y se aÒadir· sobre ella, no se elimina lo anterior, si no existÌa se crea nueva</p>
- * @author Isabel Rom·n
+ * <p>
+ * Clase que cotendr√° las funciones de manejo de excel comunes al manejo de
+ * cualquier informe
+ * </p>
+ * <p>
+ * Se utiliza la API apachePOI para manejar los ficheros excel
+ * </p>
+ * <p>
+ * Las primeras versiones se centran en la escritura
+ * </p>
+ * <p>
+ * Pol√≠tica de informes: un informe es una hoja de un documento excel,
+ * identificada con el id del informe
+ * </p>
+ * <p>
+ * Este Gestor tiene los m√©todos para obtener la hoja y persistirla
+ * </p>
+ * <p>
+ * Si la hoja existÔøΩa la recupera y se a√±adir√° sobre ella, no se elimina lo
+ * anterior, si no exist√≠a se crea nueva
+ * </p>
+ * <p>
+ * Deuda t√©cnica. En la persistencia de m√©tricas e indicadores se observa mucho
+ * c√≥digo replicado, se debe optimizar
+ * </p>
+ * 
+ * @author Isabel Rom√°n
  * 
  *
  */
-public class ExcelReportManager implements PersistenceManager, FileManager{
-	private static Logger log=Logger.getLogger(ExcelReportManager.class.getName());
+public class ExcelReportManager implements PersistenceManager, FileManager {
+	private static Logger log = Logger.getLogger(ExcelReportManager.class.getName());
+
+	private Map<String, XSSFCellStyle> styles = new HashMap<String, XSSFCellStyle>();
 	/**
-	 * <p>Referencia al gestor de estilo que se va a utilizar</p>
+	 * <p>
+	 * Referencia al gestor de estilo que se va a utilizar
+	 * </p>
 	 */
 	protected ReportFormaterI formater;
-	ReportI report;
-	FileInputStream inputStream=null;
-	
+
+	FileInputStream inputStream = null;
+
 	/**
-	 * <p>LocalizaciÛn del fichero excel</p>
+	 * <p>
+	 * Localizaci√≥n del fichero excel
+	 * </p>
 	 */
-	protected String filePath="";
+	protected String filePath = "";
 	/**
-	 * <p>Nombre del fichero excel</p>
+	 * <p>
+	 * Nombre del fichero excel
+	 * </p>
 	 */
-	protected String fileName="";
-	
-	protected HSSFWorkbook wb=null;
-	protected HSSFSheet sheet=null;
-	
-	public void setReport(ReportI report) {
-		log.info("Establece el informe");
-		this.report=report;
+	protected String fileName = "";
+
+	protected XSSFWorkbook wb = null;
+	protected XSSFSheet sheet = null;
+
+	public ExcelReportManager(String filePath, String fileName) {
+		super();
+		this.filePath = filePath;
+		this.fileName = fileName;
 	}
 
-
+	public ExcelReportManager() {
+		super();
+	}
 
 	@Override
 	public void setFormater(ReportFormaterI formater) {
 		log.info("Establece el formateador");
-		this.formater=formater;
-		
+		this.formater = formater;
+
 	}
 
 	@Override
 	public void setPath(String path) {
 		log.info("Establece la ruta al fichero");
-		this.filePath=path;
-		
+		this.filePath = path;
+
 	}
 
 	@Override
 	public void setName(String name) {
 		log.info("Establece el nombre del fichero");
-		this.fileName=name;
-		
+		this.fileName = name;
+
 	}
+
 	/**
-	 * El libro contendr·n todos los informes de un tipo concreto
-	 * Primero hay que abrir el libro
-	 * Busco la hoja correspondiente a esta entidad, si ya existe la elimino
-	 * Creo la hoja
+	 * <p>
+	 * El libro contendr√° todos los informes de un tipo concreto. Primero hay que
+	 * abrir el libro. Busco la hoja correspondiente a esta entidad, si ya existe la
+	 * elimino. Creo la hoja
+	 * </p>
+	 * 
 	 * @return Hoja de excel
-	 * @throws IOException error al abrir el fichero
+	 * @throws IOException                error al abrir el fichero
 	 * @throws EncryptedDocumentException documento protegido
 	 */
-	protected HSSFSheet getCleanSheet() throws EncryptedDocumentException, IOException {
-		log.info("Solicita una hoja nueva del libro manejado");
-		if(wb==null) {			
-			inputStream = new FileInputStream(filePath+fileName+".xls");
-			wb = (HSSFWorkbook) WorkbookFactory.create(inputStream);
+	protected XSSFSheet getCleanSheet(String entityId) throws EncryptedDocumentException, IOException {
+		log.info("Solicita una hoja nueva del libro manejado, para la entidad con id: " + entityId);
+		if (wb == null) {
+			inputStream = new FileInputStream(filePath + fileName);
+
+			wb = new XSSFWorkbook(inputStream);
 			log.info("Generado workbook");
-		  
+
 		}
-		if(sheet==null)
-		{
+		if (sheet == null) {
 			/**
-			  int templateIndex=wb.getSheetIndex("Template");
-			  HSSFSheet sheet = wb.cloneSheet(templateIndex);
-			  int newIndex=wb.getSheetIndex(sheet);
-			  **/
+			 * int templateIndex=wb.getSheetIndex("Template"); HSSFSheet sheet =
+			 * wb.cloneSheet(templateIndex); int newIndex=wb.getSheetIndex(sheet);
+			 **/
 			/**
-			 * <p>Verifico si la hoja existe y si es asÌ la extraigo</p>
-			 * <p>Si no existe la creo.
+			 * <p>
+			 * Verifico si la hoja existe y si es as√≠ la extraigo
+			 * </p>
+			 * <p>
+			 * Si no existe la creo.
 			 */
-			  sheet= wb.getSheet(report.getId().replaceAll("/", "."));
-			  
-			  if(sheet!=null) {
-				  log.info("Recuperada hoja, que ya existÌa");
-				  /*
-				   * Si la hoja existe la elimino
-				   */
-				  int index = wb.getSheetIndex(sheet);
-				  wb.removeSheetAt(index);
-			  }
-			  sheet=wb.createSheet(report.getId().replaceAll("/", "."));
-			  log.info("Creada hoja nueva");
-				
+			sheet = wb.getSheet(entityId.replaceAll("/", "."));
+
+			if (sheet != null) {
+				log.info("Recuperada hoja, que ya exist√≠a");
+				/*
+				 * Si la hoja existe la elimino
+				 */
+				int index = wb.getSheetIndex(sheet);
+				wb.removeSheetAt(index);
+			}
+			sheet = wb.createSheet(entityId.replaceAll("/", "."));
+			log.info("Creada hoja nueva");
+
 		}
-		
-	  
+
 		return sheet;
 	}
+
 	/**
-	 * Guarda en un hoja limpia con el nombre del id del informe todas las mÈtricas y los indicadores que incluya
+	 * Un informe ser√° una hoja en el libro excel Guarda en un hoja limpia con el
+	 * nombre del id del informe Incluye todas las m√©tricas y los indicadores que
+	 * tenga report
 	 */
 	@Override
-    public void saveReport() throws ReportNotDefinedException{
-		log.info("Guardando informe");
-    	if(report==null) {
-    		throw new ReportNotDefinedException();
-    	}
-    	try {
-    		FileOutputStream out;
-    		if(sheet==null) {
-    			sheet=getCleanSheet();
-    		}
-    		
-    		/**
-    		 * A partir de la ˙ltima que haya
-			 * Fila 1: Encabezado mÈtricas
-			 * Filas 2 a N:Para cada mÈtrica del informe una fila
-			 * Fila N+1: Encabezado indicadores
-			 * Filas N+2 a M: Para cada indicador una fila
+	public void saveReport(ReportI report) {
+		log.info("Guardando informe con id: " + report.getEntityId());
+		try {
+			FileOutputStream out;
+			if (sheet == null) {
+				sheet = getCleanSheet(report.getEntityId());
+			}
+
+			/**
+			 * A partir de la √∫ltima que haya Fila 1: Encabezado m√©tricas Filas 2 a N:Para
+			 * cada m√©trica del informe una fila Fila N+1: Encabezado indicadores Filas N+2
+			 * a M: Para cada indicador una fila
 			 */
-    		    int rowIndex=sheet.getLastRowNum();
-    		    rowIndex++;
-    			sheet.createRow(rowIndex).createCell(0).setCellValue("MÈtricas tomadas el dÌa ");
-    			sheet.getRow(rowIndex).createCell(1).setCellValue(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)).toString());
-    			Collection<Metric> collection=report.getAllMetrics();
-    			for(Metric metric:collection) {
-    				persistMetric(metric);
-    			}
-    
-    			
-    			out = new FileOutputStream(filePath+fileName+".xls");
-    			wb.write(out);
-    			out.close();
-    		} catch (Exception e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-    	}
+			int rowIndex = sheet.getLastRowNum();
+			rowIndex++;
+			sheet.createRow(rowIndex).createCell(0).setCellValue("M√©tricas guardadas el d√≠a ");
+			sheet.getRow(rowIndex).createCell(1)
+					.setCellValue(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)).toString());
+			Collection<ReportItemI> collection = report.getAllMetrics();
+			for (ReportItemI metric : collection) {
+				persistMetric(metric);
+				rowIndex++;
+			}
+			// Ahora ir√≠an los indicadores
+			rowIndex++;
+			sheet.createRow(rowIndex).createCell(0).setCellValue("Indicadores");
+			collection = report.getAllIndicators();
+			for (ReportItemI indicator : collection) {
+				persistIndicator(indicator);
+				rowIndex++;
+			}
 
-   private void persistMetric(Metric metric) {
-	   log.info("Introduzco mÈtrica en la hoja");	   
-	  
-	   int rowIndex=sheet.getLastRowNum();
-	   rowIndex++;
-	   Row row=sheet.createRow(rowIndex);
-	   log.info("Indice de fila nueva "+rowIndex);
-	   int cellIndex=0;
-	   //AquÌ deberÌa incorporar el formato de fuente en las celdas
-	   row.createCell(cellIndex++).setCellValue(metric.getName());
-	   row.createCell(cellIndex++).setCellValue(metric.getValue().toString());
-	   row.createCell(cellIndex++).setCellValue(metric.getUnit());
-	   row.createCell(cellIndex++).setCellValue(metric.getDescription());
-	   row.createCell(cellIndex++).setCellValue(metric.getSource());
-	   row.createCell(cellIndex).setCellValue(metric.getDate().toString());
-	   log.info("Indice de celda final"+cellIndex);
-	   
-	   }
-	   
-   private void persistIndicator(Indicator indicator) {
-	   log.info("Introduzco indicador en la hoja");
-	   
-	   
-	   int rowIndex=sheet.getLastRowNum();
-	   rowIndex++;
-	   Row row=sheet.createRow(rowIndex);
-	   log.info("Indice de fila nueva "+rowIndex);
-	   int cellIndex=0;
-	   //AquÌ deberÌa indicar el formato de fuente en las celdas, que depender· del estado del Ìndice
-	   row.createCell(cellIndex++).setCellValue(indicator.getName());
-	   row.createCell(cellIndex++).setCellValue(indicator.getValue().toString());
+			out = new FileOutputStream(filePath + fileName);
+			wb.write(out);
+			out.close();
+		} catch (Exception e) {
 
-	   row.createCell(cellIndex++).setCellValue(indicator.getDescription());
-	
-	   row.createCell(cellIndex).setCellValue(indicator.getDate().toString());
-	   log.info("Indice de celda final"+cellIndex);
-	   
-	   }
+			e.printStackTrace();
+		}
+	}
+
+	private void persistMetric(ReportItemI metric) {
+		log.info("Introduzco m√©trica en la hoja");
+
+		int rowIndex = sheet.getLastRowNum();
+		rowIndex++;
+		XSSFRow row = sheet.createRow(rowIndex);
+		log.info("Indice de fila nueva " + rowIndex);
+		int cellIndex = 0;
+		StylesTable stylesTable = wb.getStylesSource();
+		stylesTable.ensureThemesTable();
+		XSSFCellStyle style = styles.get("metricStyle");
+
+		if (style == null) {
+
+			style = stylesTable.createCellStyle();
+			XSSFFont poiFont = wb.createFont();
+
+			Font a4iFont = formater.getMetricFont();
+			// Establezco el color y la fuente a utilizar en el texto de los indicadores.
+			byte[] color = { (byte) a4iFont.getColor().getRed(), (byte) a4iFont.getColor().getGreen(),
+					(byte) a4iFont.getColor().getBlue() };
+			XSSFColor myColor = new XSSFColor(color);
+			log.info("El nuevo color es " + myColor.getARGBHex());
+
+			poiFont.setFontHeightInPoints((short) a4iFont.getFont().getSize());
+			poiFont.setFontName(a4iFont.getFont().getFamily());
+			poiFont.setColor(myColor);
+			poiFont.setBold(true);
+			poiFont.setItalic(false);
+
+			log.info("La nueva fuente poi es " + poiFont.toString());
+
+			// style.setFillBackgroundColor(a4iFont.getColor().toString());
+			style.setFont(poiFont);
+			style.setFillBackgroundColor(myColor);
+			styles.put("metricStyle", style);
+			log.info("Creado el estilo con indice " + style.getIndex());
+		}
+
+		XSSFCell cell;
+
+		cell = row.createCell(cellIndex);
+		cell.setCellValue(metric.getName());
+		cell.setCellStyle(style);
+		sheet.autoSizeColumn(cellIndex++);
+
+		cell = row.createCell(cellIndex);
+		cell.setCellValue(metric.getValue().toString());
+		cell.setCellStyle(style);
+		sheet.autoSizeColumn(cellIndex++);
+
+		row.createCell(cellIndex).setCellValue(metric.getUnit());
+		sheet.autoSizeColumn(cellIndex++);
+
+		row.createCell(cellIndex).setCellValue(metric.getDescription());
+		sheet.autoSizeColumn(cellIndex++);
+
+		row.createCell(cellIndex).setCellValue(metric.getSource());
+		sheet.autoSizeColumn(cellIndex++);
+
+		row.createCell(cellIndex).setCellValue(metric.getDate().toString());
+		sheet.autoSizeColumn(cellIndex);
+		log.info("Indice de celda final " + cellIndex);
+
+	}
+
+	private void persistIndicator(ReportItemI indicator) {
+		log.info("Introduzco indicador en la hoja");
+		// Mantengo uno diferente porque en el futuro la informaci√≥n del indicador ser√°
+		// distinta a la de la m√©trica
+		int rowIndex = sheet.getLastRowNum();
+		rowIndex++;
+		XSSFRow row = sheet.createRow(rowIndex);
+		log.info("Indice de fila nueva " + rowIndex);
+		int cellIndex = 0;
+		StylesTable stylesTable = wb.getStylesSource();
+		stylesTable.ensureThemesTable();
+
+		XSSFCellStyle style = styles.get(indicator.getIndicator().getState().toString());
+		try {
+			if (style == null) {
+
+				style = stylesTable.createCellStyle();
+				XSSFFont poiFont = wb.createFont();
+
+				Font a4iFont = formater.getIndicatorFont(indicator.getIndicator().getState());
+				// Establezco el color y la fuente a utilizar en el texto de los indicadores.
+				byte[] color = { (byte) a4iFont.getColor().getRed(), (byte) a4iFont.getColor().getGreen(),
+						(byte) a4iFont.getColor().getBlue() };
+				XSSFColor myColor = new XSSFColor(color);
+
+				log.info("El nuevo color es " + myColor.getARGBHex());
+
+				// myColor.setIndexed(newColor++);
+
+				poiFont.setFontHeightInPoints((short) a4iFont.getFont().getSize());
+				poiFont.setFontName(a4iFont.getFont().getFamily());
+				poiFont.setColor(myColor);
+				poiFont.setBold(true);
+				poiFont.setItalic(false);
+
+				log.info("La nueva fuente poi es " + poiFont.toString());
+
+				// style.setFillBackgroundColor(a4iFont.getColor().toString());
+				style.setFont(poiFont);
+				style.setFillBackgroundColor(myColor);
+
+				styles.put(indicator.getIndicator().getState().toString(), style);
+
+				log.info("Creado el estilo con indice " + style.getIndex());
+			}
+			XSSFCell cell;
+
+			cell = row.createCell(cellIndex);
+			cell.setCellValue(indicator.getName());
+			cell.setCellStyle(style);
+			sheet.autoSizeColumn(cellIndex++);
+
+			cell = row.createCell(cellIndex);
+			cell.setCellValue(indicator.getValue().toString());
+			cell.setCellStyle(style);
+			sheet.autoSizeColumn(cellIndex++);
+
+			row.createCell(cellIndex).setCellValue(indicator.getUnit());
+			sheet.autoSizeColumn(cellIndex++);
+
+			row.createCell(cellIndex).setCellValue(indicator.getDescription());
+			sheet.autoSizeColumn(cellIndex++);
+
+			cell = row.createCell(cellIndex);
+			cell.setCellStyle(style);
+			log.info("Establecido el estilo con indice " + style.getIndex() + " en la celda " + cellIndex);
+			cell.setCellValue(indicator.getIndicator().getState().toString());
+			sheet.autoSizeColumn(cellIndex++);
+
+			row.createCell(cellIndex).setCellValue(indicator.getSource());
+			sheet.autoSizeColumn(cellIndex++);
+
+			row.createCell(cellIndex).setCellValue(indicator.getDate().toString());
+			sheet.autoSizeColumn(cellIndex);
+			log.info("Indice de celda final " + cellIndex);
+
+		} catch (IOException e) {
+			log.warning("Problema al abrir el fichero con los formatos");
+			e.printStackTrace();
+		}
+
+	}
 
 	@Override
-	public void deleteReport() throws ReportNotDefinedException {
-		// TODO Auto-generated method stub
-		
-	}    	 
-    }
+	public void deleteReport(ReportI report) throws ReportNotDefinedException {
 
+		log.info("Eliminando informe excel");
+		if (report == null) {
+			throw new ReportNotDefinedException();
+		}
+		try {
+			inputStream = new FileInputStream(filePath + fileName);
 
+			wb = new XSSFWorkbook(inputStream);
+			log.info("Generado workbook");
+			sheet = wb.getSheet(report.getEntityId());
+			if (sheet != null) {
+				int index = wb.getSheetIndex(sheet);
+				wb.removeSheetAt(index);
+				FileOutputStream out;
+				out = new FileOutputStream(filePath + fileName);
+				wb.write(out);
+				out.close();
+
+			} else {
+				log.info("No existe el informe " + report.getEntityId());
+			}
+			inputStream.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+}
