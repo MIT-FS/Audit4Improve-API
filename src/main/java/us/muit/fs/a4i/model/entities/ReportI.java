@@ -84,11 +84,4 @@ public interface ReportI {
 
 	void addIndicator(ReportItemI newIndicator);
 
-	/**
-	 * Calcula un indicador a partir de su nombre y lo añade al informe Si se basa
-	 * en métricas que no están aún incluidas en el informe las incluye
-	 * 
-	 * @param name Nombre del indicador que se quiere calcular
-	 */
-
 }
