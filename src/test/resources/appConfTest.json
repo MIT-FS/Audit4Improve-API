@@ -9,8 +9,32 @@
 		{
 			"name": "comments",
 			"type": "java.lang.Integer",
-			"description": "N�meoro de comentarios",
+			"description": "Número de comentarios",
 			"unit": "comments"
+		},
+		{
+			"name": "cycleTime",
+			"type": "java.lang.Double",
+			"description": "Tiempo medio que tarda una tarea en completarse",
+			"unit": "horas"
+		},
+		{
+			"name": "waitTime",
+			"type": "java.lang.Double",
+			"description": "Tiempo medio que las tareas permanecen en espera o bloqueadas",
+			"unit": "horas"
+		},
+		{
+			"name": "throughput",
+			"type": "java.lang.Double",
+			"description": "Número de tareas completadas en un período determinado",
+			"unit": "tareas/semana"
+		},
+		{
+			"name": "WIP",
+			"type": "java.lang.Double",
+			"description": "Promedio de tareas en curso (trabajo en progreso)",
+			"unit": "tareas"
 		}
 	],
 	"indicators": [
@@ -18,13 +42,34 @@
 			"name": "pullReqGlory",
 			"type": "java.lang.Double",
 			"description": "Ratio de pull request aceptados frente a solicitados",
-			"unit": "ratio"
+			"unit": "ratio",
+			"limits": {
+				"ok": 2,
+				"warning": 4,
+				"critical": 6
+			}
 		},
 		{
 			"name": "commentsInterest",
 			"type": "java.lang.Double",
-			"description": "Ratio de comentarios con m�s de 1 respuesta frente al n�mero total de comentarios",
-			"unit": "ratio"
+			"description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
+			"unit": "ratio",
+			"limits": {
+				"ok": 2,
+				"warning": 4,
+				"critical": 6
+			}
+		},
+		{
+			"name": "IEF",
+			"type": "java.lang.Double",
+			"description": "Índice de Eficiencia del Flujo",
+			"unit": "índice",
+			"limits": {
+				"ok": 0.8,
+				"warning": 0.6,
+				"critical": 0.4
+				}
 		}
 	]
 }
