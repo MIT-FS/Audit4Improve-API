@@ -26,12 +26,13 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/mit-fs/audit4improve-api")         
+            url = uri("https://maven.pkg.github.com/androdfer1/audit4improve-api")         
             credentials {
             //las propiedades gpr.user y gpr.key están configuradas en gradle.properties en el raiz del proyecto, y se añade a .gitignore para que no se suban
             //O bien configuro las variables de entorno GITHUB_LOGIN y GITHUB_PACKAGES
                 username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_LOGIN")
                 password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_PACKAGES")
+                
                 }
         }
     }
@@ -39,16 +40,16 @@ publishing {
         gpr(MavenPublication) {
          //Del tutorial https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
         
-            groupId = 'us.mitfs.samples'
-            artifactId = 'a4i'
-            version = '0.2'
+            groupId = 'com.androdfer1'
+            artifactId = 'audit4improve-api'
+            version = '0.0.1-androdfer1'
 
             from components.java
         }
        
     }
 }
-version = '0.2'
+version = '0.0.1-androdfer1'
 //group = 'us.mitfs.samples'
 tasks.withType(JavaCompile) {
     //Añadir la opción Xlint
