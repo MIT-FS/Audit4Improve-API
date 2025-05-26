@@ -1,0 +1,16 @@
+String nombre
+
+tasks.register('dependiente') {
+    /*dependsOn 'independiente'*/
+    doLast {
+        println "Su nombre es: $nombre"
+    }
+}
+
+tasks.register('independiente') {
+    doLast {
+        nombre = 'Isabel'
+        println "El nombre original es: $nombre"
+        println "En mayúsculas: ${nombre.toUpperCase()}"
+    }
+}
