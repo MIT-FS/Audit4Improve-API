@@ -7,9 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
 
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.exceptions.ReportItemException;
@@ -229,7 +233,7 @@ class GitHubRepositoryEnquirerTest {
 	void testGetTotalCommitsLastMonth() throws MetricException {
 
 		// Nombre de la métrica que queremos consultar
-		String nombreMetrica = "totalCommits";
+		String nombreMetrica = "totalCommitsLastMonth";
 
 		// Repositorio del que se quiere obtener la métrica
 		String repositoryId = "MIT-FS/Audit4Improve-API";
@@ -251,6 +255,37 @@ class GitHubRepositoryEnquirerTest {
 		assertTrue(totalCommitsLastMonth.getValue() instanceof Integer, "Getting total commits failed: value is not an Integer");
 		// 3. El valor de la métrica es mayor o igual que 0
 		assertTrue(totalCommitsLastMonth.getValue() >= 0, "Getting total commits failed: value is less than 0");
+	}
+	
+	@Test
+	void testGetTotalCommitsPerUserLastMonth() throws MetricException {
+
+		// Nombre de la métrica que queremos consultar
+		String nombreMetrica = "totalCommitsPerUserLastMonth";
+
+		// Repositorio del que se quiere obtener la métrica
+		String repositoryId = "MIT-FS/Audit4Improve-API";
+
+		// Variable para almacenar el número de commits totales realizados en el último mes
+		ReportItem<HashMap<String, Integer>> totalCommitsPerUserLastMonth = null;
+
+		// Creamos el RemoteEnquirer para el repositorio GitHub
+		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
+
+		// Obtenemos el número de commits en el último mes
+		totalCommitsPerUserLastMonth = enquirer.getMetric(nombreMetrica, repositoryId);
+		log.info("Número de commits en el último mes: "+totalCommitsPerUserLastMonth .toString());
+
+		// Comprobaciones:
+		// 1. El valor de la métrica no es nulo
+		assertNotNull(totalCommitsPerUserLastMonth , "Getting total commits failed: reportItem is null");
+		// 2. El valor de la métrica es un hashmap con los usuarios y sus commits
+		assertTrue(totalCommitsPerUserLastMonth.getValue() instanceof HashMap, "Getting total commits failed: value is not an Integer");
+		// 3. El valor de la métrica es mayor o igual que 0
+		for (Map.Entry<String, Integer> entry : totalCommitsPerUserLastMonth.getValue().entrySet()) {
+			assertTrue(entry.getValue() >= 0,
+					"Getting total commits failed: value is less than 0 for user " + entry.getKey());
+		}
 	}
 	
 }
