@@ -239,6 +239,18 @@
 			"type": "java.lang.Integer",
 			"description": "Numero total de commits en el ultimo mes",
 			"unit": "commits"
+		},
+		{
+			"name": "commitsPerUserLastMonth",
+			"type": "java.util.HashMap",
+			"description": "Numero de commits creados por cada usuario en el ultimo mes",
+			"unit": "<Usuario, numero commits>"
+		},
+		{
+			"name": "totalLinesLastMonth",
+			"type": "java.lang.Integer",
+			"description": "Numero total de lineas de codigo escritas en el ultimo mes",
+			"unit": "lineas"
 		}
 	],
 	"indicators": [

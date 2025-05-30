@@ -80,6 +80,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 
 		// Equipo 13 curso 24/25
 		myQueries.put("totalCommitsLastMonth", GitHubRepositoryEnquirer::getTotalCommitsLastMonth);
+		myQueries.put("totalCommitsPerUserLastMonth", GitHubRepositoryEnquirer::getTotalCommitsPerUserLastMonth);
 		
 		// equipo3
 		myQueries.put("issuesLastMonth", GitHubRepositoryEnquirer::getIssuesLastMonth);
@@ -974,12 +975,54 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 
 			// Create the metric
 			ReportItemBuilder<Integer> totalCommitsLastMonthMetric = new ReportItem.ReportItemBuilder<Integer>(
-					"conventionalCommits", commits.size());
+					"totalCommitsLastMonth", commits.size());
 			totalCommitsLastMonthMetric.source("GitHub, calculada")
 					.description("Número de commits convencionales en el último mes");
 			metric = totalCommitsLastMonthMetric.build();
 		} catch (IOException e) {
 			throw new MetricException("Error al consultar los commits totales en el último mes del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+		return metric;
+	}
+	
+	/**
+	 * <p>
+	 * Obtiene el número total de commits en el último mes por cada usuario
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return HashMap donde la clave es un String (nombre del usuario) y el valor es el número de commits del usuario
+	 * @throws MetricException Si se produce un error al consultar los commits por usuario o al
+	 *                         crear la métrica
+	 */
+	static private ReportItem<HashMap<String, Integer>> getTotalCommitsPerUserLastMonth(GHRepository remoteRepo) throws MetricException {
+		// Attributes
+		ReportItem<HashMap<String, Integer>> metric = null;
+		List<GHCommit> commits;
+		HashMap<String, Integer> commitsPerUser = new HashMap<>();
+
+		// Se obtienen todos los commits del último mes
+		try {
+			commits = remoteRepo.queryCommits().since(new Date(System.currentTimeMillis() - 30 * 24 * 60 * 60 * 1000))
+					.list().toList();
+
+			// Se obtienen los commits por usuario
+			for (GHCommit commit : commits) {
+				// Se obtiene el autor del commit
+				String username = commit.getAuthor().getName();
+				commitsPerUser.put(username, commitsPerUser.getOrDefault(username, 0) + 1);
+			}
+			
+			// Create the metric
+			ReportItemBuilder<HashMap<String, Integer>> totalCommitsPerUserLastMonthMetric = new ReportItem.ReportItemBuilder<HashMap<String, Integer>>(
+					"commitsPerUserLastMonth", commitsPerUser);
+			totalCommitsPerUserLastMonthMetric.source("GitHub, calculada")
+					.description("Número de commits por usuario en el último mes");
+			metric = totalCommitsPerUserLastMonthMetric.build();
+		} catch (IOException e) {
+			throw new MetricException("Error al consultar los commits por usuario en el último mes del repositorio");
 		} catch (ReportItemException e) {
 			throw new MetricException("Error al crear la métrica");
 		}
