@@ -233,7 +233,13 @@
 			"type": "java.lang.Integer",
 			"description": "Balance de equipos y open issues",
 			"unit": "ratio"
-		}	
+		},
+		{
+			"name": "totalCommitsLastMonth",
+			"type": "java.lang.Integer",
+			"description": "Numero total de commits en el ultimo mes",
+			"unit": "commits"
+		}
 	],
 	"indicators": [
 		{

@@ -78,6 +78,9 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 		myQueries.put("collaborators", GitHubRepositoryEnquirer::getCollaborators);
 		myQueries.put("ownerCommits", GitHubRepositoryEnquirer::getOwnerCommits);
 
+		// Equipo 13 curso 24/25
+		myQueries.put("totalCommitsLastMonth", GitHubRepositoryEnquirer::getTotalCommitsLastMonth);
+		
 		// equipo3
 		myQueries.put("issuesLastMonth", GitHubRepositoryEnquirer::getIssuesLastMonth);
 		myQueries.put("closedIssuesLastMonth", GitHubRepositoryEnquirer::getClosedIssuesLastMonth);
@@ -948,6 +951,41 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 		}
 	}
 
+	// Métricas equipo 13 curso 24/25
+	/**
+	 * <p>
+	 * Obtiene el número total de commits en el último mes
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return Número entero que representa el número de commits del último mes
+	 * @throws MetricException Si se produce un error al consultar los commits o al
+	 *                         crear la métrica
+	 */
+	static private ReportItem<Integer> getTotalCommitsLastMonth(GHRepository remoteRepo) throws MetricException {
+		// Attributes
+		ReportItem<Integer> metric = null;
+		List<GHCommit> commits;
+
+		// Se obtienen todos los commits del último mes
+		try {
+			commits = remoteRepo.queryCommits().since(new Date(System.currentTimeMillis() - 30 * 24 * 60 * 60 * 1000))
+					.list().toList();
+
+			// Create the metric
+			ReportItemBuilder<Integer> totalCommitsLastMonthMetric = new ReportItem.ReportItemBuilder<Integer>(
+					"conventionalCommits", commits.size());
+			totalCommitsLastMonthMetric.source("GitHub, calculada")
+					.description("Número de commits convencionales en el último mes");
+			metric = totalCommitsLastMonthMetric.build();
+		} catch (IOException e) {
+			throw new MetricException("Error al consultar los commits totales en el último mes del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+		return metric;
+	}
+		
 	// Metricas equipo 1 curso 23/24
 	/**
 	 * <p>
