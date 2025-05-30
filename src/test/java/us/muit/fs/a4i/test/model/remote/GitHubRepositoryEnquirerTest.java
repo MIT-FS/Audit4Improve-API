@@ -257,6 +257,9 @@ class GitHubRepositoryEnquirerTest {
 		assertTrue(totalCommitsLastMonth.getValue() >= 0, "Getting total commits failed: value is less than 0");
 	}
 	
+	/**
+	 * @throws MetricException
+	 */
 	@Test
 	void testGetTotalCommitsPerUserLastMonth() throws MetricException {
 
@@ -286,6 +289,37 @@ class GitHubRepositoryEnquirerTest {
 			assertTrue(entry.getValue() >= 0,
 					"Getting total commits failed: value is less than 0 for user " + entry.getKey());
 		}
+	}
+
+	/**
+	 * @throws MetricException
+	 */
+	@Test
+	void testGetTotalLinesLastMonth() throws MetricException {
+
+		// Nombre de la métrica que queremos consultar
+		String nombreMetrica = "totalLinesLastMonth";
+
+		// Repositorio del que se quiere obtener la métrica
+		String repositoryId = "MIT-FS/Audit4Improve-API";
+
+		// Variable para almacenar el número de commits totales realizados en el último mes
+		ReportItem<Integer> totalLinesLastMonth = null;
+
+		// Creamos el RemoteEnquirer para el repositorio GitHub
+		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
+
+		// Obtenemos el número de commits en el último mes
+		totalLinesLastMonth = enquirer.getMetric(nombreMetrica, repositoryId);
+		log.info("Número de líneas de código escritas en el último mes: "+totalLinesLastMonth.toString());
+
+		// Comprobaciones:
+		// 1. El valor de la métrica no es nulo
+		assertNotNull(totalLinesLastMonth, "Getting total lines failed: reportItem is null");
+		// 2. El valor de la métrica es un número entero
+		assertTrue(totalLinesLastMonth.getValue() instanceof Integer, "Getting total lines failed: value is not an Integer");
+		// 3. El valor de la métrica es mayor o igual que 0
+		assertTrue(totalLinesLastMonth.getValue() >= 0, "Getting total lines failed: value is less than 0");
 	}
 	
 }
