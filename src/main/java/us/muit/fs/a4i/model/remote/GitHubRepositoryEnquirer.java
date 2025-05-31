@@ -1028,6 +1028,76 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 		}
 		return metric;
 	}
+	
+	/**
+	 * <p>
+	 * Obtiene el número total de lineas modificadas en el último mes
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return Número entero que representa el número de líneas de código modificadas en el último mes
+	 * @throws MetricException Si se produce un error al consultar los commits o al
+	 *                         crear la métrica
+	 */
+	static private ReportItem<Integer> getTotalLinesLastMonth(GHRepository remoteRepo) throws MetricException {
+	    ReportItem<Integer> metric = null;
+	    List<GHCommit> commits;
+
+		// Se obtienen todos los commits del último mes
+	    try {
+			commits = remoteRepo.queryCommits().since(new Date(System.currentTimeMillis() - 30 * 24 * 60 * 60 * 1000))
+					.list().toList();
+			
+			// Creamos el contador de líneas modificadas
+			int totalLinesModified = 0;
+			
+		    // Recorremos los commits y sumamos las líneas modificadas
+			for (GHCommit commit : commits) {
+				if (commit != null) {
+					totalLinesModified += commit.getLinesChanged();
+				}
+			}
+			
+			// Create the metric
+			ReportItemBuilder<Integer> totalLinesLastMonthMetric = new ReportItem.ReportItemBuilder<Integer>(
+					"totalLinesLastMonth", totalLinesModified);
+			totalLinesLastMonthMetric.source("GitHub, calculada")
+				.description("Número de líneas modificadas en el último mes");
+			metric = totalLinesLastMonthMetric.build();
+	    } catch (IOException e) {
+			throw new MetricException("Error al consultar las líneas modificadas en el último mes del repositorio");
+		} catch (ReportItemException e) {
+			throw new MetricException("Error al crear la métrica");
+		}
+		return metric;
+	
+	}
+	
+	/**
+	 * <p>
+	 * Obtiene el número total de lineas modificadas por usuario en el último mes
+	 * </p>
+	 * 
+	 * @param remoteRepo Repositorio remoto
+	 * @return Número entero que representa el número de líneas de código en el último último mes
+	 * @throws MetricException Si se produce un error al consultar los commits o al
+	 *                         crear la métrica
+	 */
+	/*static private ReportItem<Integer> getTotalLinesPerUserLastMonth(GHRepository remoteRepo) throws MetricException {
+	    ReportItem<Integer> metric = null;
+	    List<GHCommit> commits;
+
+	    try {
+	    	//A se obtienen todos los commi
+	    	
+	    } catch (IOException e) {
+	        throw new MetricException("Error al consultar los commits por usuario en el último mes");
+	    } catch (ReportItemException e) {
+	        throw new MetricException("Error al crear la métrica de commits por usuario");
+	    }
+	
+	}
+	*/
 		
 	// Metricas equipo 1 curso 23/24
 	/**
