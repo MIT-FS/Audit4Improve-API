@@ -329,7 +329,7 @@ class GitHubRepositoryEnquirerTest {
 	void testGetTotalLinesPerUserLastMonth() throws MetricException {
 	
 		// Nombre de la métrica que queremos consultar
-		String nombreMetrica = "testGetTotalLinesPerUserLastMonth";
+		String nombreMetrica = "totalLinesPerUserLastMonth";
 	
 		// Repositorio del que se quiere obtener la métrica
 		String repositoryId = "MIT-FS/Audit4Improve-API";

@@ -251,6 +251,12 @@
 			"type": "java.lang.Integer",
 			"description": "Numero total de lineas de codigo escritas en el ultimo mes",
 			"unit": "lineas"
+		},
+		{
+			"name": "linesPerUserLastMonth",
+			"type": "java.util.HashMap",
+			"description": "Numero de lineas modificadas por cada usuario en el ultimo mes",
+			"unit": "<Usuario, numero lineas>"
 		}
 	],
 	"indicators": [
