@@ -30,8 +30,8 @@ public class DiversityOfContributionsStrategy implements IndicatorStrategy<HashM
 	private static Logger log = Logger.getLogger(Indicator.class.getName());
 
 	// Métricas necesarias para calcular el indicador
-	private static final List<String> REQUIRED_METRICS = Arrays.asList("TotalCommitsPerUserLastMonth", 
-																	   "TotalLinesPerUserLastMonth");
+	private static final List<String> REQUIRED_METRICS = Arrays.asList("totalCommitsPerUserLastMonth", 
+																	   "totalLinesPerUserLastMonth");
 
 	@Override
 	public ReportItemI<HashMap<String, Double>> calcIndicator(List<ReportItemI<HashMap<String, Double>>> metrics) throws NotAvailableMetricException {
@@ -122,8 +122,8 @@ public class DiversityOfContributionsStrategy implements IndicatorStrategy<HashM
 	@Override
 	public List<String> requiredMetrics() {
 		// Para calcular el indicador DiversityOfContributionsStrategy se requieren las siguientes métricas:
-		// - TotalCommitsPerUserLastMonth
-		// - TotalLinesPerUserLastMonth
+		// - totalCommitsPerUserLastMonth
+		// - totalLinesPerUserLastMonth
 		log.info("Métricas requeridas: " + REQUIRED_METRICS);
 		return REQUIRED_METRICS;
 	}

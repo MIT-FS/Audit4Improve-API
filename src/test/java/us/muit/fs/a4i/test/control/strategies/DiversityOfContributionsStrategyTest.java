@@ -35,10 +35,10 @@ class DiversityOfContributionsStrategyTest {
 		//Mockito.when(mockNum_commits.getValue()).thenReturn(200);
 
 		HashMap<String,Double> commits_per_user = new HashMap<>();
-		commits_per_user.put("Antonio", 100.0);
-		commits_per_user.put("Manolo", 100.0);
+		commits_per_user.put("Antonio", 200.0);
+		commits_per_user.put("Manolo", 3.0);
 		
-		Mockito.when(mockNum_commits_per_user.getName()).thenReturn("commitsPerUserLastMonth");
+		Mockito.when(mockNum_commits_per_user.getName()).thenReturn("totalCommitsPerUserLastMonth");
 		Mockito.when(mockNum_commits_per_user.getValue()).thenReturn(commits_per_user);
 
 		//Mockito.when(mockNum_lines.getName()).thenReturn("totalLinesLastMonth");
@@ -48,7 +48,7 @@ class DiversityOfContributionsStrategyTest {
 		lines_per_user.put("Antonio", 10000.0);
 		lines_per_user.put("Manolo", 10000.0);
 		
-		Mockito.when(mockNum_lines_per_user.getName()).thenReturn("linesPerUserLastMonth");
+		Mockito.when(mockNum_lines_per_user.getName()).thenReturn("totalLinesPerUserLastMonth");
 		Mockito.when(mockNum_lines_per_user.getValue()).thenReturn(lines_per_user);
 
 		// Creamos una instancia de la estrategia
@@ -60,7 +60,7 @@ class DiversityOfContributionsStrategyTest {
 
 		// Comprobamos que el resultado es el esperado
 		Assertions.assertEquals("diversityOfContributions", result.getName());
-		Assertions.assertEquals(1.0, result.getValue().get("entropyValue"), 0.01);
+		Assertions.assertEquals(0.112, result.getValue().get("entropyValue"), 0.01);
 		Assertions.assertDoesNotThrow(() -> strategy.calcIndicator(metrics));
 
 	}

@@ -1022,7 +1022,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 			
 			// Create the metric
 			ReportItemBuilder<HashMap<String, Double>> totalCommitsPerUserLastMonthMetric = new ReportItem.ReportItemBuilder<HashMap<String, Double>>(
-					"commitsPerUserLastMonth", commitsPerUser);
+					"totalCommitsPerUserLastMonth", commitsPerUser);
 			totalCommitsPerUserLastMonthMetric.source("GitHub, calculada")
 					.description("Número de commits por usuario en el último mes");
 			metric = totalCommitsPerUserLastMonthMetric.build();
@@ -1110,7 +1110,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 			
 			// Create the metric
 			ReportItemBuilder<HashMap<String, Double>> totalLinesPerUserLastMonthMetric = new ReportItem.ReportItemBuilder<HashMap<String, Double>>(
-					"linesPerUserLastMonth", linesPerUser);
+					"totalLinesPerUserLastMonth", linesPerUser);
 			totalLinesPerUserLastMonthMetric.source("GitHub, calculada")
 					.description("Número de líneas modificadas por usuario en el último mes");
 			metric = totalLinesPerUserLastMonthMetric.build();
