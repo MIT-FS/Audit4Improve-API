@@ -31,7 +31,7 @@ class DiversityOfContributionsStrategyTest {
 		// Configuramos los mocks para devolver valores predefinidos
 		HashMap<String,Double> commits_per_user = new HashMap<>();
 		commits_per_user.put("Antonio", 200.0);
-		commits_per_user.put("Manolo", 3.0);
+		commits_per_user.put("Manolo", 4.0);
 		
 		Mockito.when(mockNum_commits_per_user.getName()).thenReturn("totalCommitsPerUserLastYear");
 		Mockito.when(mockNum_commits_per_user.getValue()).thenReturn(commits_per_user);
