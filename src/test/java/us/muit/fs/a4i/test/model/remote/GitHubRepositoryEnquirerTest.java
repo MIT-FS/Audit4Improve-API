@@ -255,7 +255,7 @@ class GitHubRepositoryEnquirerTest {
 		// 2. El valor de la métrica es un número entero
 		assertTrue(totalCommitsLastMonth.getValue() instanceof Integer, "Getting total commits failed: value is not an Integer");
 		// 3. El valor de la métrica es mayor o igual que 0
-		assertTrue(totalCommitsLastMonth.getValue() >= 0, "Getting total commits failed: value is less than 0");
+		assertTrue(totalCommitsLastMonth.getValue() >= 0, "Getting total commits failed: value is less than 0");	
 	}
 	
 	/**
