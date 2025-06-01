@@ -81,8 +81,8 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 		// Equipo 13 curso 24/25
 		//myQueries.put("totalCommitsLastMonth", GitHubRepositoryEnquirer::getTotalCommitsLastMonth);
 		//myQueries.put("totalLinesLastMonth", GitHubRepositoryEnquirer::getTotalLinesLastMonth);
-		myQueries.put("totalCommitsPerUserLastMonth", GitHubRepositoryEnquirer::getTotalCommitsPerUserLastMonth);
-		myQueries.put("totalLinesPerUserLastMonth", GitHubRepositoryEnquirer::getTotalLinesPerUserLastMonth);
+		myQueries.put("totalCommitsPerUserLastYear", GitHubRepositoryEnquirer::getTotalCommitsPerUserLastYear);
+		myQueries.put("totalLinesPerUserLastYear", GitHubRepositoryEnquirer::getTotalLinesPerUserLastYear);
 		
 		// equipo3
 		myQueries.put("issuesLastMonth", GitHubRepositoryEnquirer::getIssuesLastMonth);
@@ -1001,7 +1001,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 	 * @throws MetricException Si se produce un error al consultar los commits por usuario o al
 	 *                         crear la métrica
 	 */
-	static private ReportItem<HashMap<String, Double>> getTotalCommitsPerUserLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem<HashMap<String, Double>> getTotalCommitsPerUserLastYear(GHRepository remoteRepo) throws MetricException {
 		// Attributes
 		ReportItem<HashMap<String, Double>> metric = null;
 		List<GHCommit> commits;
@@ -1021,13 +1021,13 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 			log.info("Número de commits en el último mes: "+commitsPerUser.toString());
 			
 			// Create the metric
-			ReportItemBuilder<HashMap<String, Double>> totalCommitsPerUserLastMonthMetric = new ReportItem.ReportItemBuilder<HashMap<String, Double>>(
-					"totalCommitsPerUserLastMonth", commitsPerUser);
-			totalCommitsPerUserLastMonthMetric.source("GitHub, calculada")
+			ReportItemBuilder<HashMap<String, Double>> totalCommitsPerUserLastYearMetric = new ReportItem.ReportItemBuilder<HashMap<String, Double>>(
+					"totalCommitsPerUserLastYear", commitsPerUser);
+			totalCommitsPerUserLastYearMetric.source("GitHub, calculada")
 					.description("Número de commits por usuario en el último mes");
-			metric = totalCommitsPerUserLastMonthMetric.build();
+			metric = totalCommitsPerUserLastYearMetric.build();
 		} catch (IOException e) {
-			throw new MetricException("Error al consultar los commits por usuario en el último mes del repositorio");
+			throw new MetricException("Error al consultar los commits por usuario en el último año del repositorio");
 		} catch (ReportItemException e) {
 			throw new MetricException("Error al crear la métrica");
 		}
@@ -1089,7 +1089,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 	 * @throws MetricException Si se produce un error al consultar los commits por usuario o al
 	 *                         crear la métrica
 	 */
-	static private ReportItem<HashMap<String, Double>> getTotalLinesPerUserLastMonth(GHRepository remoteRepo) throws MetricException {
+	static private ReportItem<HashMap<String, Double>> getTotalLinesPerUserLastYear(GHRepository remoteRepo) throws MetricException {
 		// Attributes
 		ReportItem<HashMap<String, Double>> metric = null;
 		List<GHCommit> commits;
@@ -1106,16 +1106,16 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer<GHRepository> {
 				linesPerUser.put(username, linesPerUser.getOrDefault(username, 0.0) + commit.getLinesChanged());
 			}
 			
-			log.info("Número de lineas por usuario en el último mes: "+linesPerUser.toString());
+			log.info("Número de lineas por usuario en el último año: "+linesPerUser.toString());
 			
 			// Create the metric
-			ReportItemBuilder<HashMap<String, Double>> totalLinesPerUserLastMonthMetric = new ReportItem.ReportItemBuilder<HashMap<String, Double>>(
-					"totalLinesPerUserLastMonth", linesPerUser);
-			totalLinesPerUserLastMonthMetric.source("GitHub, calculada")
+			ReportItemBuilder<HashMap<String, Double>> totalLinesPerUserLastYearMetric = new ReportItem.ReportItemBuilder<HashMap<String, Double>>(
+					"totalLinesPerUserLastYear", linesPerUser);
+			totalLinesPerUserLastYearMetric.source("GitHub, calculada")
 					.description("Número de líneas modificadas por usuario en el último mes");
-			metric = totalLinesPerUserLastMonthMetric.build();
+			metric = totalLinesPerUserLastYearMetric.build();
 		} catch (IOException e) {
-			throw new MetricException("Error al consultar los líneas modificadas por usuario en el último mes del repositorio");
+			throw new MetricException("Error al consultar los líneas modificadas por usuario en el último año del repositorio");
 		} catch (ReportItemException e) {
 			throw new MetricException("Error al crear la métrica");
 		}

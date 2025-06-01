@@ -235,15 +235,15 @@
 			"unit": "ratio"
 		},
 		{
-			"name": "totalCommitsPerUserLastMonth",
+			"name": "totalCommitsPerUserLastYear",
 			"type": "java.util.HashMap",
-			"description": "Numero de commits creados por cada usuario en el ultimo mes",
+			"description": "Numero de commits creados por cada usuario en el ultimo año",
 			"unit": "<Usuario, numero commits>"
 		},
 		{
-			"name": "totalLinesPerUserLastMonth",
+			"name": "totalLinesPerUserLastYear",
 			"type": "java.util.HashMap",
-			"description": "Numero de lineas modificadas por cada usuario en el ultimo mes",
+			"description": "Numero de lineas modificadas por cada usuario en el ultimo año",
 			"unit": "<Usuario, numero lineas>"
 		}
 	],
@@ -326,7 +326,7 @@
 		{
 			"name": "diversityOfContributions",
 			"type": "java.util.HashMap",
-			"description": "Diversidad de contribuciones",
+			"description": "Diversidad de contribuciones de los usuarios en el ultimo año",
 			"unit": "ratio"
 		}
 	]
