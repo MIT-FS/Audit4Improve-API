@@ -235,22 +235,10 @@
 			"unit": "ratio"
 		},
 		{
-			"name": "totalCommitsLastMonth",
-			"type": "java.lang.Integer",
-			"description": "Numero total de commits en el ultimo mes",
-			"unit": "commits"
-		},
-		{
 			"name": "commitsPerUserLastMonth",
 			"type": "java.util.HashMap",
 			"description": "Numero de commits creados por cada usuario en el ultimo mes",
 			"unit": "<Usuario, numero commits>"
-		},
-		{
-			"name": "totalLinesLastMonth",
-			"type": "java.lang.Integer",
-			"description": "Numero total de lineas de codigo escritas en el ultimo mes",
-			"unit": "lineas"
 		},
 		{
 			"name": "linesPerUserLastMonth",
@@ -329,10 +317,16 @@
 			"unit": "ratio",
 			"limits": { "ok": 0.2, "warning": 0.6, "critical": 0.8 }
 		},
-			{
+		{
 			"name": "fixTime",
 			"type": "java.lang.Double",
 			"description": "Tiempo para arreglos",
+			"unit": "ratio"
+		},
+		{
+			"name": "diversityOfContributions",
+			"type": "java.lang.HashMap",
+			"description": "Diversidad de contribuciones",
 			"unit": "ratio"
 		}
 	]

@@ -25,63 +25,60 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
 /**
  * REMEMBER: metrics and indicators must be included in a4iDefault.json
  */
-
-public class DiversityOfContributionsStrategy implements IndicatorStrategy<Object> {
+public class DiversityOfContributionsStrategy implements IndicatorStrategy<HashMap<String, Double>> {
 
 	private static Logger log = Logger.getLogger(Indicator.class.getName());
 
 	// Métricas necesarias para calcular el indicador
-	private static final List<String> REQUIRED_METRICS = Arrays.asList("TotalCommitsLastMonth", "TotalCommitsPerUserLastMonth", 
-																		"TotalLinesLastMonth", "TotalLinesPerUserLastMonth");
+	private static final List<String> REQUIRED_METRICS = Arrays.asList("TotalCommitsPerUserLastMonth", 
+																	   "TotalLinesPerUserLastMonth");
 
 	@Override
-	public ReportItemI<Object> calcIndicator(List<ReportItemI<Object>> metrics) throws NotAvailableMetricException {
-	    List<ReportItemI<?>> mixedMetrics = (List<ReportItemI<?>>) (List<?>) metrics;
+	public ReportItemI<HashMap<String, Double>> calcIndicator(List<ReportItemI<HashMap<String, Double>>> metrics) throws NotAvailableMetricException {
 
-		Optional<ReportItemI<Integer>> totalCommitsLastMonth = mixedMetrics.stream()
-				.filter(m -> REQUIRED_METRICS.get(0).equals(m.getName()) && m.getValue() instanceof Integer)
-				.map(m -> (ReportItemI<Integer>) m).findAny();
-
-	    Optional<ReportItemI<HashMap<String, Integer>>> totalCommitsPerUserLastMonth = mixedMetrics.stream()
-	        .filter(m -> REQUIRED_METRICS.get(1).equals(m.getName()))
-	        .map(m -> (ReportItemI<HashMap<String, Integer>>) m)
+	    Optional<ReportItemI<HashMap<String, Double>>> totalCommitsPerUserLastMonth = metrics.stream()
+	        .filter(m -> REQUIRED_METRICS.get(0).equals(m.getName()))
+	        .map(m -> (ReportItemI<HashMap<String, Double>>) m)
 	        .findAny();
 
-		Optional<ReportItemI<Double>> totalLinesLastMonth = mixedMetrics.stream()
-				.filter(m -> REQUIRED_METRICS.get(2).equals(m.getName()) && m.getValue() instanceof Double)
-				.map(m -> (ReportItemI<Double>) m).findAny();
-
-	    Optional<ReportItemI<HashMap<String, Integer>>> totalLinesPerUserLastMonth = mixedMetrics.stream()
-	        .filter(m -> REQUIRED_METRICS.get(3).equals(m.getName()))
-	        .map(m -> (ReportItemI<HashMap<String, Integer>>) m)
+	    Optional<ReportItemI<HashMap<String, Double>>> totalLinesPerUserLastMonth = metrics.stream()
+	        .filter(m -> REQUIRED_METRICS.get(1).equals(m.getName()))
+	        .map(m -> (ReportItemI<HashMap<String, Double>>) m)
 	        .findAny();
         
-		ReportItemI<?> indicatorReport = null;
+		ReportItemI<HashMap<String, Double>> indicatorReport = null;
 		
 		Double probContributionUserN = 0.0;
 		List<Double> probContributionUsers = new ArrayList<Double>();
 		Double probContribution = 0.0;
 		Double entropyValue = 0.0;
+		Integer totalCommitsLastMonth = 0;
+		Integer totalLinesLastMonth = 0;
 
-		if (totalCommitsLastMonth.isPresent() && totalCommitsPerUserLastMonth.isPresent() && 
-			totalLinesLastMonth.isPresent() && totalLinesPerUserLastMonth.isPresent()) {
+		if (totalCommitsPerUserLastMonth.isPresent() && 
+			totalLinesPerUserLastMonth.isPresent()) {
 		
 			// Se realiza el calculo del indicador
 
-			if (totalCommitsLastMonth.get().getValue() >= 0 && !totalCommitsPerUserLastMonth.get().getValue().isEmpty()
-					&& totalLinesLastMonth.get().getValue() >= 0 && !totalLinesPerUserLastMonth.get().getValue().isEmpty()) {
+			if (!totalCommitsPerUserLastMonth.get().getValue().isEmpty() && 
+				!totalLinesPerUserLastMonth.get().getValue().isEmpty()) {
 				
 				// Calculamos el número de lineas de código modificadas por usuario partido del número de lineas modificadas totales
 				// y el número de commits por usuario partido del número de commits totales, recorriendo los hash maps de la misma longitud
+				// Antes de bucle, se sacan todos los commits y líneas totales del mes pasado
+				
+				totalCommitsLastMonth = totalCommitsPerUserLastMonth.get().getValue().values().stream().mapToInt(Double::intValue).sum();
+				totalLinesLastMonth = totalLinesPerUserLastMonth.get().getValue().values().stream().mapToInt(Double::intValue).sum();
+				
 				for (int i = 0; i < totalCommitsPerUserLastMonth.get().getValue().size(); i++) {
 					String user = (String) totalCommitsPerUserLastMonth.get().getValue().keySet().toArray()[i];
-					Integer commits = totalCommitsPerUserLastMonth.get().getValue().get(user);
-					Integer lines = totalLinesPerUserLastMonth.get().getValue().get(user);
+					Double commits = totalCommitsPerUserLastMonth.get().getValue().get(user);
+					Double lines = totalLinesPerUserLastMonth.get().getValue().get(user);
 
 					// Evitamos la división por cero
 					if (commits != 0 && lines != 0) {
-						probContributionUserN = (double) commits / totalCommitsLastMonth.get().getValue() + 
-								(double) lines / totalLinesLastMonth.get().getValue();
+						probContributionUserN = (double) commits / totalCommitsLastMonth + 
+								(double) lines / totalLinesLastMonth;
 						probContributionUsers.add(probContributionUserN);
 					}
 				}
@@ -92,20 +89,22 @@ public class DiversityOfContributionsStrategy implements IndicatorStrategy<Objec
                 }
 			    
 			    entropyValue = probContribution / Math.log(probContributionUsers.size());
+			    HashMap<String, Double> result = new HashMap<>();
+			    result.put("entropyValue", entropyValue.doubleValue());
 			}
 			
 			else
 				entropyValue = 0.0;
+				HashMap<String, Double> result = new HashMap<>();
+				result.put("entropyValue", entropyValue.doubleValue());
 
 			try {
 				// Se crea el indicador
-				indicatorReport = new ReportItem.ReportItemBuilder<Double>("diversityOfContributions", 
-						entropyValue)
-						.metrics(Arrays.asList(totalCommitsLastMonth.get(), 
-								totalCommitsPerUserLastMonth.get(), 
-								totalLinesLastMonth.get(),
-								totalLinesPerUserLastMonth.get()))
-						.indicator(IndicatorState.UNDEFINED).build();
+				indicatorReport = new ReportItem.ReportItemBuilder<HashMap<String, Double>>("diversityOfContributions", result)
+						.metrics(Arrays.asList(totalCommitsPerUserLastMonth.get(), totalLinesPerUserLastMonth.get()))
+						.indicator(IndicatorState.UNDEFINED)
+						.build();
+				
 			} catch (ReportItemException e) {
 				log.info("Error en ReportItemBuilder.");
 				e.printStackTrace();
@@ -117,15 +116,13 @@ public class DiversityOfContributionsStrategy implements IndicatorStrategy<Objec
 			throw new NotAvailableMetricException(REQUIRED_METRICS.toString());
 		}
 
-		return (ReportItem<Object>) indicatorReport;
+		return indicatorReport;
 	}
 
 	@Override
 	public List<String> requiredMetrics() {
 		// Para calcular el indicador DiversityOfContributionsStrategy se requieren las siguientes métricas:
-		// - TotalCommitsLastMonth
 		// - TotalCommitsPerUserLastMonth
-		// - TotalLinesLastMonth
 		// - TotalLinesPerUserLastMonth
 		log.info("Métricas requeridas: " + REQUIRED_METRICS);
 		return REQUIRED_METRICS;

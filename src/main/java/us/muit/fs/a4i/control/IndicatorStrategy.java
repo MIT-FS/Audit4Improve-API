@@ -26,6 +26,8 @@ public interface IndicatorStrategy<T> {
 	 * @return indicador
 	 */
 	public ReportItemI<T> calcIndicator(List<ReportItemI<T>> metrics) throws NotAvailableMetricException;
+	
+
 
 	/**
 	 * Obtiene las métricas necesarias
