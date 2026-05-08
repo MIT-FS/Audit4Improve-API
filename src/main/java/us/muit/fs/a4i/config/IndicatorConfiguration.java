@@ -1,6 +1,7 @@
 /**
- * 
+ * Código revisado por Sergio Ramírez.
  */
+
 package us.muit.fs.a4i.config;
 
 import java.io.FileInputStream;
@@ -121,6 +122,7 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 					int okLimit = 0;
 					int warningLimit = 0;
 					int criticalLimit = 0;
+
 
 					if (limits != null) {
 						okLimit = limits.getInt("ok");
