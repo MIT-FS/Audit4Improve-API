@@ -1,3 +1,7 @@
+/**
+ * Código revisado por Sergio Ramírez.
+ */
+
 package us.muit.fs.a4i.model.remote;
 
 import java.io.IOException;
@@ -43,8 +47,8 @@ public class ExtraccionMetricas implements RemoteEnquirer {
             throw new MetricException("Métrica no soportada: " + metricName);
         }
 
-        if (!entityId.contains("/")) {
-            entityId = entityId + "/Audit4Improve-API";
+        if (entityId == null || entityId.isBlank() || !entityId.contains("/")) {
+            throw new MetricException("El identificador del repositorio debe tener formato owner/repository");
         }
         
         try {

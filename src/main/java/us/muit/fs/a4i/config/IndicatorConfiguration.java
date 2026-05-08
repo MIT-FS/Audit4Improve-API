@@ -1,6 +1,7 @@
 /**
- * 
+ * Código revisado por Sergio Ramírez.
  */
+
 package us.muit.fs.a4i.config;
 
 import java.io.FileInputStream;

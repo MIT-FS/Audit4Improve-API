@@ -1,3 +1,7 @@
+/**
+ * Código revisado por Sergio Ramírez.
+ */
+
 package us.muit.fs.a4i.test.model.remote;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,5 +86,28 @@ class RemoteEnquirerTest {
     @Test
     void testGetRemoteType() {
         assertEquals(RemoteEnquirer.RemoteType.GITHUB, enquirer.getRemoteType());
+    }
+    
+    // Test sencillo que comprueba que la lista de métricas disponibles no está vacía.
+    // Este test no depende de conexión a GitHub, por lo que es estable y rápido.
+    
+    @Test
+    void testAvailableMetricsIsNotEmpty() {
+        List<String> metrics = enquirer.getAvailableMetrics();
+
+        assertNotNull(metrics, "La lista de métricas disponibles no debe ser null");
+        assertFalse(metrics.isEmpty(), "La lista de métricas disponibles no debe estar vacía");
+    }
+    
+    // Test que comprueba que una métrica con nombre null se rechaza correctamente.
+    // No se realiza conexión a GitHub porque la validación de la métrica se hace antes.
+    
+    @Test
+    void testNullMetricNameThrowsException() {
+        String repoId = "MIT-FS";
+
+        assertThrows(MetricException.class, () -> {
+            enquirer.getMetric(null, repoId);
+        }, "Solicitar una métrica null debe lanzar MetricException");
     }
 }
