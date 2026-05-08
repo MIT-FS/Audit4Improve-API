@@ -90,15 +90,9 @@
 			"description": "Numero de issues abiertas",
 			"unit": "issues"
 		},
+
 		{
-			"name": "issues_total",
-			"type": "java.lang.Double",
-			"description": "Número de issues totales",
-			"unit": "issues"
-		
-		},
-		{
-			"name": "issues_etiquetados",
+			"name": "labeledIssues",
 			"type": "java.lang.Double",
 			"description": "Número de issues etiquetados",
 			"unit": "issues"
@@ -323,12 +317,7 @@
 			"description": "Indicador de conformidad con las convenciones en el repo",
 			"unit": "ratio"
 		},
-		{
-  			"name": "labeledIssues",
-  			"type": "java.lang.Double",
- 			"description": "Número de issues con al menos una etiqueta",
-  			"unit": "issues"
-		},
+
 		{
 			"name": "teamsBalanceI",
 			"type": "java.lang.Double",

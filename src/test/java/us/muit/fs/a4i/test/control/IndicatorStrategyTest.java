@@ -22,8 +22,8 @@ class IndicatorStrategyTest {
     void testCalcIndicator_OK() throws NotAvailableMetricException, ReportItemException {
         IndicatorStrategy<Double> strategy = new GDIStrategy();
 
-        ReportItemI<Double> total = new ReportItem.ReportItemBuilder<>("issues_total", 10.0).build();
-        ReportItemI<Double> etiquetados = new ReportItem.ReportItemBuilder<>("issues_etiquetados", 7.0).build();
+        ReportItemI<Double> total = new ReportItem.ReportItemBuilder<>("totalIssues", 10.0).build();
+        ReportItemI<Double> etiquetados = new ReportItem.ReportItemBuilder<>("labeledIssues", 7.0).build();
 
         List<ReportItemI<Double>> metrics = Arrays.asList(total, etiquetados);
 
@@ -33,17 +33,45 @@ class IndicatorStrategyTest {
     }
 
     @Test
-    @DisplayName("Test de excepción cuando faltan métricas")
-    void testCalcIndicator_MissingMetrics() throws ReportItemException {
+    @DisplayName("Test de excepción cuando falta la métrica totalIssues")
+    void testCalcIndicator_MissingTotalIssues() throws ReportItemException {
         IndicatorStrategy<Double> strategy = new GDIStrategy();
 
-        ReportItemI<Double> etiquetados = new ReportItem.ReportItemBuilder<>("issues_etiquetados", 7.0).build();
-
+        ReportItemI<Double> etiquetados = new ReportItem.ReportItemBuilder<>("labeledIssues", 7.0).build();
         List<ReportItemI<Double>> metrics = List.of(etiquetados);
 
         assertThrows(NotAvailableMetricException.class, () -> {
             strategy.calcIndicator(metrics);
-        }, "Se esperaba una excepción por falta de métricas");
+        }, "Se esperaba una excepción por falta de la métrica totalIssues");
+    }
+
+    @Test
+    @DisplayName("Test de excepción cuando falta la métrica labeledIssues")
+    void testCalcIndicator_MissingLabeledIssues() throws ReportItemException {
+        IndicatorStrategy<Double> strategy = new GDIStrategy();
+
+        ReportItemI<Double> total = new ReportItem.ReportItemBuilder<>("totalIssues", 10.0).build();
+        List<ReportItemI<Double>> metrics = List.of(total);
+
+        assertThrows(NotAvailableMetricException.class, () -> {
+            strategy.calcIndicator(metrics);
+        }, "Se esperaba una excepción por falta de la métrica labeledIssues");
+    }
+    
+
+    @Test
+    @DisplayName("Test de excepción cuando totalIssues es cero")
+    void testCalcIndicator_TotalIssuesZero() throws ReportItemException {
+        IndicatorStrategy<Double> strategy = new GDIStrategy();
+
+        ReportItemI<Double> total = new ReportItem.ReportItemBuilder<>("totalIssues", 0.0).build();
+        ReportItemI<Double> etiquetados = new ReportItem.ReportItemBuilder<>("labeledIssues", 0.0).build();
+
+        List<ReportItemI<Double>> metrics = Arrays.asList(total, etiquetados);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            strategy.calcIndicator(metrics);
+        }, "Se esperaba una excepción porque totalIssues no puede ser cero");
     }
 
     @Test
@@ -52,8 +80,8 @@ class IndicatorStrategyTest {
         IndicatorStrategy<Double> strategy = new GDIStrategy();
         List<String> required = strategy.requiredMetrics();
 
-        assertTrue(required.contains("issues_total"));
-        assertTrue(required.contains("issues_etiquetados"));
+        assertTrue(required.contains("totalIssues"));
+        assertTrue(required.contains("labeledIssues"));
         assertEquals(2, required.size(), "Se esperaban exactamente dos métricas");
     }
 }

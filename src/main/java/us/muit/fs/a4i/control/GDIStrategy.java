@@ -11,13 +11,17 @@ import java.util.Optional;
 
 public class GDIStrategy implements IndicatorStrategy<Double> {
 
-    private static final String METRIC_TOTAL = "issues_total";
-    private static final String METRIC_ETIQUETADOS = "issues_etiquetados";
+    private static final String METRIC_TOTAL = "totalIssues";
+    private static final String METRIC_ETIQUETADOS = "labeledIssues";
     private static final String RESULT_NAME = "grado_documentacion_issues";
 
     @Override
     public ReportItemI<Double> calcIndicator(List<ReportItemI<Double>> metrics) throws NotAvailableMetricException {
-        Optional<ReportItemI<Double>> totalOpt = metrics.stream()
+        if (metrics == null) {
+            throw new NotAvailableMetricException("No se han proporcionado métricas.");
+        }
+    	
+    	Optional<ReportItemI<Double>> totalOpt = metrics.stream()
             .filter(m -> METRIC_TOTAL.equals(m.getName()))
             .findFirst();
 
@@ -26,16 +30,30 @@ public class GDIStrategy implements IndicatorStrategy<Double> {
             .findFirst();
 
         if (totalOpt.isEmpty() || etiquetadosOpt.isEmpty()) {
-            throw new NotAvailableMetricException("Faltan métricas necesarias para calcular el indicador.");
+            throw new NotAvailableMetricException("Faltan métricas necesarias para calcular el indicador GDI.");
         }
 
         double total = totalOpt.get().getValue();
         double etiquetados = etiquetadosOpt.get().getValue();
 
-        if (total == 0) {
-            throw new RuntimeException("El valor de 'issues_total' no puede ser cero.");
+        if (total <= 0) {
+            throw new IllegalArgumentException(
+                    "El valor de 'totalIssues' debe ser mayor que cero."
+            );
         }
 
+        if (etiquetados < 0) {
+            throw new IllegalArgumentException(
+                    "El valor de 'labeledIssues' no puede ser negativo."
+            );
+        }
+
+        if (etiquetados > total) {
+            throw new IllegalArgumentException(
+                    "El número de labeledIssues no puede superar el número totalIssues."
+            );
+        }
+        
         double resultado = (etiquetados / total) * 100.0;
 
         try {
