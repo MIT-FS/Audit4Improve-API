@@ -91,6 +91,20 @@
 			"unit": "issues"
 		},
 		{
+			"name": "issues_total",
+			"type": "java.lang.Double",
+			"description": "Número de issues totales",
+			"unit": "issues"
+		
+		},
+		{
+			"name": "issues_etiquetados",
+			"type": "java.lang.Double",
+			"description": "Número de issues etiquetados",
+			"unit": "issues"
+		
+		},
+		{
 			"name": "openProjects",
 			"type": "java.lang.Integer",
 			"description": "Proyectos abiertos",
@@ -127,8 +141,8 @@
 			"unit": "issues"
 		},
 		{
-			"name": "issues",
-			"type": "java.lang.Integer",
+			"name": "totalIssues",
+			"type": "java.lang.Double",
 			"description": "Tareas totales",
 			"unit": "issues"
 		},
@@ -276,6 +290,17 @@
 			}
 		},
 		{
+			"name": "grado_documentacion_issues",
+			"type": "java.lang.Double",
+			"description": "% Issues etiquetados frente a totales",
+			"unit": "%",
+			"limits": {
+				"ok": 71,
+				"warning": 51,
+				"critical": 31
+			}
+		},
+		{
 			"name": "developerPerfomance",
 			"type": "java.lang.Double",
 			"description": "Ratio de issues cerradas frente a creadas del desarrollador frente al equipo",
@@ -297,6 +322,12 @@
 			"type": "java.lang.Double",
 			"description": "Indicador de conformidad con las convenciones en el repo",
 			"unit": "ratio"
+		},
+		{
+  			"name": "labeledIssues",
+  			"type": "java.lang.Double",
+ 			"description": "Número de issues con al menos una etiqueta",
+  			"unit": "issues"
 		},
 		{
 			"name": "teamsBalanceI",
