@@ -31,7 +31,7 @@ class RemoteEnquirerTest {
     
     @Test
     void testGetTotalIssuesMetric() throws MetricException {
-        String repoId = "MIT-FS"; // Reemplazar con un repositorio válido de prueba
+        String repoId = "MIT-FS/Audit4Improve-API"; // Reemplazar con un repositorio válido de prueba
 
         ReportItemI metric = enquirer.getMetric("totalIssues", repoId);
         assertNotNull(metric, "La métrica 'totalIssues' no debe ser null");
@@ -46,7 +46,7 @@ class RemoteEnquirerTest {
     
     @Test
     void testGetLabeledIssuesMetric() throws MetricException {
-        String repoId = "MIT-FS";
+        String repoId = "MIT-FS/Audit4Improve-API";
 
         ReportItemI metric = enquirer.getMetric("labeledIssues", repoId);
         assertNotNull(metric, "La métrica 'labeledIssues' no debe ser null");
@@ -73,7 +73,7 @@ class RemoteEnquirerTest {
     
     @Test
     void testInvalidMetricThrowsException() {
-        String repoId = "Isabel-Roman";
+        String repoId = "MIT-FS/Audit4Improve-API";
 
         assertThrows(MetricException.class, () -> {
             enquirer.getMetric("nonExistentMetric", repoId);
@@ -104,7 +104,7 @@ class RemoteEnquirerTest {
     
     @Test
     void testNullMetricNameThrowsException() {
-        String repoId = "MIT-FS";
+        String repoId = "MIT-FS/Audit4Improve-API";
 
         assertThrows(MetricException.class, () -> {
             enquirer.getMetric(null, repoId);
