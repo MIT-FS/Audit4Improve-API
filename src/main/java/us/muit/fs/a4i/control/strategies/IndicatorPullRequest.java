@@ -6,9 +6,9 @@ import us.muit.fs.a4i.exceptions.ReportItemException;
 import us.muit.fs.a4i.model.entities.IndicatorI.IndicatorState;
 import us.muit.fs.a4i.model.entities.ReportItem;
 
-public class PullRequestIndicatorStrategy implements IndicatorStrategy<Double> {  //this defines the indicator as a double
+public class IndicatorPullRequest implements IndicatorStrategy<Double> {  //this defines the indicator as a double
     
-    private static final Logger log = Logger.getLogger(PullRequestIndicatorStrategy.class.getName()); //to show error messages during the execution
+    private static final Logger log = Logger.getLogger(IndicatorPullRequest.class.getName()); //to show error messages during the execution
     private static final List<String> REQUIRED_METRICS = Arrays.asList("totalPullReq", "closedPullReq"); //this defines the mandatory metrics to evaluate the inidcator, so the total and closed pull requests
 
     @Override
