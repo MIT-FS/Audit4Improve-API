@@ -113,6 +113,9 @@ dependencies {
     //JAVADOC: https://www.javadoc.io/doc/org.glassfish/javax.json/1.1/javax/json/JsonObject.html
     implementation 'org.glassfish:javax.json:1.1.4'
     
+    
+	implementation 'org.json:json:20231013' // Librería JSON (JSONArray, JSONObject)
+    
 
     
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
