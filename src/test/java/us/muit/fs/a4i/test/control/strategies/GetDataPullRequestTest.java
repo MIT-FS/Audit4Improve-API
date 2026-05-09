@@ -1,33 +1,34 @@
 package us.muit.fs.a4i.test.control.strategies;
 
-import static org.junit.jupiter.api.Assertions.*; //JUnit methods
-import org.junit.jupiter.api.Test; //to indicate that is a test
-import org.kohsuke.github.GHEventPayload.PullRequest;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
+import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.control.strategies.GetDataPullRequest;
 
-import java.util.List;
-
-//Correccion del test por Álvaro Pérez
-
+// Correccion del test por Álvaro Pérez
 
 public class GetDataPullRequestTest {
 
     @Test
-    public void testGetPullRequests_basic() throws Exception {
-        GetDataPullRequest enquirer = new GetDataPullRequest("owner", "repo", "token"); //to get information about the repository
+    public void testGetTotalPullRequests_basic() throws Exception {
 
-        List<PullRequest> pullRequests = enquirer.getPullRequests(); //this calls the method to get the list of PUllRequest
 
-        assertNotNull(pullRequests, "the list cannot be null");  //control that the list is not null unless it gives the error message
+        GetDataPullRequest enquirer = new GetDataPullRequest();
 
-        // assertFalse(pullRequests.isEmpty(), "the list cannot be empty"); //this is to control that the list is not empty, only if we always want that at least one pull request is done
-        for (PullRequest state : pullRequests) {
-            assertNotNull(state, "every PullRequest must have a state");
+        //Uso de variables de entorno para configurar el propietario y el repositorio de GitHub
+        String owner = System.getenv("GITHUB_OWNER");
+        String repo = System.getenv("GITHUB_REPO");
 
-            assertTrue(state.equals("open") || state.equals("closed"),"Lo stato deve essere 'open' o 'closed'");
-          //this controls the parameter of the pull request, so it control that the object are passed correctly from JSON to java, the pull request must have a state and the state has to be or open or closed
-          //the indicator then evalyate the percentage of closed pull request on the total number
-        }
+        assumeTrue(owner != null && !owner.isBlank(), "GITHUB_OWNER is not configured");
+        assumeTrue(repo != null && !repo.isBlank(), "GITHUB_REPO is not configured");
+        
+        int pullRequests = enquirer.getTotalPullRequests(owner, repo);
+
+        assertTrue(
+                pullRequests >= 0,
+                "the number of pull requests cannot be negative"
+        );
     }
 }
