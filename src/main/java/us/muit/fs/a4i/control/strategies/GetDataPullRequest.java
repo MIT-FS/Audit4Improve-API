@@ -14,7 +14,7 @@ public class GetDataPullRequest {
     private final HttpClient httpClient;
 
     //Cambiado el constructor 
-    public GetDataPullRequest(String string, String string2, String string3) {
+    public GetDataPullRequest() {
         this.httpClient = HttpClient.newHttpClient();
     }
 
