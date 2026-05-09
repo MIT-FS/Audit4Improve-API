@@ -10,6 +10,7 @@ import us.muit.fs.a4i.exceptions.NotAvailableMetricException;
 import us.muit.fs.a4i.exceptions.ReportItemException;
 import us.muit.fs.a4i.model.entities.IndicatorI.IndicatorState;
 import us.muit.fs.a4i.model.entities.ReportItem;
+import us.muit.fs.a4i.model.entities.ReportItemI;
 
 public class IndicatorPullRequest implements IndicatorStrategy<Double> {
 
@@ -19,14 +20,14 @@ public class IndicatorPullRequest implements IndicatorStrategy<Double> {
             Arrays.asList("totalPullReq", "closedPullReq");
 
     @Override
-    public ReportItem<Double> calcIndicator(List<ReportItem<Double>> metrics)
+    public ReportItem<Double> calcIndicator(List<ReportItemI<Double>> metrics)
             throws NotAvailableMetricException {
 
-        Optional<ReportItem<Double>> totalPullReq = metrics.stream()
+        Optional<ReportItemI<Double>> totalPullReq = metrics.stream()
                 .filter(m -> REQUIRED_METRICS.get(0).equals(m.getName()))
                 .findAny();
 
-        Optional<ReportItem<Double>> closedPullReq = metrics.stream()
+        Optional<ReportItemI<Double>> closedPullReq = metrics.stream()
                 .filter(m -> REQUIRED_METRICS.get(1).equals(m.getName()))
                 .findAny();
 
