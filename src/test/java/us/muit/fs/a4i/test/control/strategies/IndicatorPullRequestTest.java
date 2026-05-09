@@ -19,19 +19,19 @@ public class IndicatorPullRequestTest {
     @Test
     public void testQualityLevelCorrecto() {
         String level = indicator.evaluateQualityLevel(80.0);
-        assertEquals("Correcto", level);
+        assertEquals("OK", level);
     }
 
     @Test
     public void testQualityLevelPrecaucion() {
         String level = indicator.evaluateQualityLevel(60.0);
-        assertEquals("Precaución", level);
+        assertEquals("WARNING", level);
     }
 
     @Test
     public void testQualityLevelCritico() {
         String level = indicator.evaluateQualityLevel(40.0);
-        assertEquals("Crítico", level);
+        assertEquals("CRTITICAL", level);
     }
 
     @Test
