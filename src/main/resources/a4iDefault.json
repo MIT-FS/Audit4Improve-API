@@ -233,7 +233,19 @@
 			"type": "java.lang.Integer",
 			"description": "Balance de equipos y open issues",
 			"unit": "ratio"
-		}	
+		},
+		{
+			"name": "totalCommitsPerUserLastYear",
+			"type": "java.util.HashMap",
+			"description": "Numero de commits creados por cada usuario en el ultimo año",
+			"unit": "<Usuario, numero commits>"
+		},
+		{
+			"name": "totalLinesPerUserLastYear",
+			"type": "java.util.HashMap",
+			"description": "Numero de lineas modificadas por cada usuario en el ultimo año",
+			"unit": "<Usuario, numero lineas>"
+		}
 	],
 	"indicators": [
 		{
@@ -305,10 +317,16 @@
 			"unit": "ratio",
 			"limits": { "ok": 0.2, "warning": 0.6, "critical": 0.8 }
 		},
-			{
+		{
 			"name": "fixTime",
 			"type": "java.lang.Double",
 			"description": "Tiempo para arreglos",
+			"unit": "ratio"
+		},
+		{
+			"name": "diversityOfContributions",
+			"type": "java.util.HashMap",
+			"description": "Diversidad de contribuciones de los usuarios en el ultimo año",
 			"unit": "ratio"
 		}
 	]

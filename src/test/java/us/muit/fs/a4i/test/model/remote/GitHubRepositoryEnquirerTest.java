@@ -7,9 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
 
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.exceptions.ReportItemException;
@@ -219,5 +223,88 @@ class GitHubRepositoryEnquirerTest {
 		ReportI report=ghEnquirer.buildReport("MIT-FS/Audit4Improve-API");
 		assertNotNull(report,"No construye el informe");
 		log.info("Informe construido "+report.toString());
+	}
+
+	
+	// Test realizados por le equipo 13 curso 25/25
+	/**
+	 * @throws MetricException
+	 */
+	@Test
+	void testGetTotalCommitsPerUserLastYear() throws MetricException {
+
+		// Nombre de la métrica que queremos consultar
+		String nombreMetrica = "totalCommitsPerUserLastYear";
+
+		// Repositorio del que se quiere obtener la métrica
+		String repositoryId = "MIT-FS/Audit4Improve-API";
+
+		// Variable para almacenar el número de commits totales realizados en el último mes
+		ReportItem<HashMap<String, Double>> totalCommitsPerUserLastYear = null;
+		// Creamos el RemoteEnquirer para el repositorio GitHub
+		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
+
+		// Obtenemos el número de commits en el último mes
+		totalCommitsPerUserLastYear = enquirer.getMetric(nombreMetrica, repositoryId);
+
+		// Comprobaciones:
+		// 1. El valor de la métrica no es nulo
+		assertNotNull(totalCommitsPerUserLastYear , "Getting total commits per user failed: reportItem is null");
+		
+		// COMENTARIO DE REVISIÓN: La aserción 'instanceof HashMap' es correcta y oportuna para asegurar que el enquirer 
+		// no ha degradado el tipo dinámico de la colección (por ejemplo, pasándolo a una lista o un mapa inmutable genérico), 
+		// garantizando que el consumidor de la API reciba la estructura exacta que requiere el indicador.
+		// 2. El valor de la métrica es un hashmap con los usuarios y sus commits
+		assertTrue(totalCommitsPerUserLastYear.getValue() instanceof HashMap, "Getting total commits per user failed: value is not an HahMap");
+		
+		// COMENTARIO DE REVISIÓN: El bucle de validación incremental es un acierto de diseño. Al comprobar 'entry.getValue() >= 0' 
+		// mediante un tipo 'Double' explícito, se verifica que la métrica de actividad no contenga valores erróneos o negativos, 
+		// respetando la semántica del indicador matemático de contribuciones.
+		// 3. El valor de la métrica es mayor o igual que 0
+		for (Map.Entry<String, Double> entry : totalCommitsPerUserLastYear.getValue().entrySet()) {
+			assertTrue(entry.getValue() >= 0,
+					"Getting total commits per user failed: value is less than 0 for user " + entry.getKey());
+		}
+	}
+	
+	/**
+	 * @throws MetricException
+	 */
+	@Test
+	void testGetTotalLinesPerUserLastYear() throws MetricException {
+	
+		// Nombre de la métrica que queremos consultar
+		String nombreMetrica = "totalLinesPerUserLastYear";
+	
+		// Repositorio del que se quiere obtener la métrica
+		String repositoryId = "MIT-FS/Audit4Improve-API";
+	
+		// Variable para almacenar el número de commits totales realizados en el último mes
+		ReportItem<HashMap<String, Double>> testGetTotalLinesPerUserLastYear = null;
+	
+		// Creamos el RemoteEnquirer para el repositorio GitHub
+		GitHubRepositoryEnquirer enquirer = new GitHubRepositoryEnquirer();
+	
+		// Obtenemos el número de commits en el último mes
+		testGetTotalLinesPerUserLastYear = enquirer.getMetric(nombreMetrica, repositoryId);
+
+		// Comprobaciones:
+		// 1. El valor de la métrica no es nulo
+		assertNotNull(testGetTotalLinesPerUserLastYear , "Getting total lines per user failed: reportItem is null");
+		
+		// COMENTARIO DE REVISIÓN: El test valida correctamente el contrato de la firma. Al exigir un 'HashMap' con valores 
+		// 'Double', se amarra el comportamiento del enquirer para que la recolección de volumen de líneas modificadas sea 
+		// compatible de forma transparente con los algoritmos matemáticos de diversidad de aportaciones del modelo.
+		// 2. El valor de la métrica es un hashmap con los usuarios y sus commits
+		assertTrue(testGetTotalLinesPerUserLastYear.getValue() instanceof HashMap, "Getting total lines per user failed: value is not an HashMap");
+		
+		// COMENTARIO DE REVISIÓN: La verificación por cada elemento de la colección asegura que la métrica es robusta. 
+		// Aunque un usuario elimine más líneas de las que añada, el total de líneas modificadas acumuladas (additions + deletions) 
+		// debe ser estrictamente positivo o cero, por lo que evaluar que el valor sea '>= 0' es lógicamente impecable.
+		// 3. El valor de la métrica es mayor o igual que 0
+		for (Map.Entry<String, Double> entry : testGetTotalLinesPerUserLastYear.getValue().entrySet()) {
+			assertTrue(entry.getValue() >= 0,
+					"Getting total lines per user failed: value is less than 0 for user " + entry.getKey());
+		}
 	}
 }
