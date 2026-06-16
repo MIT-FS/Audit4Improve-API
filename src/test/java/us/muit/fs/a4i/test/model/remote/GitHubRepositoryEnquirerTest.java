@@ -250,8 +250,16 @@ class GitHubRepositoryEnquirerTest {
 		// Comprobaciones:
 		// 1. El valor de la métrica no es nulo
 		assertNotNull(totalCommitsPerUserLastYear , "Getting total commits per user failed: reportItem is null");
+		
+		// COMENTARIO DE REVISIÓN: La aserción 'instanceof HashMap' es correcta y oportuna para asegurar que el enquirer 
+		// no ha degradado el tipo dinámico de la colección (por ejemplo, pasándolo a una lista o un mapa inmutable genérico), 
+		// garantizando que el consumidor de la API reciba la estructura exacta que requiere el indicador.
 		// 2. El valor de la métrica es un hashmap con los usuarios y sus commits
 		assertTrue(totalCommitsPerUserLastYear.getValue() instanceof HashMap, "Getting total commits per user failed: value is not an HahMap");
+		
+		// COMENTARIO DE REVISIÓN: El bucle de validación incremental es un acierto de diseño. Al comprobar 'entry.getValue() >= 0' 
+		// mediante un tipo 'Double' explícito, se verifica que la métrica de actividad no contenga valores erróneos o negativos, 
+		// respetando la semántica del indicador matemático de contribuciones.
 		// 3. El valor de la métrica es mayor o igual que 0
 		for (Map.Entry<String, Double> entry : totalCommitsPerUserLastYear.getValue().entrySet()) {
 			assertTrue(entry.getValue() >= 0,
@@ -283,8 +291,16 @@ class GitHubRepositoryEnquirerTest {
 		// Comprobaciones:
 		// 1. El valor de la métrica no es nulo
 		assertNotNull(testGetTotalLinesPerUserLastYear , "Getting total lines per user failed: reportItem is null");
+		
+		// COMENTARIO DE REVISIÓN: El test valida correctamente el contrato de la firma. Al exigir un 'HashMap' con valores 
+		// 'Double', se amarra el comportamiento del enquirer para que la recolección de volumen de líneas modificadas sea 
+		// compatible de forma transparente con los algoritmos matemáticos de diversidad de aportaciones del modelo.
 		// 2. El valor de la métrica es un hashmap con los usuarios y sus commits
 		assertTrue(testGetTotalLinesPerUserLastYear.getValue() instanceof HashMap, "Getting total lines per user failed: value is not an HashMap");
+		
+		// COMENTARIO DE REVISIÓN: La verificación por cada elemento de la colección asegura que la métrica es robusta. 
+		// Aunque un usuario elimine más líneas de las que añada, el total de líneas modificadas acumuladas (additions + deletions) 
+		// debe ser estrictamente positivo o cero, por lo que evaluar que el valor sea '>= 0' es lógicamente impecable.
 		// 3. El valor de la métrica es mayor o igual que 0
 		for (Map.Entry<String, Double> entry : testGetTotalLinesPerUserLastYear.getValue().entrySet()) {
 			assertTrue(entry.getValue() >= 0,
