@@ -1,18 +1,12 @@
-/**
- * 
- */
 package us.muit.fs.a4i.control.strategies;
 
-/**
- * 
- */
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
-import java.util.HashMap;
-import java.util.ArrayList;
-
 
 import us.muit.fs.a4i.control.IndicatorStrategy;
 import us.muit.fs.a4i.exceptions.NotAvailableMetricException;
@@ -29,113 +23,114 @@ public class DiversityOfContributionsStrategy implements IndicatorStrategy<HashM
 
 	private static Logger log = Logger.getLogger(Indicator.class.getName());
 
-	// Métricas necesarias para calcular el indicador
-	private static final List<String> REQUIRED_METRICS = Arrays.asList("totalCommitsPerUserLastYear", 
-																	   "totalLinesPerUserLastYear");
+	private static final List<String> REQUIRED_METRICS = Arrays.asList(
+			"totalCommitsPerUserLastYear",
+			"totalLinesPerUserLastYear"
+	);
 
 	@Override
-	public ReportItemI<HashMap<String, Double>> calcIndicator(List<ReportItemI<HashMap<String, Double>>> metrics) throws NotAvailableMetricException {
+	public ReportItemI<HashMap<String, Double>> calcIndicator(List<ReportItemI<HashMap<String, Double>>> metrics)
+			throws NotAvailableMetricException {
 
-	    Optional<ReportItemI<HashMap<String, Double>>> totalCommitsPerUserLastYear = metrics.stream()
-	        .filter(m -> REQUIRED_METRICS.get(0).equals(m.getName()))
-	        .map(m -> (ReportItemI<HashMap<String, Double>>) m)
-	        .findAny();
+		Optional<ReportItemI<HashMap<String, Double>>> totalCommitsPerUserLastYear = metrics.stream()
+				.filter(m -> REQUIRED_METRICS.get(0).equals(m.getName()))
+				.findAny();
 
-	    Optional<ReportItemI<HashMap<String, Double>>> totalLinesPerUserLastYear = metrics.stream()
-	        .filter(m -> REQUIRED_METRICS.get(1).equals(m.getName()))
-	        .map(m -> (ReportItemI<HashMap<String, Double>>) m)
-	        .findAny();
-        
-		ReportItemI<HashMap<String, Double>> indicatorReport = null;
-		
-		Double probContributionUserN = 0.0;
-		List<Double> probContributionUsers = new ArrayList<Double>();
-		Double probContribution = 0.0;
-		Double entropyValue = 0.0;
-		Integer totalCommitsLastYear = 0;
-		Integer totalLinesLastYear = 0;
+		Optional<ReportItemI<HashMap<String, Double>>> totalLinesPerUserLastYear = metrics.stream()
+				.filter(m -> REQUIRED_METRICS.get(1).equals(m.getName()))
+				.findAny();
 
-		if (totalCommitsPerUserLastYear.isPresent() && 
-			totalLinesPerUserLastYear.isPresent()) {
-		
-			// Se realiza el calculo del indicador
-
-			if (!totalCommitsPerUserLastYear.get().getValue().isEmpty() && 
-				!totalLinesPerUserLastYear.get().getValue().isEmpty()) {
-				
-				// Calculamos el número de lineas de código modificadas por usuario partido del número de lineas modificadas totales
-				// y el número de commits por usuario partido del número de commits totales, recorriendo los hash maps de la misma longitud
-				// Antes de bucle, se sacan todos los commits y líneas totales del año pasado
-				
-				totalCommitsLastYear = totalCommitsPerUserLastYear.get().getValue().values().stream().mapToInt(Double::intValue).sum();
-				totalLinesLastYear = totalLinesPerUserLastYear.get().getValue().values().stream().mapToInt(Double::intValue).sum();
-				log.info("Total de commits del año pasado: " + totalCommitsLastYear);
-				log.info("Total de líneas del año pasado: " + totalLinesLastYear);
-				
-				for (int i = 0; i < totalCommitsPerUserLastYear.get().getValue().size(); i++) {
-					String user = (String) totalCommitsPerUserLastYear.get().getValue().keySet().toArray()[i];
-					Double commits = totalCommitsPerUserLastYear.get().getValue().get(user);
-					Double lines = totalLinesPerUserLastYear.get().getValue().get(user);
-
-					// Evitamos la división por cero
-					if (commits != 0 && lines != 0) {
-						// Calculamos la probabilidad de contribución del usuario N
-						log.info("Usuario: " + user + ", Commits: " + commits + ", Lines: " + lines);
-						
-						probContributionUserN = ((double) commits / totalCommitsLastYear + 
-								(double) lines / totalLinesLastYear)/2;
-						probContributionUsers.add(probContributionUserN);
-						log.info("Probabilidad de contribucion del usuario " + user + "en el ultimo mes: " + probContributionUserN);
-					}
-				}
-	            
-				// Calculamos el indicador DiversityOfContributions
-			    for (Double probUser : probContributionUsers) {
-                    probContribution -= probUser * Math.log(probUser);
-                    log.info("Contribucion acumulada: " + probContribution);
-                }
-			    
-			    entropyValue = probContribution / Math.log(probContributionUsers.size());
-				HashMap<String, Double> result = new HashMap<>();
-				result.put("entropyValue", entropyValue.doubleValue());
-				if (entropyValue == 0.0 || entropyValue == -0.0) {
-					log.info("No han habido contribuciones en este repositorio durante el último año");
-				}
-				else
-					log.info("Valor de entropia calculado: " + entropyValue);
-			}
-			
-			else
-				entropyValue = 0.0;
-				HashMap<String, Double> result = new HashMap<>();
-				result.put("entropyValue", entropyValue.doubleValue());
-
-			try {
-				// Se crea el indicador
-				indicatorReport = new ReportItem.ReportItemBuilder<HashMap<String, Double>>("diversityOfContributions", result)
-						.metrics(Arrays.asList(totalCommitsPerUserLastYear.get(), totalLinesPerUserLastYear.get()))
-						.indicator(IndicatorState.UNDEFINED)
-						.build();
-				
-			} catch (ReportItemException e) {
-				log.info("Error en ReportItemBuilder.");
-				e.printStackTrace();
-			}
-
-		}
-		else {
+		if (!totalCommitsPerUserLastYear.isPresent() || !totalLinesPerUserLastYear.isPresent()) {
 			log.info("No se han proporcionado las metricas necesarias");
 			throw new NotAvailableMetricException(REQUIRED_METRICS.toString());
+		}
+
+		HashMap<String, Double> commitsPerUser = totalCommitsPerUserLastYear.get().getValue();
+		HashMap<String, Double> linesPerUser = totalLinesPerUserLastYear.get().getValue();
+
+		double entropyValue = calculateDiversityOfContributions(commitsPerUser, linesPerUser);
+
+		HashMap<String, Double> result = new HashMap<>();
+		result.put("entropyValue", entropyValue);
+
+		ReportItemI<HashMap<String, Double>> indicatorReport = null;
+
+		try {
+			indicatorReport = new ReportItem.ReportItemBuilder<HashMap<String, Double>>(
+					"diversityOfContributions",
+					result
+			)
+					.metrics(Arrays.asList(totalCommitsPerUserLastYear.get(), totalLinesPerUserLastYear.get()))
+					.indicator(IndicatorState.UNDEFINED)
+					.build();
+
+		} catch (ReportItemException e) {
+			log.info("Error en ReportItemBuilder.");
+			e.printStackTrace();
 		}
 
 		return indicatorReport;
 	}
 
+	private double calculateDiversityOfContributions(HashMap<String, Double> commitsPerUser,
+			HashMap<String, Double> linesPerUser) {
+
+		if (commitsPerUser == null || linesPerUser == null) {
+			return 0.0;
+		}
+
+		Set<String> users = new HashSet<>();
+		users.addAll(commitsPerUser.keySet());
+		users.addAll(linesPerUser.keySet());
+
+		if (users.size() <= 1) {
+			return 0.0;
+		}
+
+		double totalCommits = commitsPerUser.values().stream()
+				.mapToDouble(Double::doubleValue)
+				.sum();
+
+		double totalLines = linesPerUser.values().stream()
+				.mapToDouble(Double::doubleValue)
+				.sum();
+
+		if (totalCommits <= 0.0 || totalLines <= 0.0) {
+			return 0.0;
+		}
+
+		double entropy = 0.0;
+		int activeUsers = 0;
+
+		for (String user : users) {
+			double commits = commitsPerUser.getOrDefault(user, 0.0);
+			double lines = linesPerUser.getOrDefault(user, 0.0);
+
+			double commitContribution = commits / totalCommits;
+			double lineContribution = lines / totalLines;
+			double userContribution = (commitContribution + lineContribution) / 2.0;
+
+			if (userContribution > 0.0) {
+				entropy -= userContribution * Math.log(userContribution);
+				activeUsers++;
+			}
+		}
+
+		if (activeUsers <= 1) {
+			return 0.0;
+		}
+
+		double normalizedEntropy = entropy / Math.log(activeUsers);
+
+		if (Double.isNaN(normalizedEntropy) || Double.isInfinite(normalizedEntropy)) {
+			return 0.0;
+		}
+
+		return normalizedEntropy;
+	}
+
 	@Override
 	public List<String> requiredMetrics() {
-		// Para calcular el indicador DiversityOfContributionsStrategy se requieren las siguientes métricas:
-		// - totalCommitsPerUserLastMonth
-		// - totalLinesPerUserLastMonth
 		log.info("Métricas requeridas: " + REQUIRED_METRICS);
 		return REQUIRED_METRICS;
 	}
